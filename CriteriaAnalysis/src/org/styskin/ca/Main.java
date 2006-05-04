@@ -23,6 +23,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
+		// TEST COMMENT
 		(new Main()).testCriteria();
 	}
 
