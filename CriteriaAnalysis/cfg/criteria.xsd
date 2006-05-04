@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="urn:org:stysin:ca" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ca="urn:org:stysin:ca">
+	<complexType name="criteria">
+		<choice></choice>
+		<attribute name="type" type="class"></attribute>
+		<attribute name="weight" type="float"></attribute>
+		<attribute name="class" type="string"></attribute>
+	</complexType>
+
+	<simpleType name="class">
+		<list itemType="string">
+			<enumeration value="single"></enumeration>
+			<enumeration value="complex"></enumeration>
+		</list>
+	</simpleType>
+
+</schema>
