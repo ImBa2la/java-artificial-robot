@@ -1,0 +1,31 @@
+unit GaussianFuncFrm;
+
+interface
+
+uses 
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ComCtrls, StdCtrls;
+
+type
+  TfrmGaussianFunc = class(TFrame)
+    edtKMin: TEdit;
+    lblKMin: TLabel;
+    lblLSatiationl: TLabel;
+    edtLSatiation: TEdit;
+    UpDownLSatiation: TUpDown;
+    lblRSatiationl: TLabel;
+    edtRSatiation: TEdit;
+    UpDownUpDownRSatiation: TUpDown;
+    edtKMax: TEdit;
+    lblKMax: TLabel;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.DFM}
+
+end.

@@ -1,0 +1,11 @@
+[COMMON]
+Problem Name=Новая задача
+Author=
+Description File=Критерий.txt
+[DATA]
+Connection string=Provider=MSDASQL.1;Persist Security Info=False;Data Source=dBASE Files;Extended Properties="DSN=dBASE Files;DBQ=D:\Andrey\МИФИ\7 семестр\Учебно исследовательская работа\Тексты программ\Data;DefaultDir=D:\Andrey\МИФИ\7 семестр\Учебно исследовательская работа\Тексты программ;DriverId=533;FIL=dBase 5.0;MaxBufferSize=2048;PageTimeout=5;";Initial Catalog=D:\Andrey\МИФИ\7 семестр\Учебно исследовательская работа\Тексты программ\Data
+Data Table Name=K_2_MC_11_1
+Name Field=MOUNS
+Criteria File=Критерий_CR.dbf
+Legitimate Value File=Критерий_LV.dbf
+Fuction Parametr File=Критерий_FP.dbf
