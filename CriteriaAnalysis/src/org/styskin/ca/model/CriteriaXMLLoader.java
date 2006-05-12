@@ -27,7 +27,7 @@ public class CriteriaXMLLoader {
 
 
 	    public void endDocument() {
-	    	criteria.setMatrix();
+//	    	criteria.setMatrix();
 	    }
 
 

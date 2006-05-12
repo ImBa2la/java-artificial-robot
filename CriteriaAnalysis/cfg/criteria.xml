@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<criteria type="complex" class="mult" lambda="0.6">
-	<criteria type="complex" class="add" lambda="0.6" weight="0.3">
-		<criteria type="single" weight="0.7" />
-		<criteria type="single" weight="0.3" />
+<criteria type="complex" class="mult" lambda="0.4">
+	<criteria type="complex" class="mult" lambda="0.4" weight="0.3">
+		<criteria type="single" weight="0.6" />
+		<criteria type="single" weight="0.4" />
 	</criteria>
 	<criteria type="complex" class="mult" lambda="0.3" weight="0.6">
 		<criteria type="single" weight="0.6" />

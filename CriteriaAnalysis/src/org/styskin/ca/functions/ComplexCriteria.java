@@ -73,7 +73,7 @@ public class ComplexCriteria extends Criteria {
 
 		int i = 0;
 		for(Criteria child : children) {
-			sb.append('{').append(FORMAT.format(operator.weights.get(i))).append(" - ").append(child.toString()).append('}');
+			sb.append('{').append(FORMAT.format(operator.weights.get(i++))).append(" - ").append(child.toString()).append('}');
 		}
 		sb.append(')');
 		return sb.toString();

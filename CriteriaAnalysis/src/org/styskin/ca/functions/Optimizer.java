@@ -6,22 +6,28 @@ package org.styskin.ca.functions;
 import org.styskin.ca.model.Constants;
 
 public class Optimizer implements Constants {
+	
+	private CacheCriteria cache;
+	
+	private Criteria root;
+	
 
-	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c, Criteria root) {
+	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c) {
 		boolean moved = false;
 
 		ComplexOperator op = c.operator;
+		cache.turnOffCache(c);		
 
-		double f = root.check();
+		double f = cache.check();
 		op.lambda += h[0];
 		op.refresh();
-		if (root.check() < f) {
+		if (cache.check() < f) {
 			V[0] += h[0];
 			moved = true;
 		} else {
 			op.lambda -= 2*h[0];
 			op.refresh();
-			if (root.check() < f) {
+			if (cache.check() < f) {
 				V[0] -= h[0];
 				moved = true;
 			}
@@ -30,13 +36,13 @@ public class Optimizer implements Constants {
 		for(int i = 1; i < V.length; i++) {
 			op.weights.set(i-1, V[i] + h[i]);
 			op.refresh();
-			if (root.check() < f) {
+			if (cache.check() < f) {
 				V[i] += h[i];
 				moved = true;
 			} else {
 				op.weights.set(i-1, V[i] - h[i]);
 				op.refresh();
-				if (root.check() < f) {
+				if (cache.check() < f) {
 					V[i] -= h[i];
 					moved = true;
 				}
@@ -46,7 +52,9 @@ public class Optimizer implements Constants {
 		for(int i = 0; i < op.weights.size(); i++) {
 			op.weights.set(i, V[i+1]);
 		}
-		op.refresh();
+		
+		op.refresh();		
+		cache.refreshCache();
 		return moved;
 	}
 
@@ -57,10 +65,10 @@ public class Optimizer implements Constants {
 			op.weights.set(i, V[i + 1]);
 		}
 		op.refresh();
-		return root.check();
+		return cache.check();
 	}
 
-	public void criteria(ComplexCriteria c, Criteria root) {
+	public void criteria(ComplexCriteria c) {
 		int STEP = 5;
 		ComplexOperator op = c.operator;
 
@@ -84,7 +92,7 @@ public class Optimizer implements Constants {
 		step = 1;
 		double f, fn;
 		while (true) {
-			while ( !searchPoint(V[step], h, c, root) ) {
+			while ( !searchPoint(V[step], h, c) ) {
 				for(int j = 0; j < h.length; j++) {
 					h[j] /= 2;
 				}
@@ -112,18 +120,22 @@ public class Optimizer implements Constants {
 		}
 	}
 
-	public void iteration(Criteria c, Criteria root) {
+	public void iteration(Criteria c) {
 		if(c instanceof ComplexCriteria) {
-			criteria((ComplexCriteria) c, root);
+			criteria((ComplexCriteria) c);
 			for(Criteria child : ((ComplexCriteria) c).children) {
-				iteration(child,root);
+				iteration(child);
 			}
 		}
 	}
 
-	public void optimize(Criteria root) {
-		for(int i=0; i < 100; i++) {
-			iteration(root, root);
+	public void optimize(Criteria root, Criteria base) {
+		this.root = root;
+		cache = new CacheCriteria(root);
+		cache.setBase(base);
+						
+		for(int i=0; i < 1000; i++) {
+			iteration(root);
 		}
 	}
 }
