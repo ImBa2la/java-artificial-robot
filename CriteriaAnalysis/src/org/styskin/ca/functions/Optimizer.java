@@ -3,6 +3,9 @@
  */
 package org.styskin.ca.functions;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import org.styskin.ca.model.Constants;
 
 public class Optimizer implements Constants {
@@ -119,12 +122,28 @@ public class Optimizer implements Constants {
 			}
 		}
 	}
-
-	public void iteration(Criteria c) {
+	
+	// Deep Optimization
+	public void rec(Criteria c) {
 		if(c instanceof ComplexCriteria) {
 			criteria((ComplexCriteria) c);
 			for(Criteria child : ((ComplexCriteria) c).children) {
-				iteration(child);
+				rec(child);
+			}
+		}		
+	}
+
+	// Long optimization	
+	public void iteration() {
+		Queue<Criteria> queue = new LinkedList<Criteria>();
+		queue.offer(root);		
+		Criteria c;		
+		while((c = queue.poll()) != null) {		
+			if(c instanceof ComplexCriteria) {
+				criteria((ComplexCriteria) c);
+				for(Criteria child : ((ComplexCriteria) c).children) {
+					queue.offer(child);
+				}
 			}
 		}
 	}
@@ -135,7 +154,7 @@ public class Optimizer implements Constants {
 		cache.setBase(base);
 						
 		for(int i=0; i < 1000; i++) {
-			iteration(root);
+			iteration();
 		}
 	}
 }
