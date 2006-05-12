@@ -6,76 +6,70 @@ import static java.lang.Math.min;
 
 import java.util.List;
 
-import org.styskin.ca.model.Pair;
-
 public class MultiplicativeOperator extends ComplexOperator {
+
+	/**
+	 * @throws Exception
+	 */
+	public MultiplicativeOperator() throws Exception {
+		super();
+	}
+	
+	public MultiplicativeOperator(double L) throws Exception {		
+		super(L);
+	}	
+	
+	public MultiplicativeOperator(double L, List<Double> weights) throws Exception {		
+		super(L, weights);
+	}	
+	
+	public MultiplicativeOperator(List<Double> weights) throws Exception {		
+		super(weights);
+	}	
 
 	private double FConst;
 
 	private static final double DELTA = 1E-4;
 
-	public MultiplicativeOperator(double L, List<Pair<Double, Criteria>> children) throws Exception {
-		super(L, children);
-	}
-
-	public MultiplicativeOperator(List<Pair<Double, Criteria>> children) throws Exception {
-		super(children);
-	}
-
-	public MultiplicativeOperator(double L) throws Exception {
-		super(L);
-	}
-
-	public MultiplicativeOperator() throws Exception {
-		super();
-	}
 
 	@Override
 	protected String operatorType() {
-		return "+";
+		return "*";
 	}
 
 	@Override
 	public void refresh() {
 		super.refresh();
-		double[] V = new double[children.size()];
+		double[] V = new double[weights.size()];
 		int i = 0;
-		for(Pair<Double, Criteria> pair : children) {
-			V[i++] = pair.getFirst();
+		for(double weight : weights) {
+			V[i++] = weight;
 		}
 		reCalculateC(V);
 	}
 
 	@Override
-	public void addCriteria(Criteria criteria, double weight) {
-		children.add(new Pair<Double, Criteria>(weight, criteria));
-		double sum = 0;
-		double[] V = new double[children.size()];
-		int i = 0;
-		for(Pair<Double, Criteria> pair : children) {
-			V[i++] = pair.getFirst();
-			sum += V[i - 1];
-		}
-/*		if(Math.abs(sum - 1) < EPS) {
-			reCalculateC(V);
-		}*/
+	public void addCriteria(double weight) {
+		weights.add(weight);
 	}
 
 	@Override
-	public double getValue() {
+	public double getValue(double[] X) throws Exception {
 		double result = 1;
 		double L = 0;
 		if( lambda < 0.5 + DELTA) {
 			L = min(lambda, 0.5 - DELTA);
-			for(Pair<Double, Criteria> pair : children) {
-				result *= 1 + FConst * 2 * L * pair.getFirst() * pair.getSecond().getValue();
+			int i = 0;
+			for(double w : weights) {
+				result *= 1 + FConst * 2 * L * w * X[i++];
 			}
 
 			result = (result - 1)/FConst;
 		} else {
 			L  = max(lambda, 0.5 + DELTA);
-			for(Pair<Double, Criteria> pair : children) {
-				result *= 1 + FConst*2*(1 - L)* pair.getFirst()*(1 - pair.getSecond().getValue());
+			int i = 0;
+			for(double w : weights) {
+				result *= 1 + FConst*2*(1 - L)* w * (1 - X[i++]);
 			}
 			result = 1 - (result - 1)/FConst;
 		}
@@ -127,4 +121,5 @@ public class MultiplicativeOperator extends ComplexOperator {
 
 		return result;
 	}
+
 }

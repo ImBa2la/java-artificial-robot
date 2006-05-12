@@ -4,22 +4,23 @@
 package org.styskin.ca.functions;
 
 import org.styskin.ca.model.Constants;
-import org.styskin.ca.model.Pair;
 
 public class Optimizer implements Constants {
 
 	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c, Criteria root) {
 		boolean moved = false;
 
+		ComplexOperator op = c.operator;
+
 		double f = root.check();
-		c.operator.lambda += h[0];
-		c.refresh();
+		op.lambda += h[0];
+		op.refresh();
 		if (root.check() < f) {
 			V[0] += h[0];
 			moved = true;
 		} else {
-			c.operator.lambda -= 2*h[0];
-			c.refresh();
+			op.lambda -= 2*h[0];
+			op.refresh();
 			if (root.check() < f) {
 				V[0] -= h[0];
 				moved = true;
@@ -27,41 +28,41 @@ public class Optimizer implements Constants {
 		}
 
 		for(int i = 1; i < V.length; i++) {
-			c.operator.children.get(i-1).setFirst(V[i] + h[i]);
-			c.refresh();
+			op.weights.set(i-1, V[i] + h[i]);
+			op.refresh();
 			if (root.check() < f) {
 				V[i] += h[i];
 				moved = true;
 			} else {
-				c.operator.children.get(i-1).setFirst(V[i] - h[i]);
-				c.refresh();
+				op.weights.set(i-1, V[i] - h[i]);
+				op.refresh();
 				if (root.check() < f) {
 					V[i] -= h[i];
 					moved = true;
 				}
 			}
 		}
-		c.operator.lambda = V[0];
-		int i = 1;
-		for(Pair<Double, Criteria> pair : c.operator.children) {
-			pair.setFirst(V[i++]);
+		op.lambda = V[0];
+		for(int i = 0; i < op.weights.size(); i++) {
+			op.weights.set(i, V[i+1]);
 		}
-		c.refresh();
+		op.refresh();
 		return moved;
 	}
 
 	private double getValue(double[] V, ComplexCriteria c, Criteria root) {
-		c.operator.lambda = V[0];
-		int i = 1;
-		for(Pair<Double, Criteria> pair : c.operator.children) {
-			pair.setFirst(V[i++]);
+		ComplexOperator op = c.operator;
+		op.lambda = V[0];
+		for(int i = 0; i < op.weights.size(); i++) {
+			op.weights.set(i, V[i + 1]);
 		}
-		c.refresh();
+		op.refresh();
 		return root.check();
 	}
 
 	public void criteria(ComplexCriteria c, Criteria root) {
 		int STEP = 5;
+		ComplexOperator op = c.operator;
 
 		double[][] V = new double[2][c.getSize()+1];
 		double[] h = new double[c.getSize()+1];
@@ -71,13 +72,11 @@ public class Optimizer implements Constants {
 		V[0][0] = c.operator.lambda;
 		V[1][0] = c.operator.lambda;
 
-		int i = 1;
-		for(Pair<Double, Criteria> pair : c.operator.children) {
-			V[0][i] = pair.getFirst();
-			V[1][i++] = pair.getFirst();
+		for(int i = 0; i < op.weights.size(); i++) {
+			V[1][i+1] = V[0][i+1] = op.weights.get(i);
 		}
-		// step
-		for(i=0; i < h.length; i++) {
+		// XXX step
+		for(int i = 0; i < h.length; i++) {
 			h[i] = 1E-3;
 		}
 
@@ -122,9 +121,8 @@ public class Optimizer implements Constants {
 		}
 	}
 
-
 	public void optimize(Criteria root) {
-		for(int i=0; i < 50; i++) {
+		for(int i=0; i < 100; i++) {
 			iteration(root, root);
 		}
 	}

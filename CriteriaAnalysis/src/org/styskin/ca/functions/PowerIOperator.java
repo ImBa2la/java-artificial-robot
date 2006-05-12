@@ -2,8 +2,6 @@ package org.styskin.ca.functions;
 
 import java.util.List;
 
-import org.styskin.ca.model.Pair;
-
 public class PowerIOperator extends PowerOperator {
 
 	public PowerIOperator(double L) throws Exception {
@@ -14,19 +12,20 @@ public class PowerIOperator extends PowerOperator {
 		super();
 	}
 
-	public PowerIOperator(double L, List<Pair<Double, Criteria>> children) throws Exception {
+	public PowerIOperator(double L, List<Double> children) throws Exception {
 		super(L, children);
 	}
 
-	public PowerIOperator(List<Pair<Double, Criteria>> children) throws Exception {
+	public PowerIOperator(List<Double> children) throws Exception {
 		super(children);
 	}
 
 	@Override
-	public double getValue() {
+	public double getValue(double[] X) throws Exception {
 		double result = 0;
-		for(Pair<Double, Criteria> pair : children) {
-			result += pair.getFirst() * Math.pow(pair.getSecond().getValue(), FPower);
+		int i = 0;
+		for(double w : weights) {
+			result += w * Math.pow(X[i++], FPower);
 		}
 		return result;
 	}

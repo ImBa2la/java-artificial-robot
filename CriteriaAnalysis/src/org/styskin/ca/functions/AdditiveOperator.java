@@ -2,16 +2,14 @@ package org.styskin.ca.functions;
 
 import java.util.List;
 
-import org.styskin.ca.model.Pair;
+public class AdditiveOperator extends ComplexOperator {
 
-strictfp public class AdditiveOperator extends ComplexOperator {
-
-	public AdditiveOperator(double L, List<Pair<Double, Criteria>> children)
+	public AdditiveOperator(double L, List<Double> children)
 		throws Exception {
 		super(L, children);
 	}
 
-	public AdditiveOperator(List<Pair<Double, Criteria>> children) throws Exception {
+	public AdditiveOperator(List<Double> children) throws Exception {
 		super(children);
 	}
 
@@ -29,13 +27,10 @@ strictfp public class AdditiveOperator extends ComplexOperator {
 	}
 
 	@Override
-	public double getValue() {
+	public double getValue(double[] X) throws Exception {
 		double result = 0;
-		for(Pair<Double, Criteria> pair : children) {
-			double v = pair.getFirst();
-			Criteria child = pair.getSecond();
-
-			result += v * child.getValue();
+		for(int i = 0; i < weights.size(); i++) {
+			result += weights.get(i) * X[i];
 		}
 		return result;
 	}

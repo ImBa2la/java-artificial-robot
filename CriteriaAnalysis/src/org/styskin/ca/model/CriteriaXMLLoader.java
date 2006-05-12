@@ -65,7 +65,9 @@ public class CriteriaXMLLoader {
 	    	tag = false;
 	    	level --;
 	    	Criteria criteria = stack.pop();
-    		criteria.refresh();
+	    	if (criteria instanceof ComplexCriteria) {
+	    		((ComplexCriteria)criteria).operator.refresh();
+	    	}
 	    }
 
 

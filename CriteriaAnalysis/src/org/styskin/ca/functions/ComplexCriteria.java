@@ -1,14 +1,19 @@
 package org.styskin.ca.functions;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.styskin.ca.model.OperatorType;
 import org.styskin.ca.model.OperatorUtils;
 
-public class ComplexCriteria extends Criteria {
+public class ComplexCriteria extends Criteria {	
 	List<Criteria> children = new ArrayList<Criteria>();
-	ComplexOperator operator;
+	public ComplexOperator operator;
+	
+	static protected NumberFormat FORMAT = DecimalFormat.getInstance();
+	
 
 	public ComplexCriteria(OperatorType type, double L) throws Exception {
 		operator = OperatorUtils.createOperator(type, L);
@@ -20,7 +25,7 @@ public class ComplexCriteria extends Criteria {
 
 	public void addChild(Criteria criteria, double weight) {
 		children.add(criteria);
-		operator.addCriteria(criteria, weight);
+		operator.addCriteria(weight);
 	}
 
 	protected void setValues(double[] X, int start, int end) throws Exception {
@@ -32,20 +37,19 @@ public class ComplexCriteria extends Criteria {
 			throw new Exception("Incorrect arguments count");
 		}
 
+	}
+
+	@Override
+	protected double getValue(double[] X, int start, int end) throws Exception {
+		double[] Y = new double[children.size()];
+
+		int i = 0;
 		for(Criteria criteria : children) {
-			criteria.setValues(X, start, start + criteria.getSize() - 1);
+			Y[i++] = criteria.getValue(X, start, start + criteria.getSize() - 1);
 			start += criteria.getSize();
 		}
-	}
-
-	@Override
-	public void refresh() {
-		operator.refresh();
-	}
-
-	@Override
-	protected double getValue() {
-		return operator.getValue();
+		
+		return operator.getValue(Y);
 	}
 
 	@Override
@@ -64,6 +68,14 @@ public class ComplexCriteria extends Criteria {
 
 	@Override
 	public String toString() {
-		return operator.toString();
+		StringBuffer sb = new StringBuffer();
+		sb.append("(").append(operator.operatorType()).append(", L=").append(FORMAT.format(operator.lambda)).append(' ');
+
+		int i = 0;
+		for(Criteria child : children) {
+			sb.append('{').append(FORMAT.format(operator.weights.get(i))).append(" - ").append(child.toString()).append('}');
+		}
+		sb.append(')');
+		return sb.toString();
 	}
 }

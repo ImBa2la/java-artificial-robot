@@ -21,8 +21,8 @@ public abstract class Criteria {
 	}
 
 	public double getValues(double... X) throws Exception {
-		setValues(X, 0, X.length - 1);
-		return getValue();
+//		setValues(X, 0, X.length - 1);
+		return getValue(X, 0, X.length - 1);
 	}
 
 	public void setBase(Criteria c) {
@@ -46,13 +46,9 @@ public abstract class Criteria {
 		return Math.sqrt(d);
 	}
 
-	public void refresh() {}
-
-	abstract protected double getValue();
+	abstract protected double getValue(double[] X, int start, int end) throws Exception;
 
 	abstract protected int getSize();
 
 	abstract public int getTotalSize();
-
-	abstract protected void setValues(double[] X, int start, int end) throws Exception;
 }
