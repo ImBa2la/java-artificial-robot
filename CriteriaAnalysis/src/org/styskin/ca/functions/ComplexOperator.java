@@ -5,7 +5,8 @@ import java.util.List;
 
 public abstract class ComplexOperator extends Operator {
 
-	protected double lambda;
+	// TODO public -> protected
+	public double lambda;
 
 	protected List<Double> weights;
 

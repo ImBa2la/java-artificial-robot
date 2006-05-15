@@ -14,6 +14,7 @@ public class Optimizer implements Constants {
 	
 	private Criteria root;
 	
+	private double[][] F;
 
 	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c) {
 		boolean moved = false;
@@ -148,12 +149,12 @@ public class Optimizer implements Constants {
 		}
 	}
 
-	public void optimize(Criteria root, Criteria base) {
+	public void optimize(Criteria root, Criteria base, double[][] F) {
+		this.F = F;
 		this.root = root;
-		cache = new CacheCriteria(root);
-		cache.setBase(base);
+		cache = new CacheCriteria(root, base,  F);
 						
-		for(int i=0; i < 1000; i++) {
+		for(int i=0; i < 200; i++) {
 			iteration();
 		}
 	}

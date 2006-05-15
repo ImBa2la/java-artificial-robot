@@ -22,27 +22,13 @@ public class CacheCriteria {
 	private double[] base;
 	protected double[][] F;
 
-	private void setMatrix() {
-		double[] CASES = {0.2, 0.5, 0.8};
-		int VAR_NUMBER = root.getTotalSize();
-		int CASE_NUMBER = (int) Math.round(Math.pow(CASES.length, VAR_NUMBER));
-
-		F = new double[CASE_NUMBER][VAR_NUMBER];
-		for(int i=0; i < CASE_NUMBER; i++) {
-			int mod = CASE_NUMBER/3;
-			for(int j=0; j < VAR_NUMBER; j++) {
-				F[i][j] = CASES[(i / mod) %3];
-				mod /= 3;
-			}
-		}
-	}	
-	
-	public CacheCriteria(Criteria criteria) {
+	public CacheCriteria(Criteria criteria, Criteria criteriaBase, double[][] F) {
+		this.F = F;
+		setBase(criteriaBase);
 		root = criteria;
 		cached = new HashMap<Criteria, Boolean>();
 		index = new HashMap<Criteria, Integer>();
 		
-		setMatrix();
 		int size = buildIndex(root, 0);
 		R = new double[size + 1][F.length];
 		buildSingle(root, 0);		
@@ -107,7 +93,7 @@ public class CacheCriteria {
 		}		
 	}
 	
-	public void setBase(Criteria c) {
+	private void setBase(Criteria c) {
 		base = new double[F.length];
 		// TODO rewrite try-catch block
 		try {
