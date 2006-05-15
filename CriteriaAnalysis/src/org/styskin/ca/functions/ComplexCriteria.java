@@ -8,12 +8,12 @@ import java.util.List;
 import org.styskin.ca.model.OperatorType;
 import org.styskin.ca.model.OperatorUtils;
 
-public class ComplexCriteria extends Criteria {	
-	List<Criteria> children = new ArrayList<Criteria>();
+public class ComplexCriteria extends Criteria {
+	public List<Criteria> children = new ArrayList<Criteria>();
 	public ComplexOperator operator;
-	
+
 	static protected NumberFormat FORMAT = DecimalFormat.getInstance();
-	
+
 
 	public ComplexCriteria(OperatorType type, double L) throws Exception {
 		operator = OperatorUtils.createOperator(type, L);
@@ -48,7 +48,7 @@ public class ComplexCriteria extends Criteria {
 			Y[i++] = criteria.getValue(X, start, start + criteria.getSize() - 1);
 			start += criteria.getSize();
 		}
-		
+
 		return operator.getValue(Y);
 	}
 

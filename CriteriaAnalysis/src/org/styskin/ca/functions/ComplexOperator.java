@@ -30,7 +30,6 @@ public abstract class ComplexOperator extends Operator {
 
 	public ComplexOperator(double L, List<Double> weights)
 		throws Exception {
-		double w = 0;
 		lambda = L;
 		this.weights = weights;
 		normalize();

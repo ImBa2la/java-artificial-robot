@@ -3,7 +3,7 @@ package org.styskin.ca.functions;
 
 public class SingleCriteria extends Criteria {
 
-	private SingleOperator operator = new SingleOperator();
+//	private SingleOperator operator = new SingleOperator();
 
 	@Override
 	protected double getValue(double[] X, int start, int end) throws Exception {

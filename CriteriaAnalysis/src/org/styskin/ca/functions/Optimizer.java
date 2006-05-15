@@ -9,18 +9,16 @@ import java.util.Queue;
 import org.styskin.ca.model.Constants;
 
 public class Optimizer implements Constants {
-	
+
 	private CacheCriteria cache;
-	
+
 	private Criteria root;
-	
-	private double[][] F;
 
 	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c) {
 		boolean moved = false;
 
 		ComplexOperator op = c.operator;
-		cache.turnOffCache(c);		
+		cache.turnOffCache(c);
 
 		double f = cache.check();
 		op.lambda += h[0];
@@ -56,8 +54,8 @@ public class Optimizer implements Constants {
 		for(int i = 0; i < op.weights.size(); i++) {
 			op.weights.set(i, V[i+1]);
 		}
-		
-		op.refresh();		
+
+		op.refresh();
 		cache.refreshCache();
 		return moved;
 	}
@@ -123,7 +121,7 @@ public class Optimizer implements Constants {
 			}
 		}
 	}
-	
+
 	// Deep Optimization
 	public void rec(Criteria c) {
 		if(c instanceof ComplexCriteria) {
@@ -131,15 +129,15 @@ public class Optimizer implements Constants {
 			for(Criteria child : ((ComplexCriteria) c).children) {
 				rec(child);
 			}
-		}		
+		}
 	}
 
-	// Long optimization	
+	// Long optimization
 	public void iteration() {
 		Queue<Criteria> queue = new LinkedList<Criteria>();
-		queue.offer(root);		
-		Criteria c;		
-		while((c = queue.poll()) != null) {		
+		queue.offer(root);
+		Criteria c;
+		while((c = queue.poll()) != null) {
 			if(c instanceof ComplexCriteria) {
 				criteria((ComplexCriteria) c);
 				for(Criteria child : ((ComplexCriteria) c).children) {
@@ -150,11 +148,10 @@ public class Optimizer implements Constants {
 	}
 
 	public void optimize(Criteria root, Criteria base, double[][] F) {
-		this.F = F;
 		this.root = root;
 		cache = new CacheCriteria(root, base,  F);
-						
-		for(int i=0; i < 200; i++) {
+
+		for(int i=0; i < 400; i++) {
 			iteration();
 		}
 	}
