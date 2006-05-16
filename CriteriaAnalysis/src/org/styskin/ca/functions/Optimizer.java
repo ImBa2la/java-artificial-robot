@@ -94,7 +94,7 @@ public class Optimizer implements Constants {
 		}
 
 		for(int i = 0; i < h.length; i++) {
-			h[i] = 1E-3;
+			h[i] = 5E-2;
 		}
 
 		k = 0;
@@ -147,8 +147,9 @@ public class Optimizer implements Constants {
 		while((c = queue.poll()) != null) {
 			if(c.getFirst() instanceof ComplexCriteria) {
 				cc = (ComplexCriteria) c.getFirst();
+				System.out.printf("%d, ", c.getSecond());
 				
-				if (c.getSecond() < 2) {				
+				if (c.getSecond() < 15) {				
 					criteria(cc);
 				} else {
 					ComplexOperator src = cc.operator;
@@ -193,8 +194,9 @@ public class Optimizer implements Constants {
 			ex.printStackTrace();
 		}
 
-		for(int i=0; i < 200; i++) {
-			iteration();
+		for(int i=0; i < 2; i++) {
+			iteration()
+			System.out.printf("\nIteration #%d\n", i);
 		}
 	}
 }
