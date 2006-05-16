@@ -140,12 +140,10 @@ public class CacheCriteria {
 	public double check() {
 		double d = 0;
 		double[] Y = getValue();
-		try {
-			for(int i=0; i< base.length; i++) {
-				double t = Y[i] - base[i];
-				d += t*t;
-			}
-		} catch(Exception e) {}
+		for(int i=0; i< base.length; i++) {
+			double t = Y[i] - base[i];
+			d += t*t;
+		}
 		return Math.sqrt(d);
 	}
 }

@@ -7,7 +7,7 @@ import static java.lang.Math.min;
 import java.util.List;
 
 public class MultiplicativeOperator extends ComplexOperator {
-
+	
 	/**
 	 * @throws Exception
 	 */

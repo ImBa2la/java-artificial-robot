@@ -3,7 +3,7 @@ package org.styskin.ca.functions;
 import java.util.List;
 
 public class AdditiveOperator extends ComplexOperator {
-
+	
 	public AdditiveOperator(double L, List<Double> children)
 		throws Exception {
 		super(L, children);

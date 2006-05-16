@@ -31,25 +31,10 @@ public class Main {
 
 		double[][] F = getMatrix(criteria.getTotalSize());
 		CacheCriteria cr = new CacheCriteria(criteria2, criteria, F);
-/*		cr.refreshCache();
-		cr.turnOffCache(((ComplexCriteria)criteria2).children.get(0));
-		((ComplexCriteria)((ComplexCriteria)criteria2).children.get(0)).operator.lambda += 0.1;
-		((ComplexCriteria)((ComplexCriteria)criteria2).children.get(0)).operator.refresh();
-		System.out.println(cr.check());
-
-		double d = 0 , t1 , t2;
-		for(int i=0; i < F.length; i++) {
-			t1 = criteria.getValues(F[i]);
-			t2 = criteria2.getValues(F[i]);
-			d += (t1 - t2)*(t1 - t2);
-		}
-		d = Math.sqrt(d);
-		System.out.println(d);*/
-
 
 		Optimizer optimizer = new Optimizer();
 		optimizer.optimize(criteria2, criteria, F);
-
+		
 		cr.clearCache();
 		System.out.printf("%4.4f - %s\n", cr.check(), criteria2);
 	}

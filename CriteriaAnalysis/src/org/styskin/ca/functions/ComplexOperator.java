@@ -4,9 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ComplexOperator extends Operator {
+	
+	public static List<Class> complexOperators = new ArrayList<Class>();
+	
+	static {
+		complexOperators.add(AdditiveOperator.class);
+		complexOperators.add(MultiplicativeOperator.class);
+		complexOperators.add(PowerDoubleOperator.class);
+		complexOperators.add(PowerIIOperator.class);
+		complexOperators.add(PowerIOperator.class);
+	}
 
-	// TODO public -> protected
-	public double lambda;
+	protected double lambda;
 
 	protected List<Double> weights;
 
@@ -45,7 +54,7 @@ public abstract class ComplexOperator extends Operator {
 		weights = new ArrayList<Double>();
 	}
 
-	public ComplexOperator() throws Exception {
+	public ComplexOperator() throws Exception {		
 		this(0.5);
 	}
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <criteria type="complex" class="mult" lambda="0.4">
-	<criteria type="complex" class="mult" lambda="0.6" weight="0.2">
+	<criteria type="complex" class="powerDouble" lambda="0.6" weight="0.2">
 		<criteria type="single" weight="0.8" />
 		<criteria type="single" weight="0.2" />
 	</criteria>
-	<criteria type="complex" class="mult" lambda="0.5" weight="0.7">
+	<criteria type="complex" class="powerDouble" lambda="0.5" weight="0.7">
 		<criteria type="single" weight="0.2" />
 		<criteria type="single" weight="0.8" />
 	</criteria>

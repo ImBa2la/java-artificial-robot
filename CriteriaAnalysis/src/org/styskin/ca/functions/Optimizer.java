@@ -3,16 +3,21 @@
  */
 package org.styskin.ca.functions;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import org.styskin.ca.model.Constants;
+import org.styskin.ca.model.Pair;
 
 public class Optimizer implements Constants {
 
 	private CacheCriteria cache;
 
 	private Criteria root;
+
+	private List<ComplexOperator> operators;
 
 	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c) {
 		boolean moved = false;
@@ -70,6 +75,8 @@ public class Optimizer implements Constants {
 		return cache.check();
 	}
 
+	
+	// TODO Constants!!!
 	public void criteria(ComplexCriteria c) {
 		int STEP = 5;
 		ComplexOperator op = c.operator;
@@ -85,7 +92,7 @@ public class Optimizer implements Constants {
 		for(int i = 0; i < op.weights.size(); i++) {
 			V[1][i+1] = V[0][i+1] = op.weights.get(i);
 		}
-		// XXX step
+
 		for(int i = 0; i < h.length; i++) {
 			h[i] = 1E-3;
 		}
@@ -113,7 +120,6 @@ public class Optimizer implements Constants {
 					V[step][j] = V[step][j] + 2*(V[(step+1)%2][j] - V[step][j]);
 				}
 				fn = getValue(V[step], c, root);
-
 			} while ( fn < f );
 
 			for(int j=0; j < V[step].length; j++) {
@@ -134,14 +140,41 @@ public class Optimizer implements Constants {
 
 	// Long optimization
 	public void iteration() {
-		Queue<Criteria> queue = new LinkedList<Criteria>();
-		queue.offer(root);
-		Criteria c;
+		Queue<Pair<Criteria, Integer>> queue = new LinkedList<Pair<Criteria, Integer>>();
+		queue.offer(new Pair<Criteria, Integer>(root, 1));
+		Pair<Criteria, Integer> c;
+		ComplexCriteria cc;
 		while((c = queue.poll()) != null) {
-			if(c instanceof ComplexCriteria) {
-				criteria((ComplexCriteria) c);
-				for(Criteria child : ((ComplexCriteria) c).children) {
-					queue.offer(child);
+			if(c.getFirst() instanceof ComplexCriteria) {
+				cc = (ComplexCriteria) c.getFirst();
+				
+				if (c.getSecond() < 2) {				
+					criteria(cc);
+				} else {
+					ComplexOperator src = cc.operator;
+					double min = cache.check(), tempCheck;
+					
+					for(ComplexOperator operator : operators) {
+						operator.weights = new ArrayList<Double>();
+						operator.weights.addAll(cc.operator.weights);
+						operator.lambda = cc.operator.lambda;
+						
+						cc.operator = operator;
+						criteria(cc);
+						
+						tempCheck = cache.check();
+						if (tempCheck < min) {
+							min = tempCheck;
+							src = operator;
+						}
+					}
+					
+					cc.operator = src;
+					cache.turnOffCache(cc);
+					cache.refreshCache();					
+				}
+				for(Criteria child : cc.children) {
+					queue.offer(new Pair<Criteria, Integer>(child, c.getSecond() + 1));
 				}
 			}
 		}
@@ -151,7 +184,16 @@ public class Optimizer implements Constants {
 		this.root = root;
 		cache = new CacheCriteria(root, base,  F);
 
-		for(int i=0; i < 400; i++) {
+		operators = new ArrayList<ComplexOperator>();
+		try {
+			for(Class clazz : ComplexOperator.complexOperators) {
+				operators.add((ComplexOperator) clazz.newInstance());				
+			}
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+
+		for(int i=0; i < 200; i++) {
 			iteration();
 		}
 	}

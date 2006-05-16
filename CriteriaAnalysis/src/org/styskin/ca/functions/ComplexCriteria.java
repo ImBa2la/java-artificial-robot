@@ -9,7 +9,7 @@ import org.styskin.ca.model.OperatorType;
 import org.styskin.ca.model.OperatorUtils;
 
 public class ComplexCriteria extends Criteria {
-	public List<Criteria> children = new ArrayList<Criteria>();
+	List<Criteria> children = new ArrayList<Criteria>();
 	public ComplexOperator operator;
 
 	static protected NumberFormat FORMAT = DecimalFormat.getInstance();

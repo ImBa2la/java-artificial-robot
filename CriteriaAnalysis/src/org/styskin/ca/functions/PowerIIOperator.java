@@ -3,7 +3,7 @@ package org.styskin.ca.functions;
 import java.util.List;
 
 public class PowerIIOperator extends PowerOperator {
-
+	
 	public PowerIIOperator(double L) throws Exception {
 		super(L);
 	}
