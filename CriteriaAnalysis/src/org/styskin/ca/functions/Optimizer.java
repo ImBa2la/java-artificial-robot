@@ -65,8 +65,16 @@ public class Optimizer implements Constants {
 		return moved;
 	}
 
+	private final static double VEPS = 1E-1;
+
 	private double getValue(double[] V, ComplexCriteria c, Criteria root) {
 		ComplexOperator op = c.operator;
+		for(int i=0; i < V.length; i++) {
+			if(V[i] < VEPS || V[i] > 1-VEPS) {
+				return 1E6;
+			}
+		}
+
 		op.lambda = V[0];
 		for(int i = 0; i < op.weights.size(); i++) {
 			op.weights.set(i, V[i + 1]);
@@ -75,7 +83,7 @@ public class Optimizer implements Constants {
 		return cache.check();
 	}
 
-	
+
 	// TODO Constants!!!
 	public void criteria(ComplexCriteria c) {
 		int STEP = 5;
@@ -94,7 +102,7 @@ public class Optimizer implements Constants {
 		}
 
 		for(int i = 0; i < h.length; i++) {
-			h[i] = 5E-2;
+			h[i] = 1E-3;
 		}
 
 		k = 0;
@@ -148,31 +156,31 @@ public class Optimizer implements Constants {
 			if(c.getFirst() instanceof ComplexCriteria) {
 				cc = (ComplexCriteria) c.getFirst();
 				System.out.printf("%d, ", c.getSecond());
-				
-				if (c.getSecond() < 15) {				
+
+				if (c.getSecond() < 15) {
 					criteria(cc);
 				} else {
 					ComplexOperator src = cc.operator;
 					double min = cache.check(), tempCheck;
-					
+
 					for(ComplexOperator operator : operators) {
 						operator.weights = new ArrayList<Double>();
 						operator.weights.addAll(cc.operator.weights);
 						operator.lambda = cc.operator.lambda;
-						
+
 						cc.operator = operator;
 						criteria(cc);
-						
+
 						tempCheck = cache.check();
 						if (tempCheck < min) {
 							min = tempCheck;
 							src = operator;
 						}
 					}
-					
+
 					cc.operator = src;
 					cache.turnOffCache(cc);
-					cache.refreshCache();					
+					cache.refreshCache();
 				}
 				for(Criteria child : cc.children) {
 					queue.offer(new Pair<Criteria, Integer>(child, c.getSecond() + 1));
@@ -188,15 +196,15 @@ public class Optimizer implements Constants {
 		operators = new ArrayList<ComplexOperator>();
 		try {
 			for(Class clazz : ComplexOperator.complexOperators) {
-				operators.add((ComplexOperator) clazz.newInstance());				
+				operators.add((ComplexOperator) clazz.newInstance());
 			}
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
 
-		for(int i=0; i < 2; i++) {
-			iteration()
-			System.out.printf("\nIteration #%d\n", i);
+		for(int i=0; i < 100; i++) {
+			iteration();
+			System.out.printf("\nIteration #%d\nCheck = %4.4f\n", i, cache.check());
 		}
 	}
 }

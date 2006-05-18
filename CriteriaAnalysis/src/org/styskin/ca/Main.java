@@ -11,11 +11,11 @@ public class Main {
 	private double[][] getMatrix(int size) {
 		double[] CASES = {0.2, 0.5, 0.8};
 		int VAR_NUMBER = size;
-		int CASE_NUMBER = (int) Math.round(Math.pow(CASES.length, VAR_NUMBER));
+		int CASE_NUMBER = 300;//(int) Math.round(Math.pow(CASES.length, VAR_NUMBER));
 
 		double[][] F = new double[CASE_NUMBER][VAR_NUMBER];
 		for(int i=0; i < CASE_NUMBER; i++) {
-			int mod = CASE_NUMBER/3;
+			int mod = (int) Math.round(Math.pow(CASES.length, VAR_NUMBER))/CASES.length;
 			for(int j=0; j < VAR_NUMBER; j++) {
 				F[i][j] = CASES[(i / mod) %3];
 				mod /= 3;
@@ -32,11 +32,13 @@ public class Main {
 		double[][] F = getMatrix(criteria.getTotalSize());
 		CacheCriteria cr = new CacheCriteria(criteria2, criteria, F);
 
-		Optimizer optimizer = new Optimizer();
+		System.out.println(cr.check());
+
+/*		Optimizer optimizer = new Optimizer();
 		optimizer.optimize(criteria2, criteria, F);
-		
+
 		cr.clearCache();
-		System.out.printf("%4.4f - %s\n", cr.check(), criteria2);
+		System.out.printf("%4.4f - %s\n", cr.check(), criteria2);*/
 	}
 
 	/**
