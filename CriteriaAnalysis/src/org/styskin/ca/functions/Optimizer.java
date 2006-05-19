@@ -157,10 +157,11 @@ public class Optimizer implements Constants {
 				cc = (ComplexCriteria) c.getFirst();
 				System.out.printf("%d, ", c.getSecond());
 
-				if (c.getSecond() < 15) {
+				if (c.getSecond() < 2) {
 					criteria(cc);
 				} else {
-					ComplexOperator src = cc.operator;
+					// TODO clone
+/*					ComplexOperator src = cc.operator;
 					double srcLambda = src.lambda;
 					List<Double> srcWeights = src.weights;
 					double min = cache.check(), tempCheck;
@@ -178,12 +179,13 @@ public class Optimizer implements Constants {
 						if (tempCheck < min) {
 							min = tempCheck;
 							src = operator;
+							srcLambda = operator.lambda;
 						}
 					}
 
 					cc.operator = src;
 					cache.turnOffCache(cc);
-					cache.refreshCache();
+					cache.refreshCache();*/
 				}
 				for(Criteria child : cc.children) {
 					queue.offer(new Pair<Criteria, Integer>(child, c.getSecond() + 1));

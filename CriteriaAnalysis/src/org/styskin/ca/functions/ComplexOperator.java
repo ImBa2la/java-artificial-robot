@@ -65,5 +65,5 @@ public abstract class ComplexOperator extends Operator {
 	protected String operatorType() {
 		return "";
 	}
-
+	
 }
