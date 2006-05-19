@@ -57,6 +57,9 @@ public class MultiplicativeOperator extends ComplexOperator {
 	public double getValue(double[] X) throws Exception {
 		double result = 1;
 		double L = 0;
+
+		assert(X.length != weights.size());
+		
 		if( lambda < 0.5 + DELTA) {
 			L = min(lambda, 0.5 - DELTA);
 			int i = 0;

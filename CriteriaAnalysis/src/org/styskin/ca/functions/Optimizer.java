@@ -161,12 +161,15 @@ public class Optimizer implements Constants {
 					criteria(cc);
 				} else {
 					ComplexOperator src = cc.operator;
+					double srcLambda = src.lambda;
+					List<Double> srcWeights = src.weights;
 					double min = cache.check(), tempCheck;
 
 					for(ComplexOperator operator : operators) {
 						operator.weights = new ArrayList<Double>();
-						operator.weights.addAll(cc.operator.weights);
-						operator.lambda = cc.operator.lambda;
+						operator.weights.addAll(srcWeights);
+						operator.lambda = srcLambda;
+						operator.refresh();
 
 						cc.operator = operator;
 						criteria(cc);
@@ -204,7 +207,7 @@ public class Optimizer implements Constants {
 
 		for(int i=0; i < 100; i++) {
 			iteration();
-			System.out.printf("\nIteration #%d\nCheck = %4.4f\n", i, cache.check());
+			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s", i, cache.check(), root);
 		}
 	}
 }

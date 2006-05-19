@@ -28,6 +28,8 @@ public class AdditiveOperator extends ComplexOperator {
 
 	@Override
 	public double getValue(double[] X) throws Exception {
+		assert(X.length != weights.size());		
+		
 		double result = 0;
 		for(int i = 0; i < weights.size(); i++) {
 			result += weights.get(i) * X[i];

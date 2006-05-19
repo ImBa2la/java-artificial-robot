@@ -22,6 +22,8 @@ public class PowerDoubleOperator extends PowerOperator {
 
 	@Override
 	public double getValue(double[] X) throws Exception {
+		assert(X.length != weights.size());		
+		
 		double result = 0;
 		int i = 0;
 		for(double weight : weights) {

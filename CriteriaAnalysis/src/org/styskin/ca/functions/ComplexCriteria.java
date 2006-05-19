@@ -28,25 +28,14 @@ public class ComplexCriteria extends Criteria {
 		operator.addCriteria(weight);
 	}
 
-	protected void setValues(double[] X, int start, int end) throws Exception {
-		int size = 0;
-		for(Criteria criteria : children) {
-			size += criteria.getSize();
-		}
-		if(size != end - start + 1) {
-			throw new Exception("Incorrect arguments count");
-		}
-
-	}
-
 	@Override
 	protected double getValue(double[] X, int start, int end) throws Exception {
 		double[] Y = new double[children.size()];
 
 		int i = 0;
 		for(Criteria criteria : children) {
-			Y[i++] = criteria.getValue(X, start, start + criteria.getSize() - 1);
-			start += criteria.getSize();
+			Y[i++] = criteria.getValue(X, start, start + criteria.getTotalSize() - 1);
+			start += criteria.getTotalSize();
 		}
 
 		return operator.getValue(Y);
