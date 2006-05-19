@@ -11,22 +11,19 @@ public class Main {
 	private double[][] getMatrix(int size, int length) {
 		double[] CASES = {0.2, 0.5, 0.8};
 		int VAR_NUMBER = size;
-		int CASE_NUMBER = (int) Math.round(Math.pow(CASES.length, VAR_NUMBER));
+		long CASE_NUMBER = Math.round(Math.pow(CASES.length, VAR_NUMBER));
 
-		double probability = (1.2 * length) / CASE_NUMBER; 
+		long step = CASE_NUMBER / length - 10;
 		double[][] F = new double[length][VAR_NUMBER];
-		
+
 		int iF = 0;
-		for(int i=0; i < CASE_NUMBER; i++) {
-			if(Math.random() > probability) {
-				continue;				
-			}
+		for(long i=0; i < CASE_NUMBER; i+= step + Math.round(20*Math.random())) {
 			if (iF >= length) {
 				break;
 			}
-			int mod = (int) Math.round(Math.pow(CASES.length, VAR_NUMBER))/CASES.length;
+			long mod = (CASE_NUMBER/CASES.length);
 			for(int j=0; j < VAR_NUMBER; j++) {
-				F[iF][j] = CASES[(i / mod) %3];
+				F[iF][j] = CASES[(int)((i / mod) %3)];
 				mod /= 3;
 			}
 			iF++;
@@ -43,7 +40,7 @@ public class Main {
 		CacheCriteria cr = new CacheCriteria(criteria2, criteria, F);
 
 		System.out.println(cr.check());
-		System.out.println(criteria2);		 
+		System.out.println(criteria2);
 
 		Optimizer optimizer = new Optimizer();
 		optimizer.optimize(criteria2, criteria, F);

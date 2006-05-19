@@ -5,12 +5,13 @@ import java.util.List;
 public abstract class PowerOperator extends ComplexOperator {
 
 	protected double FPower = 0;
-	
+
 	@Override
 	public void refresh() {
+		super.refresh();
 		if( lambda < 1 && lambda > 0) {
 			FPower = Math.log(lambda)/Math.log(1 - lambda);
-		}		
+		}
 	}
 
 	public PowerOperator(double L) throws Exception {

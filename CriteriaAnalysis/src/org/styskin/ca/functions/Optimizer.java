@@ -161,31 +161,32 @@ public class Optimizer implements Constants {
 					criteria(cc);
 				} else {
 					// TODO clone
-/*					ComplexOperator src = cc.operator;
-					double srcLambda = src.lambda;
-					List<Double> srcWeights = src.weights;
+					ComplexOperator src = cc.operator;
+					ComplexOperator minOperator = src, op = null;
 					double min = cache.check(), tempCheck;
 
 					for(ComplexOperator operator : operators) {
-						operator.weights = new ArrayList<Double>();
-						operator.weights.addAll(srcWeights);
-						operator.lambda = srcLambda;
-						operator.refresh();
-
-						cc.operator = operator;
+						try {
+							op = operator.clone();
+							op.lambda = src.lambda;
+							op.weights = new ArrayList<Double>();
+							op.weights.addAll(src.weights);
+							op.refresh();
+						} catch(CloneNotSupportedException ex) {
+							ex.printStackTrace();
+						}
+						cc.operator = op;
 						criteria(cc);
-
 						tempCheck = cache.check();
 						if (tempCheck < min) {
 							min = tempCheck;
-							src = operator;
-							srcLambda = operator.lambda;
+							minOperator = op;
 						}
 					}
 
-					cc.operator = src;
+					cc.operator = minOperator;
 					cache.turnOffCache(cc);
-					cache.refreshCache();*/
+					cache.refreshCache();
 				}
 				for(Criteria child : cc.children) {
 					queue.offer(new Pair<Criteria, Integer>(child, c.getSecond() + 1));
@@ -207,9 +208,9 @@ public class Optimizer implements Constants {
 			ex.printStackTrace();
 		}
 
-		for(int i=0; i < 100; i++) {
+		for(int i=0; i < 300; i++) {
 			iteration();
-			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s", i, cache.check(), root);
+			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
 		}
 	}
 }
