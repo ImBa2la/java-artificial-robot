@@ -12,6 +12,8 @@ public class ComplexCriteria extends Criteria {
 	List<Criteria> children = new ArrayList<Criteria>();
 	public ComplexOperator operator;
 
+	private int totalSize = -1;
+
 	static protected NumberFormat FORMAT = DecimalFormat.getInstance();
 
 
@@ -48,11 +50,15 @@ public class ComplexCriteria extends Criteria {
 
 	@Override
 	public int getTotalSize() {
-		int size = 0;
-		for(Criteria childCriteria : children) {
-			size += childCriteria.getTotalSize();
+		if(totalSize > 0) {
+			return totalSize;
+		} else {
+			totalSize = 0;
+			for(Criteria childCriteria : children) {
+				totalSize += childCriteria.getTotalSize();
+			}
+			return totalSize;
 		}
-		return size;
 	}
 
 	@Override
