@@ -155,9 +155,9 @@ public class Optimizer implements Constants {
 		while((c = queue.poll()) != null) {
 			if(c.getFirst() instanceof ComplexCriteria) {
 				cc = (ComplexCriteria) c.getFirst();
-				System.out.printf("%d, ", c.getSecond());
+//				System.out.printf("%d, ", c.getSecond());
 
-				if (c.getSecond() < 2) {
+				if (c.getSecond() < 3) {
 					criteria(cc);
 				} else {
 					// TODO clone
@@ -208,9 +208,10 @@ public class Optimizer implements Constants {
 			ex.printStackTrace();
 		}
 
-		for(int i=0; i < 300; i++) {
+		for(int i=0; i < 50; i++) {
 			iteration();
-			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
+			System.out.printf("%f\n",cache.check());
+//			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
 		}
 	}
 }
