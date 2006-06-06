@@ -1,9 +1,10 @@
-package org.styskin.ca.functions;
+package org.styskin.ca.functions.complex;
 
 import java.util.List;
 
+
 public class PowerIIOperator extends PowerOperator {
-	
+
 	public PowerIIOperator(double L) throws Exception {
 		super(L);
 	}
@@ -22,8 +23,8 @@ public class PowerIIOperator extends PowerOperator {
 
 	@Override
 	public double getValue(double[] X) throws Exception {
-		assert(X.length != weights.size());		
-		
+		assert(X.length != weights.size());
+
 		double result = 0;
 		int i = 0;
 		for(double w : weights) {
@@ -33,7 +34,7 @@ public class PowerIIOperator extends PowerOperator {
 	}
 
 	@Override
-	protected String operatorType() {
+	public String operatorType() {
 		return "**II";
 	}
 }

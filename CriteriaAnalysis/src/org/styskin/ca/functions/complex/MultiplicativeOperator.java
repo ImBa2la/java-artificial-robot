@@ -1,4 +1,4 @@
-package org.styskin.ca.functions;
+package org.styskin.ca.functions.complex;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
@@ -6,26 +6,27 @@ import static java.lang.Math.min;
 
 import java.util.List;
 
+
 public class MultiplicativeOperator extends ComplexOperator {
-	
+
 	/**
 	 * @throws Exception
 	 */
 	public MultiplicativeOperator() throws Exception {
 		super();
 	}
-	
-	public MultiplicativeOperator(double L) throws Exception {		
+
+	public MultiplicativeOperator(double L) throws Exception {
 		super(L);
-	}	
-	
-	public MultiplicativeOperator(double L, List<Double> weights) throws Exception {		
+	}
+
+	public MultiplicativeOperator(double L, List<Double> weights) throws Exception {
 		super(L, weights);
-	}	
-	
-	public MultiplicativeOperator(List<Double> weights) throws Exception {		
+	}
+
+	public MultiplicativeOperator(List<Double> weights) throws Exception {
 		super(weights);
-	}	
+	}
 
 	private double FConst;
 
@@ -33,7 +34,7 @@ public class MultiplicativeOperator extends ComplexOperator {
 
 
 	@Override
-	protected String operatorType() {
+	public String operatorType() {
 		return "*";
 	}
 
@@ -59,7 +60,7 @@ public class MultiplicativeOperator extends ComplexOperator {
 		double L = 0;
 
 		assert(X.length != weights.size());
-		
+
 		if( lambda < 0.5 + DELTA) {
 			L = min(lambda, 0.5 - DELTA);
 			int i = 0;

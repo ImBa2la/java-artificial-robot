@@ -1,6 +1,7 @@
-package org.styskin.ca.functions;
+package org.styskin.ca.functions.complex;
 
 import java.util.List;
+
 
 public abstract class PowerOperator extends ComplexOperator {
 
@@ -31,7 +32,7 @@ public abstract class PowerOperator extends ComplexOperator {
 	}
 
 	@Override
-	protected String operatorType() {
+	public String operatorType() {
 		return "**";
 	}
 }

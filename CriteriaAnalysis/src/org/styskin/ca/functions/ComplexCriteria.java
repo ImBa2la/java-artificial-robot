@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.model.OperatorType;
 import org.styskin.ca.model.OperatorUtils;
 

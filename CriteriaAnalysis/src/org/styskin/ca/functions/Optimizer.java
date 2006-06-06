@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.model.Constants;
 import org.styskin.ca.model.Pair;
 

@@ -1,9 +1,10 @@
-package org.styskin.ca.functions;
+package org.styskin.ca.functions.complex;
 
 import java.util.List;
 
+
 public class AdditiveOperator extends ComplexOperator {
-	
+
 	public AdditiveOperator(double L, List<Double> children)
 		throws Exception {
 		super(L, children);
@@ -22,14 +23,14 @@ public class AdditiveOperator extends ComplexOperator {
 	}
 
 	@Override
-	protected String operatorType() {
+	public String operatorType() {
 		return "+";
 	}
 
 	@Override
 	public double getValue(double[] X) throws Exception {
-		assert(X.length != weights.size());		
-		
+		assert(X.length != weights.size());
+
 		double result = 0;
 		for(int i = 0; i < weights.size(); i++) {
 			result += weights.get(i) * X[i];

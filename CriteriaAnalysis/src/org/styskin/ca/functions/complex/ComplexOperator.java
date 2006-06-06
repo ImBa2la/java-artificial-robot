@@ -1,7 +1,9 @@
-package org.styskin.ca.functions;
+package org.styskin.ca.functions.complex;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.styskin.ca.functions.Operator;
 
 public abstract class ComplexOperator extends Operator implements Cloneable {
 
@@ -15,9 +17,9 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 		complexOperators.add(PowerIOperator.class);
 	}
 
-	protected double lambda;
+	public double lambda;
 
-	protected List<Double> weights;
+	public List<Double> weights;
 
 	void normalize() {
 		double sum = 0;
@@ -62,7 +64,7 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 		return weights.size();
 	}
 
-	protected String operatorType() {
+	public String operatorType() {
 		return "";
 	}
 

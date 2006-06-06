@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.styskin.ca.functions.AdditiveOperator;
-import org.styskin.ca.functions.ComplexOperator;
-import org.styskin.ca.functions.MultiplicativeOperator;
 import org.styskin.ca.functions.Operator;
-import org.styskin.ca.functions.PowerDoubleOperator;
-import org.styskin.ca.functions.PowerIIOperator;
-import org.styskin.ca.functions.PowerIOperator;
+import org.styskin.ca.functions.complex.AdditiveOperator;
+import org.styskin.ca.functions.complex.ComplexOperator;
+import org.styskin.ca.functions.complex.MultiplicativeOperator;
+import org.styskin.ca.functions.complex.PowerDoubleOperator;
+import org.styskin.ca.functions.complex.PowerIIOperator;
+import org.styskin.ca.functions.complex.PowerIOperator;
 
 public class OperatorUtils {
 
