@@ -6,6 +6,7 @@ import java.util.Stack;
 import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.SingleCriteria;
+import org.styskin.ca.functions.single.SingleOperator;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -34,7 +35,15 @@ public class CriteriaXMLLoader {
 	    public void startElement(String uri, String name, String qName, Attributes atts) {
 	    	Criteria newCriteria = null;
 	    	if("single".equals(atts.getValue("type"))) {
-	    		newCriteria = new SingleCriteria();
+	    		try {
+	    			if (atts.getValue("class") == null) {
+	    				newCriteria = new SingleCriteria(new SingleOperator());
+	    			} else {
+	    				newCriteria = new SingleCriteria(OperatorUtils.getSingleOperator(atts.getValue("class"), atts));
+	    			}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 	    	} else {
 	    		OperatorType operatorType = OperatorUtils.getOperatorTypeByName(atts.getValue("class"));
 	    		double lambda = 0.5;

@@ -1,5 +1,7 @@
 package org.styskin.ca;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.Optimizer;
@@ -7,6 +9,11 @@ import org.styskin.ca.model.CriteriaXMLLoader;
 
 public class Main {
 
+	static {
+		BasicConfigurator.configure();
+	}
+
+	static Logger logger = Logger.getLogger(Main.class);
 
 	private double[][] getMatrix(int size, int length) {
 		double[] CASES = {0.2, 0.5, 0.8};
@@ -39,14 +46,14 @@ public class Main {
 		double[][] F = getMatrix(criteria.getTotalSize(), 300);
 		CacheCriteria cr = new CacheCriteria(criteria2, criteria, F);
 
-		System.out.println(cr.check());
-		System.out.println(criteria2);
+		logger.debug(cr.check());
+		logger.debug(criteria2);
 
 		Optimizer optimizer = new Optimizer();
 		optimizer.optimize(criteria2, criteria, F);
 
 		cr.clearCache();
-		System.out.printf("%4.4f - %s\n", cr.check(), criteria2);
+		logger.debug("" + cr.check() + criteria2);
 	}
 
 	/**

@@ -22,19 +22,29 @@ public class CacheCriteria {
 	private double[] base;
 	protected double[][] F;
 
-	public CacheCriteria(Criteria criteria, Criteria criteriaBase, double[][] F) {
+	private CacheCriteria(Criteria criteria, double[][] F) {
 		this.F = F;
-		setBase(criteriaBase);
 		root = criteria;
 		cached = new HashMap<Criteria, Boolean>();
 		index = new HashMap<Criteria, Integer>();
-
 		int size = buildIndex(root, 0);
 		R = new double[size + 1][F.length];
 		buildSingle(root, 0);
 
 //		clearCache();
 		refreshCache();
+	}
+
+	// TODO throws Exception base.length != F.length
+	public CacheCriteria(Criteria criteria, double[] base, double[][] F) {
+		this(criteria, F);
+		this.base = base;
+	}
+
+
+	public CacheCriteria(Criteria criteria, Criteria criteriaBase, double[][] F) {
+		this(criteria, F);
+		setBase(criteriaBase);
 	}
 
 	private int buildIndex(Criteria c, int p) {

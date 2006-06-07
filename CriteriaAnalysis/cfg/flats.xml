@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<criteria type="complex" class="mult" lambda="0.4">
+	<criteria type="complex" class="mult" lambda="0.4" weight="0.2">
+		<criteria type="single" weight="0.2" />
+		<criteria type="single" weight="0.2" />
+		<criteria type="single" weight="0.2" />
+		<criteria type="single" weight="0.2" />
+	</criteria>
+	<criteria type="complex" class="mult" lambda="0.4" weight="0.2">
+		<criteria type="single" weight="0.2"/>
+		<criteria type="single" weight="0.2" />
+	</criteria>
+	<criteria type="complex" class="add" lambda="0.4" weight="0.2">
+		<criteria type="single" weight="0.2" class="linear" fMin="0" fMax="1" />
+	</criteria>
+	<criteria type="complex" class="add" lambda="0.4" weight="0.2">
+		<criteria type="single" weight="0.2" />
+	</criteria>
+	<criteria type="complex" class="mult" lambda="0.4" weight="0.2">
+		<criteria type="single" weight="0.2" />
+		<criteria type="single" weight="0.2"/>
+		<criteria type="single" weight="0.2" />
+		<criteria type="single" weight="0.2" />
+		<criteria type="single" weight="0.2" />
+	</criteria>
+	<criteria type="complex" class="mult" lambda="0.4" weight="0.2">
+		<criteria type="single" weight="0.2" />
+		<criteria type="single" weight="0.2" />
+	</criteria>
+</criteria>

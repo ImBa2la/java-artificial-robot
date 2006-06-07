@@ -32,21 +32,22 @@
 				<criteria type="single" weight="0.5" />
 			</criteria>
 			<criteria type="complex" class="mult" lambda="0.5" weight="0.5">
-				<criteria type="single" weight="0.5" />
-				<criteria type="single" weight="0.5" />
+				<criteria type="single" weight="0.5" class="simple" fMin="0" fMax="1" />
+				<criteria type="single" weight="0.5" class="simple" fMin="0" fMax="1" />
 			</criteria>
 			<criteria type="complex" class="powerII" lambda="0.5" weight="0.5">
-				<criteria type="single" weight="0.5" />
-				<criteria type="single" weight="0.5" />
+				<criteria type="single" weight="0.5" class="simple" fMin="0" fMax="1" />
+				<criteria type="single" weight="0.5" class="simple" fMin="0" fMax="1" />
 			</criteria>
 		</criteria>
 		<criteria type="complex" class="mult" lambda="0.5" weight="0.5">
-			<criteria type="single" weight="0.5" />
-			<criteria type="single" weight="0.5" />
+			<criteria type="single" weight="0.5" class="gaussian" fMin="0" fMax="1" />
+			<criteria type="single" weight="0.5" class="simple" fMin="0" fMax="1" />
 		</criteria>
 		<criteria type="complex" class="powerII" lambda="0.5" weight="0.5">
-			<criteria type="single" weight="0.5" />
-			<criteria type="single" weight="0.5" />
-		</criteria>	</criteria>
+			<criteria type="single" weight="0.5" class="simple" fMin="0" fMax="1" />
+			<criteria type="single" weight="0.5" class="simple" fMin="0" fMax="1" />
+		</criteria>
+	</criteria>
 	<criteria type="single" weight="0.1" />
 </criteria>

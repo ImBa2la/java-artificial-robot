@@ -41,7 +41,7 @@
 			</criteria>
 		</criteria>
 		<criteria type="complex" class="mult" lambda="0.7" weight="0.3">
-			<criteria type="single" weight="0.5" />
+			<criteria type="single" weight="0.5"/>
 			<criteria type="single" weight="0.5" />
 		</criteria>
 		<criteria type="complex" class="powerII" lambda="0.8" weight="0.5">

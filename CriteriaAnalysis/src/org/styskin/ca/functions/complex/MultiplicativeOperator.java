@@ -112,7 +112,7 @@ public class MultiplicativeOperator extends ComplexOperator {
 
 		do {
 			rightV = calculate(L, right, V);
-			if( (rightV > 0 && leftV < EPS) || (rightV < 0 && leftV > 0)) {
+			if( (rightV > EPS && leftV < EPS) || (rightV < -EPS && leftV > EPS)) {
 				g = calculateG(L, right, V);
 				result = right;
 				Delta /= 2;
@@ -121,8 +121,7 @@ public class MultiplicativeOperator extends ComplexOperator {
 				leftV = rightV;
 				right += Delta;
 			}
-		} while(!(abs(g - 1) < EPS) || Delta < EPS);
-
+		} while(!(abs(g - 1) < EPS || Delta < EPS));
 		return result;
 	}
 

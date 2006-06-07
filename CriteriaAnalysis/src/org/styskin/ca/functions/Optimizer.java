@@ -8,11 +8,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.apache.log4j.Logger;
 import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.model.Constants;
 import org.styskin.ca.model.Pair;
 
 public class Optimizer implements Constants {
+
+	static Logger logger = Logger.getLogger(Optimizer.class);
 
 	private CacheCriteria cache;
 
@@ -156,7 +159,7 @@ public class Optimizer implements Constants {
 		while((c = queue.poll()) != null) {
 			if(c.getFirst() instanceof ComplexCriteria) {
 				cc = (ComplexCriteria) c.getFirst();
-//				System.out.printf("%d, ", c.getSecond());
+//				logger("%d, ", c.getSecond());
 
 				if (c.getSecond() < 3) {
 					criteria(cc);
@@ -196,10 +199,7 @@ public class Optimizer implements Constants {
 		}
 	}
 
-	public void optimize(Criteria root, Criteria base, double[][] F) {
-		this.root = root;
-		cache = new CacheCriteria(root, base,  F);
-
+	private void optimize(Criteria root) {
 		operators = new ArrayList<ComplexOperator>();
 		try {
 			for(Class clazz : ComplexOperator.complexOperators) {
@@ -211,8 +211,21 @@ public class Optimizer implements Constants {
 
 		for(int i=0; i < 50; i++) {
 			iteration();
-			System.out.printf("%f\n",cache.check());
+			logger.debug(cache.check());
 //			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
 		}
+
+	}
+
+	public void optimize(Criteria root, double[] base, double[][] F) {
+		this.root = root;
+		cache = new CacheCriteria(root, base,  F);
+		optimize(root);
+	}
+
+	public void optimize(Criteria root, Criteria base, double[][] F) {
+		this.root = root;
+		cache = new CacheCriteria(root, base,  F);
+		optimize(root);
 	}
 }

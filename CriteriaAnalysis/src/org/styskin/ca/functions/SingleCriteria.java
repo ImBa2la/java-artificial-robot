@@ -1,16 +1,24 @@
 package org.styskin.ca.functions;
 
+import org.styskin.ca.functions.single.SingleOperator;
+
 
 public class SingleCriteria extends Criteria {
 
-//	private SingleOperator operator = new SingleOperator();
+	private SingleOperator operator;
+
+	public SingleCriteria(SingleOperator operator) {
+		this.operator = operator;
+	}
 
 	@Override
 	protected double getValue(double[] X, int start, int end) throws Exception {
 		if (start != end || start >= X.length) {
 			throw new Exception("Incorrect");
 		}
-		return X[start];
+		double[] Y = {X[start]};
+		return operator.getValue(Y);
+//		return X[start];
 	}
 
 	@Override
