@@ -60,7 +60,15 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		(new Main()).testCriteria();
+		Criteria criteria = CriteriaXMLLoader.loadXML("cfg/criteria3.xml");
+		double[][] F = {{1,1},{2,2},{3,3}};
+
+		CacheCriteria cr = new CacheCriteria(criteria, criteria, F);
+		for(double x : cr.getValue()) {
+			logger.info(x);
+		}
+
+//		(new Main()).testCriteria();
 	}
 
 }

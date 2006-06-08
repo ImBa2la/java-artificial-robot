@@ -15,6 +15,7 @@ import org.styskin.ca.functions.complex.MultiplicativeOperator;
 import org.styskin.ca.functions.complex.PowerDoubleOperator;
 import org.styskin.ca.functions.complex.PowerIIOperator;
 import org.styskin.ca.functions.complex.PowerIOperator;
+import org.styskin.ca.functions.single.Beta;
 import org.styskin.ca.functions.single.BetaDistribution;
 import org.styskin.ca.functions.single.Exponential;
 import org.styskin.ca.functions.single.Gaussian;
@@ -41,7 +42,7 @@ public class OperatorUtils {
 		singleOperatorMapping = new HashMap<SingleFunction, Class>();
 		singleOperatorMapping.put(SingleFunction.LINEAR, Linear.class);
 		singleOperatorMapping.put(SingleFunction.GAUSSIAN, Gaussian.class);
-		singleOperatorMapping.put(SingleFunction.BETA, Gaussian.class);
+		singleOperatorMapping.put(SingleFunction.BETA, Beta.class);
 		singleOperatorMapping.put(SingleFunction.BETA_DISTRIBUTION, BetaDistribution.class);
 		singleOperatorMapping.put(SingleFunction.POWER, Exponential.class);
 		singleOperatorMapping.put(SingleFunction.SIMPLE, SingleOperator.class);

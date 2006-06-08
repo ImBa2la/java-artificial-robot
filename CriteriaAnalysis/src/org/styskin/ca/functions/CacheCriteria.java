@@ -66,8 +66,12 @@ public class CacheCriteria {
 			}
 		} else {
 			int me = index.get(c);
-			for(int i = 0; i < F.length; i++) {
-				R[me][i] = F[i][p];
+			try {
+				for(int i = 0; i < F.length; i++) {
+					R[me][i] = c.getValue(F[i], p, p);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			p++;
 		}

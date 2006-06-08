@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<criteria type="complex" class="mult" lambda="0.6">
+	<criteria type="single" weight="1" class="linear" fMax="5" />
+	<criteria type="single" weight="1"  class="beta" P="1" Q="1" fMax="5"/>
+</criteria>
