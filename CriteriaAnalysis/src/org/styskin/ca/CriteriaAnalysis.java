@@ -309,12 +309,13 @@ public class CriteriaAnalysis extends JFrame {
 					fileChooser.showOpenDialog((Component) e.getSource());
 					File file = fileChooser.getSelectedFile();
 					JComponent treePanel = null;
+					Criteria criteria = null;
 					try {
-						Criteria criteria = CriteriaXMLParser.loadXML(file);
-						treePanel = new CriteriaTreeForm(criteria);
+						criteria = CriteriaXMLParser.loadXML(file);
 					} catch(Exception ex) {
 						treePanel = new JLabel("Cannot open specified file");
 					}
+					treePanel = new CriteriaTreeForm(criteria);
 					getJTabbedPane().add(treePanel);
 				}
 			});

@@ -1,17 +1,21 @@
 package org.styskin.ca.mvc;
 
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.ScrollPane;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.apache.log4j.Logger;
 import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
-import org.styskin.ca.model.OperatorType;
+import org.styskin.ca.functions.complex.AdditiveOperator;
 
 public class CriteriaTreeForm extends JPanel {
 
@@ -26,11 +30,46 @@ public class CriteriaTreeForm extends JPanel {
 	private JPanel functionPanel = null;
 
 
-	private Criteria criteria;
+	static class CriteriaRenderer extends DefaultTreeCellRenderer {
 
+		private static final long serialVersionUID = -2638037386251154389L;
+		private Icon complexCriteriaIcon;
+		private Icon singleCriteriaIcon;
+
+	    public CriteriaRenderer() {
+			complexCriteriaIcon = new ImageIcon("img/Parent.gif");
+			singleCriteriaIcon = new ImageIcon("img/Child.gif");
+	    }
+
+	    @Override
+	    public Component getTreeCellRendererComponent(
+	                        JTree tree,
+	                        Object value,
+	                        boolean sel,
+	                        boolean expanded,
+	                        boolean leaf,
+	                        int row,
+	                        boolean hasFocus) {
+
+	        super.getTreeCellRendererComponent(
+	                        tree, value, sel,
+	                        expanded, leaf, row,
+	                        hasFocus);
+	        if (leaf) {
+	            setIcon(singleCriteriaIcon);
+	        } else {
+	            setIcon(complexCriteriaIcon);
+	        }
+            setToolTipText(((Criteria)((DefaultMutableTreeNode) value).getUserObject()).getName());
+	        return this;
+	    }
+	}
+
+	private Criteria criteria;
 	{
 		try {
-			criteria = new ComplexCriteria(OperatorType.ADDITIVE);
+			criteria = new ComplexCriteria(new AdditiveOperator());
+			criteria.setName("Интегральный критерий");
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}
@@ -94,7 +133,9 @@ public class CriteriaTreeForm extends JPanel {
 	        	addCriteria(cr, root);
 	        }
 			criteriaTree = new JTree(root);
+			criteriaTree.setCellRenderer(new CriteriaRenderer());
 			criteriaTree.setBounds(new java.awt.Rectangle(5,377,78,72));
+			criteriaTree.setEditable(false);
 		}
 		return criteriaTree;
 	}
@@ -133,7 +174,8 @@ public class CriteriaTreeForm extends JPanel {
 	private JPanel getFunctionPanel() {
 		if (functionPanel == null) {
 			functionPanel = new JPanel();
-			functionPanel.setVisible(false);
+			functionPanel.setVisible(true);
+			functionPanel.setEnabled(false);
 		}
 		return functionPanel;
 	}

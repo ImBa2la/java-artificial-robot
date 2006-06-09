@@ -2,6 +2,10 @@ package org.styskin.ca.model;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Stack;
 
 import org.styskin.ca.functions.ComplexCriteria;
@@ -15,6 +19,8 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 public class CriteriaXMLParser {
+
+	private static final NumberFormat NUMBER_FORMAT = DecimalFormat.getInstance(Locale.US);
 
 	static class CriteriaXMLHandler extends DefaultHandler {
 
@@ -40,19 +46,18 @@ public class CriteriaXMLParser {
 	    			if (atts.getValue("class") == null) {
 	    				newCriteria = new SingleCriteria(new SingleOperator());
 	    			} else {
-	    				newCriteria = new SingleCriteria(OperatorUtils.getSingleOperator(atts.getValue("class"), atts));
+	    				newCriteria = new SingleCriteria( SingleFunction.getSingleOperator(atts.getValue("class"), atts));
 	    			}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 	    	} else {
-	    		OperatorType operatorType = OperatorUtils.getOperatorTypeByName(atts.getValue("class"));
 	    		double lambda = 0.5;
 	    		if(atts.getValue("lambda") != null) {
 	    			lambda = Double.valueOf(atts.getValue("lambda"));
 	    		}
 	    		try {
-					newCriteria = new ComplexCriteria(operatorType, lambda);
+					newCriteria = new ComplexCriteria(ComplexFunction.createOperator(atts.getValue("class"), lambda));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -113,9 +118,30 @@ public class CriteriaXMLParser {
 		return loadXML(new File(fileName));
 	}
 
+	private static void saveNode(Criteria criteria, double weight, StringBuffer sb, PrintWriter out) throws Exception {
+		if (criteria instanceof ComplexCriteria) {
+			ComplexCriteria node = (ComplexCriteria) criteria;
+			out.printf("<criteria name=\"%s\" type=\"complex\" class=\"%s\" lambda=\"%s\">\n",
+					criteria.getName(), ComplexFunction.getOperatorName(node.operator.getClass()) , NUMBER_FORMAT.format(node.operator.lambda));
+			int i = 0;
+			sb.append('\t');
+			for(Criteria cr : node.getChildren()) {
+				saveNode(cr, node.operator.weights.get(i++), sb, out);
+			}
+			out.println("</criteria>");
+			sb.delete(sb.length()-1, sb.length());
+		} else if (criteria instanceof SingleCriteria) {
+			SingleCriteria node = (SingleCriteria) criteria;
+			// TODO extra attributes parsing
+			out.printf("<criteria name=\"%s\" type=\"single\" class=\"%s\">\n",
+					criteria.getName(), SingleFunction.getOperatorName(node.getOperator().getClass()));
+		}
+	}
 
-	// TODO saveXML
 	public static void savedXML(Criteria criteria, File file) throws Exception {
+		PrintWriter out = new PrintWriter(file);
+		saveNode(criteria, 1, new StringBuffer() ,out);
+		out.close();
 	}
 
 	public static void saveXML(Criteria criteria, String fileName) throws Exception {

@@ -1,13 +1,9 @@
 package org.styskin.ca.functions;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.styskin.ca.functions.complex.ComplexOperator;
-import org.styskin.ca.model.OperatorType;
-import org.styskin.ca.model.OperatorUtils;
 
 public class ComplexCriteria extends Criteria {
 	List<Criteria> children = new ArrayList<Criteria>();
@@ -15,18 +11,12 @@ public class ComplexCriteria extends Criteria {
 
 	private int totalSize = -1;
 
-	static protected NumberFormat FORMAT = DecimalFormat.getInstance();
-
 	public List<Criteria> getChildren() {
 		return children;
 	}
 
-	public ComplexCriteria(OperatorType type, double L) throws Exception {
-		operator = OperatorUtils.createOperator(type, L);
-	}
-
-	public ComplexCriteria(OperatorType type) throws Exception {
-		operator = OperatorUtils.createOperator(type);
+	public ComplexCriteria(ComplexOperator operator) throws Exception {
+		this.operator = operator;
 	}
 
 	public void addChild(Criteria criteria, double weight) {

@@ -39,6 +39,10 @@ public class SingleCriteria extends Criteria {
 		return 1;
 	}
 
+	public SingleOperator getOperator() {
+		return operator;
+	}
+
 /*	@Override
 	public String toString() {
 		return "x";
