@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.JComponent;
@@ -16,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
@@ -77,9 +79,9 @@ public class CriteriaAnalysis extends JFrame {
 	private void initialize() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setJMenuBar(getJJMenuBar());
-		this.setSize(406, 386);
+		this.setSize(700, 537);
 		this.setContentPane(getJContentPane());
-		this.setTitle("Application");
+		this.setTitle("CriteriaAnalysis");
 	}
 
 	/**
@@ -252,6 +254,19 @@ public class CriteriaAnalysis extends JFrame {
 			saveMenuItem.setText("Save");
 			saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 					Event.CTRL_MASK, true));
+			saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.showSaveDialog((Component) e.getSource());
+					File file = fileChooser.getSelectedFile();
+					Criteria criteria = ((CriteriaTreeForm) getJTabbedPane().getSelectedComponent()).getCriteria();
+					try {
+						CriteriaXMLParser.saveXML(criteria, file);
+					} catch(Exception ex) {
+						JOptionPane.showMessageDialog(getJTabbedPane(), "Cannot save file");
+					}
+				}
+			});
 		}
 		return saveMenuItem;
 	}
@@ -264,6 +279,14 @@ public class CriteriaAnalysis extends JFrame {
 	private JTabbedPane getJTabbedPane() {
 		if (jTabbedPane == null) {
 			jTabbedPane = new JTabbedPane();
+			jTabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					if (e.getClickCount() > 1 && e.getButton() == MouseEvent.BUTTON1) {
+						JTabbedPane pane = (JTabbedPane) e.getSource();
+						pane.remove(pane.getSelectedIndex());
+					}
+				}
+			});
 		}
 		return jTabbedPane;
 	}
@@ -317,6 +340,7 @@ public class CriteriaAnalysis extends JFrame {
 					}
 					treePanel = new CriteriaTreeForm(criteria);
 					getJTabbedPane().add(treePanel);
+					getJTabbedPane().setSelectedComponent(treePanel);
 				}
 			});
 		}
@@ -331,4 +355,4 @@ public class CriteriaAnalysis extends JFrame {
 		application.setVisible(true);
 	}
 
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+}  //  @jve:decl-index=0:visual-constraint="0,0"

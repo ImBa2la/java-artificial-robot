@@ -121,31 +121,31 @@ public class CriteriaXMLParser {
 	private static void saveNode(Criteria criteria, double weight, StringBuffer sb, PrintWriter out) throws Exception {
 		if (criteria instanceof ComplexCriteria) {
 			ComplexCriteria node = (ComplexCriteria) criteria;
-			out.printf("<criteria name=\"%s\" type=\"complex\" class=\"%s\" lambda=\"%s\">\n",
-					criteria.getName(), ComplexFunction.getOperatorName(node.operator.getClass()) , NUMBER_FORMAT.format(node.operator.lambda));
+			out.printf("%s<criteria name=\"%s\" type=\"complex\" class=\"%s\" lambda=\"%s\">\n",
+					sb, criteria.getName(), ComplexFunction.getOperatorName(node.operator.getClass()) , NUMBER_FORMAT.format(node.operator.lambda));
 			int i = 0;
 			sb.append('\t');
 			for(Criteria cr : node.getChildren()) {
 				saveNode(cr, node.operator.weights.get(i++), sb, out);
 			}
-			out.println("</criteria>");
+			out.printf("%s</criteria>\n", sb);
 			sb.delete(sb.length()-1, sb.length());
 		} else if (criteria instanceof SingleCriteria) {
 			SingleCriteria node = (SingleCriteria) criteria;
 			// TODO extra attributes parsing
-			out.printf("<criteria name=\"%s\" type=\"single\" class=\"%s\">\n",
-					criteria.getName(), SingleFunction.getOperatorName(node.getOperator().getClass()));
+			out.printf("%s<criteria name=\"%s\" type=\"single\" class=\"%s\"/>\n",
+					sb, criteria.getName(), SingleFunction.getOperatorName(node.getOperator().getClass()));
 		}
 	}
 
-	public static void savedXML(Criteria criteria, File file) throws Exception {
+	public static void saveXML(Criteria criteria, File file) throws Exception {
 		PrintWriter out = new PrintWriter(file);
 		saveNode(criteria, 1, new StringBuffer() ,out);
 		out.close();
 	}
 
 	public static void saveXML(Criteria criteria, String fileName) throws Exception {
-		savedXML(criteria, new File(fileName));
+		saveXML(criteria, new File(fileName));
 	}
 
 }

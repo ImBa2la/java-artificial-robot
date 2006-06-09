@@ -59,4 +59,8 @@ public enum ComplexFunction {
 		return function.name;
 	}
 
+	public String toString() {
+		return name;
+	}
+
 }
