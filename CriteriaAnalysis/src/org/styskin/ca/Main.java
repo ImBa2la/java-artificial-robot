@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.Optimizer;
-import org.styskin.ca.model.CriteriaXMLLoader;
+import org.styskin.ca.model.CriteriaXMLParser;
 
 public class Main {
 
@@ -40,8 +40,8 @@ public class Main {
 
 
 	public void testCriteria() throws Exception {
-		Criteria criteria = CriteriaXMLLoader.loadXML("cfg/criteria.xml");
-		Criteria criteria2 = CriteriaXMLLoader.loadXML("cfg/criteria2.xml");
+		Criteria criteria = CriteriaXMLParser.loadXML("cfg/criteria.xml");
+		Criteria criteria2 = CriteriaXMLParser.loadXML("cfg/criteria2.xml");
 
 		double[][] F = getMatrix(criteria.getTotalSize(), 300);
 		CacheCriteria cr = new CacheCriteria(criteria2, criteria, F);
@@ -60,14 +60,13 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		Criteria criteria = CriteriaXMLLoader.loadXML("cfg/criteria3.xml");
+		Criteria criteria = CriteriaXMLParser.loadXML("cfg/criteria3.xml");
 		double[][] F = {{1,1},{2,2},{3,3}};
 
 		CacheCriteria cr = new CacheCriteria(criteria, criteria, F);
 		for(double x : cr.getValue()) {
 			logger.info(x);
 		}
-
 //		(new Main()).testCriteria();
 	}
 

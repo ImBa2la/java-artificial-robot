@@ -17,6 +17,9 @@ public class ComplexCriteria extends Criteria {
 
 	static protected NumberFormat FORMAT = DecimalFormat.getInstance();
 
+	public List<Criteria> getChildren() {
+		return children;
+	}
 
 	public ComplexCriteria(OperatorType type, double L) throws Exception {
 		operator = OperatorUtils.createOperator(type, L);
@@ -62,7 +65,7 @@ public class ComplexCriteria extends Criteria {
 		}
 	}
 
-	@Override
+/*	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("(").append(operator.operatorType()).append(", L=").append(FORMAT.format(operator.lambda)).append(' ');
@@ -73,5 +76,5 @@ public class ComplexCriteria extends Criteria {
 		}
 		sb.append(')');
 		return sb.toString();
-	}
+	}*/
 }

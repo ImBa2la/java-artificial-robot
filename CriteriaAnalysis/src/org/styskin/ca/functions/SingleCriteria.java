@@ -1,14 +1,23 @@
 package org.styskin.ca.functions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.styskin.ca.functions.single.SingleOperator;
 
 
 public class SingleCriteria extends Criteria {
 
 	private SingleOperator operator;
+	private static List<Criteria> emptyList = new ArrayList<Criteria>();
 
 	public SingleCriteria(SingleOperator operator) {
 		this.operator = operator;
+	}
+
+	@Override
+	public List<Criteria> getChildren() {
+		return emptyList;
 	}
 
 	@Override
@@ -18,7 +27,6 @@ public class SingleCriteria extends Criteria {
 		}
 		double[] Y = {X[start]};
 		return operator.getValue(Y);
-//		return X[start];
 	}
 
 	@Override
@@ -31,8 +39,8 @@ public class SingleCriteria extends Criteria {
 		return 1;
 	}
 
-	@Override
+/*	@Override
 	public String toString() {
 		return "x";
-	}
+	}*/
 }

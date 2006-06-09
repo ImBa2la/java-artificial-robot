@@ -96,6 +96,7 @@ public class OperatorUtils {
 		SingleOperator operator = (SingleOperator) operatorConstructor.newInstance();
 
 		Set<String> special = new HashSet<String>();
+		special.add("name");
 		special.add("weight");
 		special.add("type");
 		special.add("class");

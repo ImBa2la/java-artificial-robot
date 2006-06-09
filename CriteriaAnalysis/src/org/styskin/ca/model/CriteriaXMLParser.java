@@ -1,5 +1,6 @@
 package org.styskin.ca.model;
 
+import java.io.File;
 import java.io.FileReader;
 import java.util.Stack;
 
@@ -13,7 +14,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-public class CriteriaXMLLoader {
+public class CriteriaXMLParser {
 
 	static class CriteriaXMLHandler extends DefaultHandler {
 
@@ -60,11 +61,16 @@ public class CriteriaXMLLoader {
 	    		criteria = newCriteria;
 		    	stack.push(newCriteria);
 	    	} else {
-	    		ComplexCriteria node = (ComplexCriteria) stack.get(stack.size() - 1);
+	    		ComplexCriteria node = (ComplexCriteria) stack.peek();
 	    		double weight = Double.valueOf(atts.getValue("weight"));
 	    		node.addChild(newCriteria, weight);
 		    	stack.push(newCriteria);
 	    	}
+    		if(atts.getValue("name") != null) {
+    			String crName = atts.getValue("name");
+    			newCriteria.setName(crName);
+    		}
+
 	        tag = true;
 	        level++;
 	    }
@@ -89,18 +95,31 @@ public class CriteriaXMLLoader {
 		}
 	}
 
-
-	public static Criteria loadXML(String fileName) throws Exception {
+	public static Criteria loadXML(File file) throws Exception {
         XMLReader xmlReader = XMLReaderFactory.createXMLReader();
         CriteriaXMLHandler handler = new CriteriaXMLHandler();
 
         xmlReader.setContentHandler(handler);
         xmlReader.setErrorHandler(handler);
 
-        FileReader r = new FileReader(fileName);
+        FileReader r = new FileReader(file);
         xmlReader.parse(new InputSource(r));
 
         return handler.getCriteria();
+	}
+
+
+	public static Criteria loadXML(String fileName) throws Exception {
+		return loadXML(new File(fileName));
+	}
+
+
+	// TODO saveXML
+	public static void savedXML(Criteria criteria, File file) throws Exception {
+	}
+
+	public static void saveXML(Criteria criteria, String fileName) throws Exception {
+		savedXML(criteria, new File(fileName));
 	}
 
 }
