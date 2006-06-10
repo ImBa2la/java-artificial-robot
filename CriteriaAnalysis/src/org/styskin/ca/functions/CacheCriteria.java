@@ -52,7 +52,7 @@ public class CacheCriteria {
 		index.put(c, size);
 		cached.put(c, false);
 		if(c instanceof ComplexCriteria) {
-			for(Criteria child : ((ComplexCriteria) c).children) {
+			for(Criteria child : c.getChildren()) {
 				size = buildIndex(child, size + 1);
 			}
 		}
@@ -61,7 +61,7 @@ public class CacheCriteria {
 
 	private int buildSingle(Criteria c, int p) {
 		if(c instanceof ComplexCriteria) {
-			for(Criteria child : ((ComplexCriteria) c).children) {
+			for(Criteria child : c.getChildren()) {
 				p = buildSingle(child, p);
 			}
 		} else {
@@ -92,10 +92,8 @@ public class CacheCriteria {
 
 	private boolean renewCache(Criteria criteria) {
 		boolean on = cached.get(criteria);
-		if(criteria instanceof ComplexCriteria) {
-			for(Criteria child : ((ComplexCriteria)criteria).children) {
-				on &= renewCache(child);
-			}
+		for(Criteria child : criteria.getChildren()) {
+			on &= renewCache(child);
 		}
 		cached.put(criteria, on);
 		return on;
@@ -130,7 +128,7 @@ public class CacheCriteria {
 				int size = cc.getSize();
 				int[] ind = new int[size];
 				int j = 0;
-				for(Criteria child : cc.children) {
+				for(Criteria child : cc.getChildren()) {
 					ind[j++] = index.get(child);
 					calcValue(child);
 				}
@@ -142,7 +140,7 @@ public class CacheCriteria {
 					}
 					// TODO
 					try {
-						R[me][i] = cc.operator.getValue(P);
+						R[me][i] = cc.getOperator().getValue(P);
 					} catch (Exception ex) {}
 				}
 			} else {

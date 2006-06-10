@@ -26,7 +26,7 @@ public class Optimizer implements Constants {
 	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c) {
 		boolean moved = false;
 
-		ComplexOperator op = c.operator;
+		ComplexOperator op = c.getOperator();
 		cache.turnOffCache(c);
 
 		double f = cache.check();
@@ -72,7 +72,7 @@ public class Optimizer implements Constants {
 	private final static double VEPS = 1E-1;
 
 	private double getValue(double[] V, ComplexCriteria c, Criteria root) {
-		ComplexOperator op = c.operator;
+		ComplexOperator op = c.getOperator();
 		for(int i=0; i < V.length; i++) {
 			if(V[i] < VEPS || V[i] > 1-VEPS) {
 				return 1E6;
@@ -89,17 +89,18 @@ public class Optimizer implements Constants {
 
 
 	// TODO Constants!!!
+	private final static int STEP = 5;
+
 	public void criteria(ComplexCriteria c) {
-		int STEP = 5;
-		ComplexOperator op = c.operator;
+		ComplexOperator op = c.getOperator();
 
 		double[][] V = new double[2][c.getSize()+1];
 		double[] h = new double[c.getSize()+1];
 		int step = 0;
 		int k = 0;
 
-		V[0][0] = c.operator.lambda;
-		V[1][0] = c.operator.lambda;
+		V[0][0] = c.getOperator().lambda;
+		V[1][0] = c.getOperator().lambda;
 
 		for(int i = 0; i < op.weights.size(); i++) {
 			V[1][i+1] = V[0][i+1] = op.weights.get(i);
@@ -144,7 +145,7 @@ public class Optimizer implements Constants {
 	public void rec(Criteria c) {
 		if(c instanceof ComplexCriteria) {
 			criteria((ComplexCriteria) c);
-			for(Criteria child : ((ComplexCriteria) c).children) {
+			for(Criteria child : c.getChildren()) {
 				rec(child);
 			}
 		}
@@ -164,11 +165,9 @@ public class Optimizer implements Constants {
 				if (c.getSecond() < 3) {
 					criteria(cc);
 				} else {
-					// TODO clone
-					ComplexOperator src = cc.operator;
+					ComplexOperator src = cc.getOperator();
 					ComplexOperator minOperator = src, op = null;
 					double min = cache.check(), tempCheck;
-
 					for(ComplexOperator operator : operators) {
 						try {
 							op = operator.clone();
@@ -179,7 +178,7 @@ public class Optimizer implements Constants {
 						} catch(CloneNotSupportedException ex) {
 							ex.printStackTrace();
 						}
-						cc.operator = op;
+						cc.setOperator(op);
 						criteria(cc);
 						tempCheck = cache.check();
 						if (tempCheck < min) {
@@ -188,11 +187,11 @@ public class Optimizer implements Constants {
 						}
 					}
 
-					cc.operator = minOperator;
+					cc.setOperator(minOperator);
 					cache.turnOffCache(cc);
 					cache.refreshCache();
 				}
-				for(Criteria child : cc.children) {
+				for(Criteria child : cc.getChildren()) {
 					queue.offer(new Pair<Criteria, Integer>(child, c.getSecond() + 1));
 				}
 			}

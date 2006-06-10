@@ -41,6 +41,15 @@ public enum ComplexFunction {
 		classing.put(clazz, function);
 	}
 
+	public ComplexOperator createOperator(double L) throws Exception {
+		Constructor<? extends ComplexOperator> operatorConstructor = clazz.getConstructor(new Class[] {double.class});
+		return operatorConstructor.newInstance(L);
+	}
+
+	public ComplexOperator createOperator() throws Exception {
+		return createOperator(0.5);
+	}
+
 	public static ComplexOperator createOperator(String name, double L) throws Exception {
 		ComplexFunction function = nameing.get(name);
 		if (function == null) {
@@ -57,6 +66,10 @@ public enum ComplexFunction {
 	public static String getOperatorName(Class<? extends ComplexOperator> clazz) throws Exception {
 		ComplexFunction function = classing.get(clazz);
 		return function.name;
+	}
+
+	public static ComplexFunction getFunction(Class<? extends ComplexOperator> clazz) {
+		return classing.get(clazz);
 	}
 
 	public String toString() {

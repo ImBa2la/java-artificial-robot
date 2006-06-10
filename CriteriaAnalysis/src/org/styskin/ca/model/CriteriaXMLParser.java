@@ -3,6 +3,7 @@ package org.styskin.ca.model;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -86,7 +87,7 @@ public class CriteriaXMLParser {
 	    	level --;
 	    	Criteria criteria = stack.pop();
 	    	if (criteria instanceof ComplexCriteria) {
-	    		((ComplexCriteria)criteria).operator.refresh();
+	    		((ComplexCriteria)criteria).getOperator().refresh();
 	    	}
 	    }
 
@@ -122,24 +123,33 @@ public class CriteriaXMLParser {
 		if (criteria instanceof ComplexCriteria) {
 			ComplexCriteria node = (ComplexCriteria) criteria;
 			out.printf("%s<criteria name=\"%s\" type=\"complex\" class=\"%s\" lambda=\"%s\">\n",
-					sb, criteria.getName(), ComplexFunction.getOperatorName(node.operator.getClass()) , NUMBER_FORMAT.format(node.operator.lambda));
+					sb, criteria.getName(), ComplexFunction.getOperatorName(node.getOperator().getClass()) , NUMBER_FORMAT.format(node.getOperator().lambda));
 			int i = 0;
 			sb.append('\t');
 			for(Criteria cr : node.getChildren()) {
-				saveNode(cr, node.operator.weights.get(i++), sb, out);
+				saveNode(cr, node.getOperator().weights.get(i++), sb, out);
 			}
-			out.printf("%s</criteria>\n", sb);
 			sb.delete(sb.length()-1, sb.length());
+			out.printf("%s</criteria>\n", sb);
 		} else if (criteria instanceof SingleCriteria) {
 			SingleCriteria node = (SingleCriteria) criteria;
-			// TODO extra attributes parsing
-			out.printf("%s<criteria name=\"%s\" type=\"single\" class=\"%s\"/>\n",
-					sb, criteria.getName(), SingleFunction.getOperatorName(node.getOperator().getClass()));
+			SingleOperator op = node.getOperator();
+			StringBuffer params = new StringBuffer();
+			Method[] methods = op.getClass().getMethods();
+			for(Method method : methods) {
+				String name = method.getName();
+				if (name.startsWith("get") && method.getParameterTypes().length == 0 && method.getReturnType() == double.class) {
+					params.append(Character.toLowerCase(name.charAt(3))).append(name.substring(4)).append("=\"").append(method.invoke(op)).append("\" ");
+				}
+			}
+			out.printf("%s<criteria name=\"%s\" type=\"single\" class=\"%s\" %s/>\n",
+					sb, criteria.getName(), SingleFunction.getOperatorName(node.getOperator().getClass()), params);
 		}
 	}
 
 	public static void saveXML(Criteria criteria, File file) throws Exception {
 		PrintWriter out = new PrintWriter(file);
+		out.println("<?xml version=\"1.0\" encoding=\"windows-1251\">\n");
 		saveNode(criteria, 1, new StringBuffer() ,out);
 		out.close();
 	}

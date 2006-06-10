@@ -6,11 +6,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Panel;
 import java.awt.ScrollPane;
+import java.awt.event.KeyAdapter;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -23,6 +27,7 @@ import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.SingleCriteria;
 import org.styskin.ca.functions.complex.AdditiveOperator;
+import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.model.ComplexFunction;
 
 public class CriteriaTreeForm extends JPanel {
@@ -30,6 +35,8 @@ public class CriteriaTreeForm extends JPanel {
 	static Logger logger = Logger.getLogger(CriteriaTreeForm.class);
 
 	private static final long serialVersionUID = -3071115953530320825L;
+
+	private static final NumberFormat NUMBER_FORMAT = DecimalFormat.getInstance();
 
 	private ScrollPane scrollPane = null;
 	private JTree criteriaTree = null;
@@ -179,6 +186,12 @@ public class CriteriaTreeForm extends JPanel {
 			criteriaTree.setCellRenderer(new CriteriaRenderer());
 			criteriaTree.setBounds(new java.awt.Rectangle(5,377,78,72));
 			criteriaTree.setEditable(false);
+	        criteriaTree.addMouseListener(new java.awt.event.MouseAdapter() {
+	        	public void mouseClicked(java.awt.event.MouseEvent e) {
+	        		reloadPanel();
+	        	}
+	        });
+//	        criteriaTree = new JTree();
 		}
 		return criteriaTree;
 	}
@@ -299,7 +312,47 @@ public class CriteriaTreeForm extends JPanel {
 		if (applyButton == null) {
 			applyButton = new Button();
 			applyButton.setLabel("Применить");
+			applyButton.setEnabled(false);
 			applyButton.setMinimumSize(new java.awt.Dimension(80,25));
+			applyButton.addActionListener(new java.awt.event.ActionListener(){
+				private static final double EPS = 1E-6;
+
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getLastPathComponent();
+					Criteria cr = (Criteria) node.getUserObject();
+					ComplexCriteria parent = getCriteriaTree().getSelectionPath().getParentPath() == null ? null : (ComplexCriteria) ((DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getParentPath().getLastPathComponent()).getUserObject();
+					try {
+						if (cr instanceof ComplexCriteria) {
+							ComplexCriteria criteria = (ComplexCriteria) cr;
+							criteria.setName(getNameEdit().getText());
+							double weight = NUMBER_FORMAT.parse(getWeightEdit().getText()).doubleValue();
+							double lambda = NUMBER_FORMAT.parse(getLambdaEdit().getText()).doubleValue();
+							ComplexFunction function = (ComplexFunction) getOperatorCombo().getSelectedItem();
+							if (lambda > 1 - EPS || lambda < EPS || weight < EPS) {
+								throw new Exception();
+							}
+							if (parent != null) {
+								parent.getOperator().weights.set(parent.getChildren().indexOf(criteria), weight);
+							}
+							ComplexOperator op = criteria.getOperator();
+							if (ComplexFunction.getFunction(op.getClass()) != function) {
+								ComplexOperator newOperator = function.createOperator(lambda);
+								newOperator.weights = op.weights;
+								newOperator.refresh();
+								criteria.setOperator(newOperator);
+							} else {
+								op.lambda = lambda;
+							}
+						} else {
+
+						}
+						enablePanel1(false);
+						getCriteriaTree().updateUI();
+					} catch(Exception ex) {
+						JOptionPane.showMessageDialog(getPanel1(), "Cannot save parameters");
+					}
+				}
+			});
 		}
 		return applyButton;
 	}
@@ -315,12 +368,27 @@ public class CriteriaTreeForm extends JPanel {
 		if (cancelButton == null) {
 			cancelButton = new Button();
 			cancelButton.setLabel("Отмена");
+			cancelButton.setEnabled(false);
 			cancelButton.setMinimumSize(new java.awt.Dimension(80,25));
+			cancelButton.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					reloadPanel();
+					enablePanel1(false);
+				}
+			});
 		}
 		return cancelButton;
 	}
 
 
+
+	class EnablePanel1 extends KeyAdapter {
+		public void keyTyped(java.awt.event.KeyEvent e) {
+			enablePanel1(true);
+		}
+	}
+
+	private EnablePanel1 enablePanel1 = new EnablePanel1();
 
 	/**
 	 * This method initializes nameEdit
@@ -331,6 +399,7 @@ public class CriteriaTreeForm extends JPanel {
 		if (nameEdit == null) {
 			nameEdit = new JTextField();
 			nameEdit.setBounds(new java.awt.Rectangle(180,24,138,20));
+			nameEdit.addKeyListener(enablePanel1);
 		}
 		return nameEdit;
 	}
@@ -346,6 +415,7 @@ public class CriteriaTreeForm extends JPanel {
 		if (weightEdit == null) {
 			weightEdit = new JTextField();
 			weightEdit.setBounds(new java.awt.Rectangle(181,61,137,20));
+			weightEdit.addKeyListener(enablePanel1);
 		}
 		return weightEdit;
 	}
@@ -361,6 +431,8 @@ public class CriteriaTreeForm extends JPanel {
 		if (lambdaEdit == null) {
 			lambdaEdit = new JTextField();
 			lambdaEdit.setBounds(new java.awt.Rectangle(183,135,135,20));
+			lambdaEdit.addKeyListener(enablePanel1);
+
 		}
 		return lambdaEdit;
 	}
@@ -376,12 +448,39 @@ public class CriteriaTreeForm extends JPanel {
 		if (operatorCombo == null) {
 			operatorCombo = new JComboBox(ComplexFunction.values());
 			operatorCombo.setBounds(new java.awt.Rectangle(182,97,131,25));
+			operatorCombo.addItemListener(new java.awt.event.ItemListener() {
+				public void itemStateChanged(java.awt.event.ItemEvent e) {
+					enablePanel1(true);
+				}
+			});
 		}
 		return operatorCombo;
 	}
 
 	public Criteria getCriteria() {
 		return criteria;
+	}
+
+	private void enablePanel1(boolean enable) {
+		getApplyButton().setEnabled(enable);
+		getCancelButton().setEnabled(enable);
+	}
+
+	private void reloadPanel() {
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getLastPathComponent();
+		Criteria cr = (Criteria) node.getUserObject();
+		ComplexCriteria parent = getCriteriaTree().getSelectionPath().getParentPath() == null ? null : (ComplexCriteria) ((DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getParentPath().getLastPathComponent()).getUserObject();
+		if (cr instanceof ComplexCriteria) {
+			ComplexCriteria criteria = (ComplexCriteria) cr;
+			getNameEdit().setText(criteria.getName());
+			double weight = parent == null ? 1 : parent.getOperator().weights.get(parent.getChildren().indexOf(criteria));
+			getWeightEdit().setText( NUMBER_FORMAT.format( weight));
+			getLambdaEdit().setText( NUMBER_FORMAT.format( criteria.getOperator().lambda));
+			getOperatorCombo().setSelectedItem( ComplexFunction.getFunction(criteria.getOperator().getClass()));
+		} else {
+
+		}
+		enablePanel1(false);
 	}
 
 

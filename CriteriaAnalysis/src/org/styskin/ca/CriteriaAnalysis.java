@@ -256,7 +256,7 @@ public class CriteriaAnalysis extends JFrame {
 					Event.CTRL_MASK, true));
 			saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					JFileChooser fileChooser = new JFileChooser();
+					JFileChooser fileChooser = new JFileChooser(new File("./"));
 					fileChooser.showSaveDialog((Component) e.getSource());
 					File file = fileChooser.getSelectedFile();
 					Criteria criteria = ((CriteriaTreeForm) getJTabbedPane().getSelectedComponent()).getCriteria();
@@ -328,7 +328,7 @@ public class CriteriaAnalysis extends JFrame {
 			openMenuItem.setText("Open");
 			openMenuItem.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					JFileChooser fileChooser = new JFileChooser();
+					JFileChooser fileChooser = new JFileChooser(new File("./"));
 					fileChooser.showOpenDialog((Component) e.getSource());
 					File file = fileChooser.getSelectedFile();
 					JComponent treePanel = null;

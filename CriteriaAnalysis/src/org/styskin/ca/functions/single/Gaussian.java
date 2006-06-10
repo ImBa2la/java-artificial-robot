@@ -21,7 +21,6 @@ public class Gaussian extends SingleOperator {
 		}
 	}
 
-
 	public double gaussian(double x, double e) {
 		double t = x;
 		double sum = x, x2 = x*x, s = 0;

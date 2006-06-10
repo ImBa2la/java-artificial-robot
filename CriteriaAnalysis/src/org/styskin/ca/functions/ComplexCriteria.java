@@ -6,8 +6,8 @@ import java.util.List;
 import org.styskin.ca.functions.complex.ComplexOperator;
 
 public class ComplexCriteria extends Criteria {
-	List<Criteria> children = new ArrayList<Criteria>();
-	public ComplexOperator operator;
+	private List<Criteria> children = new ArrayList<Criteria>();
+	private ComplexOperator operator;
 
 	private int totalSize = -1;
 
@@ -53,6 +53,18 @@ public class ComplexCriteria extends Criteria {
 			}
 			return totalSize;
 		}
+	}
+
+	public ComplexOperator getOperator() {
+		return operator;
+	}
+
+	public void setChildren(List<Criteria> children) {
+		this.children = children;
+	}
+
+	public void setOperator(ComplexOperator operator) {
+		this.operator = operator;
 	}
 
 /*	@Override

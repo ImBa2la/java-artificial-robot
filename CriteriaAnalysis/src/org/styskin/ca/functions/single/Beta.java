@@ -11,7 +11,7 @@ public class Beta extends SingleOperator {
 	private double P = 1;
 	private double Q = 0;
 	private double D;
-	private double Km;
+//	private double Km;
 
 	public double getLSatiation() {
 		return lSatiation;
@@ -29,12 +29,6 @@ public class Beta extends SingleOperator {
 			rSatiation = satiation;
 		}
 	}
-	public double getD() {
-		return D;
-	}
-	public double getKm() {
-		return Km;
-	}
 	public double getP() {
 		return P;
 	}
@@ -42,14 +36,14 @@ public class Beta extends SingleOperator {
 		return Q;
 	}
 	public void calculateD() {
-		Km = 0;
+//		Km = 0;
 		if (abs(getFMin() - getFMax()) < EPS) {
 			D = 0;
-			Km = getFMin();
+//			Km = getFMin();
 		} else if ( abs(P) < EPS &&  abs(Q) < EPS) {
 			D = 1/(getFMax() - getFMin());
 		} else {
-			Km = (getFMax() * P + getFMin() * Q) / (P + Q);
+//			Km = (getFMax() * P + getFMin() * Q) / (P + Q);
 			D = 0;
 			double step = (getFMax() - getFMin())/C;
 			double hX = getFMin() + step, hF, lF = 0;

@@ -27,12 +27,6 @@ public class BetaDistribution extends SingleOperator {
 			rSatiation = satiation;
 		}
 	}
-	public double getD() {
-		return D;
-	}
-	public double getKm() {
-		return Km;
-	}
 	public double getP() {
 		return P;
 	}
