@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="CriteriaAnalysis" default="dist" basedir=".">
+
+	<property name="src" value="src" />
+	<property name="cfg" value="cfg" />
+	<property name="lib" value="lib" />
+	<property name="bin" value="bin" />
+	<property name="test" value="test" />
+	<property name="img" value="img" />
+	<property name="dist" value="dist" />
+
+	<target name="dist.prepare">
+		<delete dir="${test}"/>
+		<copy todir="${test}">
+			<fileset dir="${bin}"/>
+		</copy>
+		<copy todir="${test}">
+			<fileset dir=".">
+				<include name="${img}/**"/>
+			</fileset>
+		</copy>
+		<unjar dest="${test}">
+			<fileset dir="${lib}">
+				<include name="*.jar"/>
+			</fileset>
+		</unjar>
+	</target>
+
+	<target name="dist.release">
+		<jar basedir="${test}" jarfile="${dist}/${ant.project.name}.jar">
+			<manifest>
+				<attribute name="Main-Class" value="org.styskin.ca.CriteriaAnalysis"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="clear.after" depends="dist.release">
+		<delete dir="${test}"/>
+	</target>
+
+	<target name="dist" depends="dist.prepare,dist.release,clear.after">
+	</target>
+</project>
+

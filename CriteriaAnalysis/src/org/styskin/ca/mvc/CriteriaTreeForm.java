@@ -52,8 +52,8 @@ public class CriteriaTreeForm extends JPanel {
 		private Icon singleCriteriaIcon;
 
 	    public CriteriaRenderer() {
-			complexCriteriaIcon = new ImageIcon("img/Parent.gif");
-			singleCriteriaIcon = new ImageIcon("img/Child.gif");
+			complexCriteriaIcon = new ImageIcon(CriteriaRenderer.class.getResource("/img/Parent.gif"));
+			singleCriteriaIcon = new ImageIcon(CriteriaRenderer.class.getResource("/img/Child.gif"));
 	    }
 
 	    @Override
