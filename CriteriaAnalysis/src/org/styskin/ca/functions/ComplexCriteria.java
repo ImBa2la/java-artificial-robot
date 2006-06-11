@@ -24,6 +24,13 @@ public class ComplexCriteria extends Criteria {
 		operator.addCriteria(weight);
 	}
 
+	public void removeChild(Criteria criteria) {
+		int index = children.indexOf(criteria);
+		children.remove(index);
+		operator.weights.remove(index);
+		operator.refresh();
+	}
+
 	@Override
 	protected double getValue(double[] X, int start, int end) throws Exception {
 		double[] Y = new double[children.size()];

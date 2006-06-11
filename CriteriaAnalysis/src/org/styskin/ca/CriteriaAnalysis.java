@@ -1,14 +1,15 @@
 package org.styskin.ca;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Event;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -20,12 +21,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.BasicConfigurator;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.model.CriteriaXMLParser;
 import org.styskin.ca.mvc.CriteriaTreeForm;
+import javax.swing.JButton;
 
 public class CriteriaAnalysis extends JFrame {
 
@@ -63,6 +66,14 @@ public class CriteriaAnalysis extends JFrame {
 
 	private JMenuItem openMenuItem = null;
 
+	private JToolBar treeToolBar = null;
+
+	private JButton addComplexCriteriaButton = null;
+
+	private JButton addSingleCriteriaButton = null;
+
+	private JButton removeCriteriaButton = null;
+
 	/**
 	 * This is the default constructor
 	 */
@@ -91,11 +102,10 @@ public class CriteriaAnalysis extends JFrame {
 	 */
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
-			GridLayout gridLayout = new GridLayout();
-			gridLayout.setRows(1);
 			jContentPane = new JPanel();
-			jContentPane.setLayout(gridLayout);
-			jContentPane.add(getJTabbedPane(), null);
+			jContentPane.setLayout(new BorderLayout());
+			jContentPane.add(getTreeToolBar(), java.awt.BorderLayout.NORTH);
+			jContentPane.add(getJTabbedPane(), java.awt.BorderLayout.CENTER);
 		}
 		return jContentPane;
 	}
@@ -345,6 +355,80 @@ public class CriteriaAnalysis extends JFrame {
 			});
 		}
 		return openMenuItem;
+	}
+
+	/**
+	 * This method initializes treeToolBar
+	 *
+	 * @return javax.swing.JToolBar
+	 */
+	private JToolBar getTreeToolBar() {
+		if (treeToolBar == null) {
+			treeToolBar = new JToolBar();
+			treeToolBar.setPreferredSize(new java.awt.Dimension(18,30));
+			treeToolBar.add(getAddComplexCriteriaButton());
+			treeToolBar.add(getAddSingleCriteriaButton());
+			treeToolBar.add(getRemoveCriteriaButton());
+		}
+		return treeToolBar;
+	}
+
+	/**
+	 * This method initializes addCriteriaButton
+	 *
+	 * @return javax.swing.JButton
+	 */
+	private JButton getAddComplexCriteriaButton() {
+		if (addComplexCriteriaButton == null) {
+			addComplexCriteriaButton = new JButton(new ImageIcon(this.getClass().getResource("/img/AddCCriteria.gif")));
+			addComplexCriteriaButton.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					System.out.println("actionPerformed()"); // TODO Auto-generated Event stub actionPerformed()
+				}
+			});
+			addComplexCriteriaButton.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					System.out.println("actionPerformed()"); // TODO Auto-generated Event stub actionPerformed()
+				}
+			});
+		}
+		return addComplexCriteriaButton;
+	}
+
+	/**
+	 * This method initializes addSingleCriteriaButton
+	 *
+	 * @return javax.swing.JButton
+	 */
+	private JButton getAddSingleCriteriaButton() {
+		if (addSingleCriteriaButton == null) {
+			addSingleCriteriaButton = new JButton(new ImageIcon(this.getClass().getResource("/img/AddSCriteria.gif")));
+			addSingleCriteriaButton.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					System.out.println("actionPerformed()"); // TODO Auto-generated Event stub actionPerformed()
+				}
+			});
+		}
+		return addSingleCriteriaButton;
+	}
+
+	/**
+	 * This method initializes removeCriteriaButton
+	 *
+	 * @return javax.swing.JButton
+	 */
+	private JButton getRemoveCriteriaButton() {
+		if (removeCriteriaButton == null) {
+			removeCriteriaButton = new JButton(new ImageIcon(this.getClass().getResource("/img/DelCriteria.gif")));
+			removeCriteriaButton.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					if (getJTabbedPane().getSelectedComponent() != null) {
+						((CriteriaTreeForm) getJTabbedPane().getSelectedComponent()).removeCriteria();
+					}
+				}
+			});
+		}
+		return removeCriteriaButton;
 	}
 
 	/**

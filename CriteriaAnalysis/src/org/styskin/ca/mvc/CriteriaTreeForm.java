@@ -461,12 +461,47 @@ public class CriteriaTreeForm extends JPanel {
 		return criteria;
 	}
 
+	public void addComplexCriteria() {
+
+	}
+
+	public void addSingleCriteria() {
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getLastPathComponent();
+		Criteria cr = (Criteria) node.getUserObject();
+		ComplexCriteria parent = getCriteriaTree().getSelectionPath().getParentPath() == null ? null : (ComplexCriteria) ((DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getParentPath().getLastPathComponent()).getUserObject();
+		if (parent != null) {
+			parent.removeChild(cr);
+		}
+		if (node.getParent() != null) {
+			((DefaultMutableTreeNode) node.getParent()).remove(node);
+		}
+		enablePanel1(false);
+		getCriteriaTree().updateUI();
+	}
+
+	public void removeCriteria() {
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getLastPathComponent();
+		Criteria cr = (Criteria) node.getUserObject();
+		ComplexCriteria parent = getCriteriaTree().getSelectionPath().getParentPath() == null ? null : (ComplexCriteria) ((DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getParentPath().getLastPathComponent()).getUserObject();
+		if (parent != null) {
+			parent.removeChild(cr);
+		}
+		if (node.getParent() != null) {
+			((DefaultMutableTreeNode) node.getParent()).remove(node);
+		}
+		enablePanel1(false);
+		getCriteriaTree().updateUI();
+	}
+
 	private void enablePanel1(boolean enable) {
 		getApplyButton().setEnabled(enable);
 		getCancelButton().setEnabled(enable);
 	}
 
 	private void reloadPanel() {
+		if (getCriteriaTree().getSelectionPath() == null) {
+			return;
+		}
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getLastPathComponent();
 		Criteria cr = (Criteria) node.getUserObject();
 		ComplexCriteria parent = getCriteriaTree().getSelectionPath().getParentPath() == null ? null : (ComplexCriteria) ((DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getParentPath().getLastPathComponent()).getUserObject();
