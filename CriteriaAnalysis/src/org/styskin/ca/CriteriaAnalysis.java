@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -26,9 +27,9 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.BasicConfigurator;
 import org.styskin.ca.functions.Criteria;
+import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
 import org.styskin.ca.mvc.CriteriaTreeForm;
-import javax.swing.JButton;
 
 public class CriteriaAnalysis extends JFrame {
 
@@ -73,6 +74,8 @@ public class CriteriaAnalysis extends JFrame {
 	private JButton addSingleCriteriaButton = null;
 
 	private JButton removeCriteriaButton = null;
+
+	private JMenuItem optimizeMenu = null;
 
 	/**
 	 * This is the default constructor
@@ -135,6 +138,7 @@ public class CriteriaAnalysis extends JFrame {
 			fileMenu = new JMenu();
 			fileMenu.setText("File");
 			fileMenu.add(getNewMunyItem());
+			fileMenu.add(getOptimizeMenu());
 			fileMenu.add(getOpenMenuItem());
 			fileMenu.add(getSaveMenuItem());
 			fileMenu.add(getExitMenuItem());
@@ -386,11 +390,6 @@ public class CriteriaAnalysis extends JFrame {
 					System.out.println("actionPerformed()"); // TODO Auto-generated Event stub actionPerformed()
 				}
 			});
-			addComplexCriteriaButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					System.out.println("actionPerformed()"); // TODO Auto-generated Event stub actionPerformed()
-				}
-			});
 		}
 		return addComplexCriteriaButton;
 	}
@@ -429,6 +428,49 @@ public class CriteriaAnalysis extends JFrame {
 			});
 		}
 		return removeCriteriaButton;
+	}
+
+	/**
+	 * This method initializes optimizeMenu
+	 *
+	 * @return javax.swing.JMenuItem
+	 */
+	private JMenuItem getOptimizeMenu() {
+		if (optimizeMenu == null) {
+			optimizeMenu = new JMenuItem();
+			optimizeMenu.setText("Optimize");
+			optimizeMenu.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					Criteria cr = ((CriteriaTreeForm) getJTabbedPane().getSelectedComponent()).getCriteria();
+					Criteria criteria = null;
+					try {
+						criteria = cr.clone();
+					} catch(CloneNotSupportedException ex) {}
+					double[][] F = Optimizer.getMatrix(criteria.getTotalSize(), 300);
+					Optimizer optimizer = new Optimizer();
+
+					JFileChooser fileChooser = new JFileChooser(new File("./"));
+					fileChooser.showOpenDialog((Component) e.getSource());
+					File file = fileChooser.getSelectedFile();
+					Criteria base = null;
+					try {
+						base = CriteriaXMLParser.loadXML(file);
+					} catch(Exception ex) {}
+					optimizer.optimize(criteria, base, F);
+					try {
+						CriteriaXMLParser.saveXML(criteria, "cfg/testOpt.xml");
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					JComponent treePanel = null;
+					treePanel = new CriteriaTreeForm(criteria);
+					getJTabbedPane().add(treePanel);
+					getJTabbedPane().setSelectedComponent(treePanel);
+				}
+			});
+		}
+		return optimizeMenu;
 	}
 
 	/**

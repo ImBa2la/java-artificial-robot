@@ -43,6 +43,16 @@ public class SingleCriteria extends Criteria {
 		return operator;
 	}
 
+	private void setOperator(SingleOperator operator) {
+		this.operator = operator;
+	}
+
+	public Criteria clone() throws CloneNotSupportedException {
+		SingleCriteria criteria = (SingleCriteria) super.clone();
+		criteria.setOperator((SingleOperator) operator.clone());
+		return criteria;
+	}
+
 /*	@Override
 	public String toString() {
 		return "x";

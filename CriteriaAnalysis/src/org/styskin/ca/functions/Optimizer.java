@@ -78,7 +78,6 @@ public class Optimizer implements Constants {
 				return 1E6;
 			}
 		}
-
 		op.lambda = V[0];
 		for(int i = 0; i < op.weights.size(); i++) {
 			op.weights.set(i, V[i + 1]);
@@ -210,8 +209,9 @@ public class Optimizer implements Constants {
 
 		for(int i=0; i < 50; i++) {
 			iteration();
-			logger.debug(cache.check());
+//			logger.debug(cache.check());
 //			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
+			System.out.printf("%4.4f\n", cache.check());
 		}
 
 	}
@@ -226,5 +226,28 @@ public class Optimizer implements Constants {
 		this.root = root;
 		cache = new CacheCriteria(root, base,  F);
 		optimize(root);
+	}
+
+	public static double[][] getMatrix(int size, int length) {
+		double[] CASES = {0.2, 0.5, 0.8};
+		int VAR_NUMBER = size;
+		long CASE_NUMBER = Math.round(Math.pow(CASES.length, VAR_NUMBER));
+
+		long step = CASE_NUMBER / length - 10;
+		double[][] F = new double[length][VAR_NUMBER];
+
+		int iF = 0;
+		for(long i=0; i < CASE_NUMBER; i+= step + Math.round(20*Math.random())) {
+			if (iF >= length) {
+				break;
+			}
+			long mod = (CASE_NUMBER/CASES.length);
+			for(int j=0; j < VAR_NUMBER; j++) {
+				F[iF][j] = CASES[(int)((i / mod) %3)];
+				mod /= 3;
+			}
+			iF++;
+		}
+		return F;
 	}
 }

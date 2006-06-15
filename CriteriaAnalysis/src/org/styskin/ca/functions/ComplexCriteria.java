@@ -74,6 +74,18 @@ public class ComplexCriteria extends Criteria {
 		this.operator = operator;
 	}
 
+	@Override
+	public Criteria clone() throws CloneNotSupportedException {
+		ComplexCriteria criteria = (ComplexCriteria) super.clone();
+		List<Criteria> childrenClone = new ArrayList<Criteria>();
+		for(Criteria child : children) {
+			childrenClone.add(child.clone());
+		}
+		criteria.setChildren(children);
+		criteria.setOperator(operator.clone());
+		return criteria;
+	}
+
 /*	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

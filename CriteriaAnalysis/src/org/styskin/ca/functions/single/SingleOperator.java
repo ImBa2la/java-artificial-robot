@@ -2,7 +2,7 @@ package org.styskin.ca.functions.single;
 
 import org.styskin.ca.functions.Operator;
 
-public class SingleOperator extends Operator {
+public class SingleOperator extends Operator implements Cloneable {
 
 	private double fMin, fMax;
 
@@ -23,4 +23,10 @@ public class SingleOperator extends Operator {
 	public void setFMin(double min) {
 		fMin = min;
 	}
+
+	public Operator clone() throws CloneNotSupportedException {
+		SingleOperator op = (SingleOperator) super.clone();
+		return op;
+	}
+
 }

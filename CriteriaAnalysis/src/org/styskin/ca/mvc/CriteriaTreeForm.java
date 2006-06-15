@@ -505,15 +505,14 @@ public class CriteriaTreeForm extends JPanel {
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getLastPathComponent();
 		Criteria cr = (Criteria) node.getUserObject();
 		ComplexCriteria parent = getCriteriaTree().getSelectionPath().getParentPath() == null ? null : (ComplexCriteria) ((DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getParentPath().getLastPathComponent()).getUserObject();
+		getNameEdit().setText(cr.getName());
+		double weight = parent == null ? 1 : parent.getOperator().weights.get(parent.getChildren().indexOf(cr));
+		getWeightEdit().setText( NUMBER_FORMAT.format( weight));
 		if (cr instanceof ComplexCriteria) {
 			ComplexCriteria criteria = (ComplexCriteria) cr;
-			getNameEdit().setText(criteria.getName());
-			double weight = parent == null ? 1 : parent.getOperator().weights.get(parent.getChildren().indexOf(criteria));
-			getWeightEdit().setText( NUMBER_FORMAT.format( weight));
 			getLambdaEdit().setText( NUMBER_FORMAT.format( criteria.getOperator().lambda));
 			getOperatorCombo().setSelectedItem( ComplexFunction.getFunction(criteria.getOperator().getClass()));
-		} else {
-
+		} else if (criteria instanceof SingleCriteria) {
 		}
 		enablePanel1(false);
 	}

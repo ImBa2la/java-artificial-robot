@@ -72,7 +72,9 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 	public ComplexOperator clone() throws CloneNotSupportedException {
 		ComplexOperator op = (ComplexOperator) super.clone();
 		op.weights = new ArrayList<Double>();
-		op.weights.addAll(this.weights);
+		for(double x : this.weights) {
+			op.weights.add(x);
+		}
 		return op;
 	}
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="windows-1251">
+
+<criteria name="Интегральный" type="complex" class="mult" lambda="0.529">
+	<criteria name="1.1" type="complex" class="powerI" lambda="0.486">
+		<criteria name="1.1.1" type="complex" class="powerII" lambda="0.549">
+			<criteria name="1.1.1.1" type="single" class="simple" fMax="0.0" fMin="0.0" />
+			<criteria name="1.1.1.2" type="single" class="simple" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="1.1.2" type="complex" class="powerII" lambda="0.547">
+			<criteria name="1.1.2.1" type="single" class="simple" fMax="0.0" fMin="0.0" />
+			<criteria name="1.1.2.2" type="single" class="simple" fMax="0.0" fMin="0.0" />
+		</criteria>
+	</criteria>
+	<criteria name="1.2" type="complex" class="powerII" lambda="0.521">
+		<criteria name="1.2.1" type="complex" class="powerI" lambda="0.623">
+			<criteria name="1.2.1.1" type="single" class="simple" fMax="0.0" fMin="0.0" />
+			<criteria name="1.2.1.2" type="single" class="simple" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="1.2.2" type="complex" class="powerD" lambda="0.522">
+			<criteria name="1.2.2.1" type="single" class="simple" fMax="0.0" fMin="0.0" />
+			<criteria name="1.2.2.2" type="single" class="simple" fMax="0.0" fMin="0.0" />
+		</criteria>
+	</criteria>
+	<criteria name="1.3" type="complex" class="powerD" lambda="0.587">
+		<criteria name="1.3.1" type="single" class="simple" fMax="0.0" fMin="0.0" />
+		<criteria name="1.3.2" type="single" class="simple" fMax="0.0" fMin="0.0" />
+		<criteria name="1.3.3" type="single" class="simple" fMax="0.0" fMin="0.0" />
+	</criteria>
+</criteria>

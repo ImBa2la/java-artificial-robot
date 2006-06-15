@@ -1,8 +1,11 @@
 package org.styskin.ca;
 
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.Arrays;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
-import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
@@ -15,59 +18,41 @@ public class Main {
 
 	static Logger logger = Logger.getLogger(Main.class);
 
-	private double[][] getMatrix(int size, int length) {
-		double[] CASES = {0.2, 0.5, 0.8};
-		int VAR_NUMBER = size;
-		long CASE_NUMBER = Math.round(Math.pow(CASES.length, VAR_NUMBER));
-
-		long step = CASE_NUMBER / length - 10;
-		double[][] F = new double[length][VAR_NUMBER];
-
-		int iF = 0;
-		for(long i=0; i < CASE_NUMBER; i+= step + Math.round(20*Math.random())) {
-			if (iF >= length) {
-				break;
-			}
-			long mod = (CASE_NUMBER/CASES.length);
-			for(int j=0; j < VAR_NUMBER; j++) {
-				F[iF][j] = CASES[(int)((i / mod) %3)];
-				mod /= 3;
-			}
-			iF++;
-		}
-		return F;
-	}
-
-
 	public void testCriteria() throws Exception {
-		Criteria criteria = CriteriaXMLParser.loadXML("cfg/criteria.xml");
-		Criteria criteria2 = CriteriaXMLParser.loadXML("cfg/criteria2.xml");
+		Criteria criteria0 = CriteriaXMLParser.loadXML("cfg/test0.xml");
+		Criteria criteria1 = CriteriaXMLParser.loadXML("cfg/test1.xml");
+		Criteria criteria2 = CriteriaXMLParser.loadXML("cfg/test2.xml");
 
-		double[][] F = getMatrix(criteria.getTotalSize(), 300);
-		CacheCriteria cr = new CacheCriteria(criteria2, criteria, F);
-
-		logger.debug(cr.check());
+		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
+/*		logger.debug(cr1.check());
 		logger.debug(criteria2);
 
 		Optimizer optimizer = new Optimizer();
 		optimizer.optimize(criteria2, criteria, F);
 
 		cr.clearCache();
-		logger.debug("" + cr.check() + criteria2);
+		logger.debug("" + cr.check() + criteria2);*/
+		Optimizer optimizer = new Optimizer();
+/*		System.setOut(new PrintStream(new FileOutputStream("out1.txt")));
+		optimizer.optimize(criteria1, criteria0, F);
+		System.out.close();*/
+		System.setOut(new PrintStream(new FileOutputStream("out4.txt")));
+		optimizer.optimize(criteria2, criteria0, F);
+		System.out.close();
 	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		Criteria criteria = CriteriaXMLParser.loadXML("cfg/criteria3.xml");
+/*		Criteria criteria = CriteriaXMLParser.loadXML("cfg/criteria3.xml");
 		double[][] F = {{1,1},{2,2},{3,3}};
 
 		CacheCriteria cr = new CacheCriteria(criteria, criteria, F);
 		for(double x : cr.getValue()) {
 			logger.info(x);
-		}
-//		(new Main()).testCriteria();
+		}*/
+		(new Main()).testCriteria();
 	}
 
 }

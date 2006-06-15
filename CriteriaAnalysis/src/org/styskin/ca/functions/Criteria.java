@@ -2,7 +2,7 @@ package org.styskin.ca.functions;
 
 import java.util.List;
 
-public abstract class Criteria {
+public abstract class Criteria implements Cloneable {
 
 	private String name;
 
@@ -29,5 +29,11 @@ public abstract class Criteria {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public Criteria clone() throws CloneNotSupportedException {
+		Criteria criteria = (Criteria) super.clone();
+		criteria.setName(name);
+		return criteria;
 	}
 }
