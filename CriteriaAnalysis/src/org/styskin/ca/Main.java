@@ -2,7 +2,6 @@ package org.styskin.ca;
 
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;

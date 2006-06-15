@@ -447,6 +447,7 @@ public class CriteriaTreeForm extends JPanel {
 	private JComboBox getOperatorCombo() {
 		if (operatorCombo == null) {
 			operatorCombo = new JComboBox(ComplexFunction.values());
+			operatorCombo.setAutoscrolls(true);
 			operatorCombo.setBounds(new java.awt.Rectangle(182,97,131,25));
 			operatorCombo.addItemListener(new java.awt.event.ItemListener() {
 				public void itemStateChanged(java.awt.event.ItemEvent e) {

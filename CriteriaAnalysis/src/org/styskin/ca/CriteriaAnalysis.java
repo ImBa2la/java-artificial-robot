@@ -2,7 +2,9 @@ package org.styskin.ca;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -24,6 +26,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.apache.log4j.BasicConfigurator;
 import org.styskin.ca.functions.Criteria;
@@ -83,6 +87,15 @@ public class CriteriaAnalysis extends JFrame {
 	public CriteriaAnalysis() {
 		super();
 		initialize();
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		SwingUtilities.updateComponentTreeUI(this);
+		Dimension us = this.getSize(), them = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation((them.width - us.width) / 2, (them.height - us.height) / 2);
+
 	}
 
 	/**

@@ -10,8 +10,11 @@
 	<property name="img" value="img" />
 	<property name="dist" value="dist" />
 
+	<target name="compile">
+		<javac srcdir="${src}" classpath="${lib}/junit.jar;${lib}/log4j-1.2.12.jar" destdir="${bin}" encoding="UTF-8"/>
+	</target>
+
 	<target name="dist.prepare">
-		<delete dir="${test}"/>
 		<copy todir="${test}">
 			<fileset dir="${bin}"/>
 		</copy>
