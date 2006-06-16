@@ -1,11 +1,10 @@
 package org.styskin.ca.mvc;
 
+import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Component;
-import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Panel;
-import java.awt.ScrollPane;
 import java.awt.event.KeyAdapter;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -16,6 +15,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
@@ -29,7 +30,6 @@ import org.styskin.ca.functions.SingleCriteria;
 import org.styskin.ca.functions.complex.AdditiveOperator;
 import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.model.ComplexFunction;
-import javax.swing.JSplitPane;
 
 public class CriteriaTreeForm extends JPanel {
 
@@ -39,7 +39,7 @@ public class CriteriaTreeForm extends JPanel {
 
 	private static final NumberFormat NUMBER_FORMAT = DecimalFormat.getInstance();
 
-	private ScrollPane scrollPane = null;
+	private JScrollPane scrollPane = null;
 	private JTree criteriaTree = null;
 	private JTabbedPane controlPanel = null;
 	private JPanel generalPanel = null;
@@ -140,11 +140,10 @@ public class CriteriaTreeForm extends JPanel {
 	 * @return void
 	 */
 	private void initialize() {
-		this.setLayout(new GridLayout());
+		this.setLayout(new BorderLayout());
 		this.setSize(690, 460);
-
 		this.setName("CriteriaTree");
-		this.add(getJSplitPane(), null);
+		this.add(getJSplitPane(), BorderLayout.CENTER);
 	}
 
 	/**
@@ -152,10 +151,9 @@ public class CriteriaTreeForm extends JPanel {
 	 *
 	 * @return java.awt.ScrollPane
 	 */
-	private ScrollPane getScrollPane() {
+	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
-			scrollPane = new ScrollPane();
-			scrollPane.add(getCriteriaTree(), null);
+			scrollPane = new JScrollPane(getCriteriaTree());
 		}
 		return scrollPane;
 	}
@@ -207,9 +205,8 @@ public class CriteriaTreeForm extends JPanel {
 	private JPanel getGeneralPanel() {
 		if (generalPanel == null) {
 			generalPanel = new JPanel();
-			generalPanel.setLayout(null);
-			generalPanel.add(getPanel(), null);
-			generalPanel.add(getPanel1(), null);
+			generalPanel.setLayout(new GridLayout());
+			generalPanel.add(getJSplitPane1(), null);
 		}
 		return generalPanel;
 	}
@@ -259,7 +256,6 @@ public class CriteriaTreeForm extends JPanel {
 			nameLabel.setBounds(new java.awt.Rectangle(15,25,124,20));
 			panel = new Panel();
 			panel.setLayout(null);
-			panel.setBounds(new java.awt.Rectangle(0,0,340,368));
 			panel.add(lambdaLabel, null);
 			panel.add(operatorLabel, null);
 			panel.add(weightLabel, null);
@@ -283,7 +279,6 @@ public class CriteriaTreeForm extends JPanel {
 		if (panel1 == null) {
 			panel1 = new Panel();
 			panel1.setComponentOrientation(java.awt.ComponentOrientation.UNKNOWN);
-			panel1.setBounds(new java.awt.Rectangle(0,369,340,62));
 			panel1.add(getApplyButton(), null);
 			panel1.add(getCancelButton(), null);
 		}
@@ -380,6 +375,8 @@ public class CriteriaTreeForm extends JPanel {
 	private EnablePanel1 enablePanel1 = new EnablePanel1();
 
 	private JSplitPane jSplitPane = null;
+
+	private JSplitPane jSplitPane1 = null;
 
 	/**
 	 * This method initializes nameEdit
@@ -524,6 +521,25 @@ public class CriteriaTreeForm extends JPanel {
 			jSplitPane.setRightComponent(getControlPanel());
 		}
 		return jSplitPane;
+	}
+
+
+
+	/**
+	 * This method initializes jSplitPane1	
+	 * 	
+	 * @return javax.swing.JSplitPane	
+	 */
+	private JSplitPane getJSplitPane1() {
+		if (jSplitPane1 == null) {
+			jSplitPane1 = new JSplitPane();
+			jSplitPane1.setBounds(new java.awt.Rectangle(5,436,202,28));
+			jSplitPane1.setDividerLocation(350);
+			jSplitPane1.setTopComponent(getPanel());
+			jSplitPane1.setBottomComponent(getPanel1());
+			jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+		}
+		return jSplitPane1;
 	}
 
 
