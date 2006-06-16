@@ -29,6 +29,7 @@ import org.styskin.ca.functions.SingleCriteria;
 import org.styskin.ca.functions.complex.AdditiveOperator;
 import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.model.ComplexFunction;
+import javax.swing.JSplitPane;
 
 public class CriteriaTreeForm extends JPanel {
 
@@ -139,23 +140,11 @@ public class CriteriaTreeForm extends JPanel {
 	 * @return void
 	 */
 	private void initialize() {
-		GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-		gridBagConstraints1.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints1.gridy = 0;
-		gridBagConstraints1.ipadx = 208;
-		gridBagConstraints1.ipady = 347;
-		gridBagConstraints1.weightx = 1.0;
-		gridBagConstraints1.weighty = 1.0;
-		gridBagConstraints1.gridx = 1;
-		GridBagConstraints gridBagConstraints = new GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 0;
 		this.setLayout(new GridLayout());
 		this.setSize(690, 460);
 
 		this.setName("CriteriaTree");
-		this.add(getScrollPane(), gridBagConstraints);
-		this.add(getControlPanel(), gridBagConstraints1);
+		this.add(getJSplitPane(), null);
 	}
 
 	/**
@@ -390,6 +379,8 @@ public class CriteriaTreeForm extends JPanel {
 
 	private EnablePanel1 enablePanel1 = new EnablePanel1();
 
+	private JSplitPane jSplitPane = null;
+
 	/**
 	 * This method initializes nameEdit
 	 *
@@ -516,6 +507,23 @@ public class CriteriaTreeForm extends JPanel {
 		} else if (criteria instanceof SingleCriteria) {
 		}
 		enablePanel1(false);
+	}
+
+
+
+	/**
+	 * This method initializes jSplitPane	
+	 * 	
+	 * @return javax.swing.JSplitPane	
+	 */
+	private JSplitPane getJSplitPane() {
+		if (jSplitPane == null) {
+			jSplitPane = new JSplitPane();
+			jSplitPane.setDividerLocation(300);
+			jSplitPane.setLeftComponent(getScrollPane());
+			jSplitPane.setRightComponent(getControlPanel());
+		}
+		return jSplitPane;
 	}
 
 
