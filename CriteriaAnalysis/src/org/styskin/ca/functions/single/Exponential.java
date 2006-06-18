@@ -15,17 +15,17 @@ public class Exponential extends SingleOperator {
 	public double getBase() {
 		return base;
 	}
-	protected void setLSatiation(double satiation) {
+	public void setLSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			lSatiation = satiation;
 		}
 	}
-	protected void setRSatiation(double satiation) {
+	public void setRSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			rSatiation = satiation;
 		}
 	}
-	protected void setBase(double base) {
+	public void setBase(double base) {
 		if(base > -EPS && base < 1 + EPS) {
 			this.base = base;
 		}

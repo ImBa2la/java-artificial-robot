@@ -89,6 +89,7 @@ public class Optimizer implements Constants {
 
 	// TODO Constants!!!
 	private final static int STEP = 5;
+	private final int LEVEL = 3;
 
 	public void criteria(ComplexCriteria c) {
 		ComplexOperator op = c.getOperator();
@@ -105,6 +106,7 @@ public class Optimizer implements Constants {
 			V[1][i+1] = V[0][i+1] = op.weights.get(i);
 		}
 
+		// TODO : constants
 		for(int i = 0; i < h.length; i++) {
 			h[i] = 1E-3;
 		}
@@ -160,8 +162,7 @@ public class Optimizer implements Constants {
 			if(c.getFirst() instanceof ComplexCriteria) {
 				cc = (ComplexCriteria) c.getFirst();
 //				logger("%d, ", c.getSecond());
-
-				if (c.getSecond() < 3) {
+				if (c.getSecond() < LEVEL) {
 					criteria(cc);
 				} else {
 					ComplexOperator src = cc.getOperator();
@@ -170,12 +171,12 @@ public class Optimizer implements Constants {
 					for(ComplexOperator operator : operators) {
 						try {
 							op = operator.clone();
-							op.lambda = src.lambda;
 							op.weights = new ArrayList<Double>();
 							op.weights.addAll(src.weights);
+							op.lambda = src.lambda;
 							op.refresh();
 						} catch(CloneNotSupportedException ex) {
-							ex.printStackTrace();
+							logger.error("Operator clone exception");
 						}
 						cc.setOperator(op);
 						criteria(cc);
@@ -185,13 +186,16 @@ public class Optimizer implements Constants {
 							minOperator = op;
 						}
 					}
-
 					cc.setOperator(minOperator);
 					cache.turnOffCache(cc);
 					cache.refreshCache();
 				}
-				for(Criteria child : cc.getChildren()) {
+/*				for(Criteria child : cc.getChildren()) {
 					queue.offer(new Pair<Criteria, Integer>(child, c.getSecond() + 1));
+				}*/
+				// Inverse order
+				for(int i = cc.getChildren().size() -1 ; i >= 0; i--) {
+					queue.offer(new Pair<Criteria, Integer>(cc.getChildren().get(i), c.getSecond() + 1));
 				}
 			}
 		}
@@ -204,16 +208,15 @@ public class Optimizer implements Constants {
 				operators.add((ComplexOperator) clazz.newInstance());
 			}
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			logger.error("Cannot pre-create operator");
 		}
-
+		// TODO criteria of finish optimization
 		for(int i=0; i < 50; i++) {
 			iteration();
-//			logger.debug(cache.check());
+//			logger.info(cache.check());
 //			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
 			System.out.printf("%4.4f\n", cache.check());
 		}
-
 	}
 
 	public void optimize(Criteria root, double[] base, double[][] F) {

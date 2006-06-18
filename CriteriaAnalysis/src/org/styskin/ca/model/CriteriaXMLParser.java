@@ -151,7 +151,7 @@ public class CriteriaXMLParser {
 
 	public static void saveXML(Criteria criteria, File file) throws Exception {
 		PrintWriter out = new PrintWriter(file);
-		out.println("<?xml version=\"1.0\" encoding=\"windows-1251\">\n");
+		out.println("<?xml version=\"1.0\" encoding=\"windows-1251\">?\n");
 		saveNode(criteria, 1, new StringBuffer() ,out);
 		out.close();
 	}

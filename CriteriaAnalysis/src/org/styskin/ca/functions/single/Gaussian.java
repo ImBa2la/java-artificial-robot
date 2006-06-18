@@ -10,12 +10,12 @@ public class Gaussian extends SingleOperator {
 	public double getRSatiation() {
 		return rSatiation;
 	}
-	protected void setLSatiation(double satiation) {
+	public void setLSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			lSatiation = satiation;
 		}
 	}
-	protected void setRSatiation(double satiation) {
+	public void setRSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			rSatiation = satiation;
 		}

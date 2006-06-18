@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<criteria name="cr_name" type="complex" class="mult" lambda="0.512" weight="1">
+	<criteria name="cr_name" type="complex" class="mult" lambda="0.615" weight="0.391">
+		<criteria name="cr_name" type="complex" class="powerI" lambda="0.662" weight="0.373">
+			<criteria name="cr_name" type="single" class="simple" weight="0.404" fMax="0.0" fMin="0.0" />
+			<criteria name="cr_name" type="single" class="simple" weight="0.596" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="cr_name" type="complex" class="powerII" lambda="0.543" weight="0.371">
+			<criteria name="cr_name" type="single" class="simple" weight="0.504" fMax="0.0" fMin="0.0" />
+			<criteria name="cr_name" type="single" class="simple" weight="0.496" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="cr_name" type="complex" class="powerII" lambda="0.629" weight="0.256">
+			<criteria name="cr_name" type="complex" class="powerD" lambda="0.72" weight="0.286">
+				<criteria name="cr_name" type="single" class="simple" weight="0.435" fMax="0.0" fMin="0.0" />
+				<criteria name="cr_name" type="single" class="simple" weight="0.565" fMax="0.0" fMin="0.0" />
+			</criteria>
+			<criteria name="cr_name" type="complex" class="powerI" lambda="0.331" weight="0.334">
+				<criteria name="cr_name" type="single" class="simple" weight="0.504" fMax="0.0" fMin="0.0" />
+				<criteria name="cr_name" type="single" class="simple" weight="0.496" fMax="0.0" fMin="0.0" />
+			</criteria>
+			<criteria name="cr_name" type="complex" class="powerI" lambda="0.785" weight="0.379">
+				<criteria name="cr_name" type="single" class="simple" weight="0.466" fMax="0.0" fMin="0.0" />
+				<criteria name="cr_name" type="single" class="simple" weight="0.534" fMax="0.0" fMin="0.0" />
+			</criteria>
+		</criteria>
+	</criteria>
+	<criteria name="cr_name" type="complex" class="mult" lambda="0.326" weight="0.483">
+		<criteria name="cr_name" type="complex" class="powerD" lambda="0.653" weight="0.3">
+			<criteria name="cr_name" type="complex" class="powerD" lambda="0.788" weight="0.439">
+				<criteria name="cr_name" type="single" class="simple" weight="0.376" fMax="0.0" fMin="0.0" />
+				<criteria name="cr_name" type="single" class="simple" weight="0.624" fMax="0.0" fMin="0.0" />
+			</criteria>
+			<criteria name="cr_name" type="complex" class="powerI" lambda="0.322" weight="0.364">
+				<criteria name="cr_name" type="single" class="simple" weight="0.511" fMax="1.0" fMin="0.0" />
+				<criteria name="cr_name" type="single" class="simple" weight="0.489" fMax="1.0" fMin="0.0" />
+			</criteria>
+			<criteria name="cr_name" type="complex" class="mult" lambda="0.491" weight="0.197">
+				<criteria name="cr_name" type="single" class="simple" weight="0.484" fMax="1.0" fMin="0.0" />
+				<criteria name="cr_name" type="single" class="simple" weight="0.516" fMax="1.0" fMin="0.0" />
+			</criteria>
+		</criteria>
+		<criteria name="cr_name" type="complex" class="mult" lambda="0.574" weight="0.447">
+			<criteria name="cr_name" type="single" class="gaussian" weight="0.421" lSatiation="0.0" rSatiation="1.0" fMax="1.0" fMin="0.0" />
+			<criteria name="cr_name" type="single" class="simple" weight="0.579" fMax="1.0" fMin="0.0" />
+		</criteria>
+		<criteria name="cr_name" type="complex" class="powerII" lambda="0.625" weight="0.253">
+			<criteria name="cr_name" type="single" class="simple" weight="0.42" fMax="1.0" fMin="0.0" />
+			<criteria name="cr_name" type="single" class="simple" weight="0.58" fMax="1.0" fMin="0.0" />
+		</criteria>
+	</criteria>
+	<criteria name="cr_name" type="single" class="simple" weight="0.126" fMax="0.0" fMin="0.0" />
+</criteria>

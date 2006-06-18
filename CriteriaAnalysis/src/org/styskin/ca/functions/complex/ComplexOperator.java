@@ -10,7 +10,6 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 	public static List<Class> complexOperators = new ArrayList<Class>();
 
 	static {
-		complexOperators.add(AdditiveOperator.class);
 		complexOperators.add(MultiplicativeOperator.class);
 		complexOperators.add(PowerDoubleOperator.class);
 		complexOperators.add(PowerIIOperator.class);

@@ -30,7 +30,6 @@ public class CacheCriteria {
 		int size = buildIndex(root, 0);
 		R = new double[size + 1][F.length];
 		buildSingle(root, 0);
-
 //		clearCache();
 		refreshCache();
 	}
@@ -157,5 +156,32 @@ public class CacheCriteria {
 			d += t*t;
 		}
 		return Math.sqrt(d);
+	}
+
+	public double[] getValue(Criteria criteria) {
+		calcValue(criteria);
+		return R[index.get(criteria)];
+	}
+
+	public double[][] getInput(ComplexCriteria cr) {
+		int size = cr.getSize();
+		int[] ind = new int[size];
+		double[][] values = new double[F.length][size];
+		int j = 0;
+		for(Criteria child : cr.getChildren()) {
+			ind[j++] = index.get(child);
+			calcValue(child);
+		}
+		int me = index.get(cr);
+		for(int i = 0; i < F.length; i++) {
+			for(int l = 0; l < values[i].length; l++) {
+				values[i][l] = R[ind[l]][i];
+			}
+			// TODO
+			try {
+				R[me][i] = cr.getOperator().getValue(values[i]);
+			} catch (Exception ex) {}
+		}
+		return values;
 	}
 }
