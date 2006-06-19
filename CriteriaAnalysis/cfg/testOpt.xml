@@ -1,53 +1,53 @@
-<?xml version="1.0" encoding="windows-1251">
+<?xml version="1.0" encoding="windows-1251">?
 
-<criteria name="null" type="complex" class="mult" lambda="0.475" weight="1">
-	<criteria name="null" type="complex" class="mult" lambda="0.6" weight="0.422">
-		<criteria name="null" type="complex" class="powerI" lambda="0.536" weight="0.232">
-			<criteria name="null" type="single" class="simple" weight="0.393" fMax="0.0" fMin="0.0" />
-			<criteria name="null" type="single" class="simple" weight="0.607" fMax="0.0" fMin="0.0" />
+<criteria name="null" type="complex" class="mult" lambda="0.493" weight="1">
+	<criteria name="null" type="complex" class="mult" lambda="0.603" weight="0.38">
+		<criteria name="null" type="complex" class="mult" lambda="0.308" weight="0.249">
+			<criteria name="null" type="single" class="simple" weight="0.418" fMax="0.0" fMin="0.0" />
+			<criteria name="null" type="single" class="simple" weight="0.582" fMax="0.0" fMin="0.0" />
 		</criteria>
-		<criteria name="null" type="complex" class="powerII" lambda="0.535" weight="0.332">
-			<criteria name="null" type="single" class="simple" weight="0.507" fMax="0.0" fMin="0.0" />
-			<criteria name="null" type="single" class="simple" weight="0.493" fMax="0.0" fMin="0.0" />
+		<criteria name="null" type="complex" class="mult" lambda="0.465" weight="0.323">
+			<criteria name="null" type="single" class="simple" weight="0.501" fMax="0.0" fMin="0.0" />
+			<criteria name="null" type="single" class="simple" weight="0.499" fMax="0.0" fMin="0.0" />
 		</criteria>
-		<criteria name="null" type="complex" class="powerII" lambda="0.688" weight="0.436">
-			<criteria name="null" type="complex" class="powerI" lambda="0.727" weight="0.298">
-				<criteria name="null" type="single" class="simple" weight="0.455" fMax="0.0" fMin="0.0" />
-				<criteria name="null" type="single" class="simple" weight="0.545" fMax="0.0" fMin="0.0" />
+		<criteria name="null" type="complex" class="powerII" lambda="0.715" weight="0.428">
+			<criteria name="null" type="complex" class="add" lambda="0.502" weight="0.321">
+				<criteria name="null" type="single" class="simple" weight="0.424" fMax="0.0" fMin="0.0" />
+				<criteria name="null" type="single" class="simple" weight="0.576" fMax="0.0" fMin="0.0" />
 			</criteria>
-			<criteria name="null" type="complex" class="powerII" lambda="0.678" weight="0.371">
-				<criteria name="null" type="single" class="simple" weight="0.499" fMax="0.0" fMin="0.0" />
-				<criteria name="null" type="single" class="simple" weight="0.501" fMax="0.0" fMin="0.0" />
+			<criteria name="null" type="complex" class="mult" lambda="0.49" weight="0.307">
+				<criteria name="null" type="single" class="simple" weight="0.453" fMax="0.0" fMin="0.0" />
+				<criteria name="null" type="single" class="simple" weight="0.547" fMax="0.0" fMin="0.0" />
 			</criteria>
-			<criteria name="null" type="complex" class="powerI" lambda="0.8" weight="0.331">
-				<criteria name="null" type="single" class="simple" weight="0.447" fMax="0.0" fMin="0.0" />
-				<criteria name="null" type="single" class="simple" weight="0.553" fMax="0.0" fMin="0.0" />
+			<criteria name="null" type="complex" class="powerII" lambda="0.8" weight="0.371">
+				<criteria name="null" type="single" class="simple" weight="0.445" fMax="0.0" fMin="0.0" />
+				<criteria name="null" type="single" class="simple" weight="0.555" fMax="0.0" fMin="0.0" />
 			</criteria>
 		</criteria>
 	</criteria>
-	<criteria name="null" type="complex" class="mult" lambda="0.356" weight="0.458">
-		<criteria name="null" type="complex" class="powerD" lambda="0.655" weight="0.303">
-			<criteria name="null" type="complex" class="powerD" lambda="0.797" weight="0.427">
+	<criteria name="null" type="complex" class="mult" lambda="0.374" weight="0.493">
+		<criteria name="null" type="complex" class="mult" lambda="0.313" weight="0.312">
+			<criteria name="null" type="complex" class="add" lambda="0.502" weight="0.384">
 				<criteria name="null" type="single" class="simple" weight="0.38" fMax="0.0" fMin="0.0" />
 				<criteria name="null" type="single" class="simple" weight="0.62" fMax="0.0" fMin="0.0" />
 			</criteria>
-			<criteria name="null" type="complex" class="powerI" lambda="0.382" weight="0.389">
-				<criteria name="null" type="single" class="simple" weight="0.51" fMax="1.0" fMin="0.0" />
-				<criteria name="null" type="single" class="simple" weight="0.49" fMax="1.0" fMin="0.0" />
+			<criteria name="null" type="complex" class="mult" lambda="0.612" weight="0.397">
+				<criteria name="null" type="single" class="simple" weight="0.511" fMax="1.0" fMin="0.0" />
+				<criteria name="null" type="single" class="simple" weight="0.489" fMax="1.0" fMin="0.0" />
 			</criteria>
-			<criteria name="null" type="complex" class="mult" lambda="0.473" weight="0.184">
-				<criteria name="null" type="single" class="simple" weight="0.464" fMax="1.0" fMin="0.0" />
-				<criteria name="null" type="single" class="simple" weight="0.536" fMax="1.0" fMin="0.0" />
+			<criteria name="null" type="complex" class="powerII" lambda="0.465" weight="0.219">
+				<criteria name="null" type="single" class="simple" weight="0.467" fMax="1.0" fMin="0.0" />
+				<criteria name="null" type="single" class="simple" weight="0.533" fMax="1.0" fMin="0.0" />
 			</criteria>
 		</criteria>
-		<criteria name="null" type="complex" class="powerI" lambda="0.456" weight="0.426">
-			<criteria name="null" type="single" class="gaussian" weight="0.436" lSatiation="0.0" rSatiation="1.0" fMax="1.0" fMin="0.0" />
-			<criteria name="null" type="single" class="simple" weight="0.564" fMax="1.0" fMin="0.0" />
+		<criteria name="null" type="complex" class="mult" lambda="0.596" weight="0.415">
+			<criteria name="null" type="single" class="gaussian" weight="0.417" lSatiation="0.0" rSatiation="1.0" fMax="1.0" fMin="0.0" />
+			<criteria name="null" type="single" class="simple" weight="0.583" fMax="1.0" fMin="0.0" />
 		</criteria>
-		<criteria name="null" type="complex" class="powerII" lambda="0.639" weight="0.27">
-			<criteria name="null" type="single" class="simple" weight="0.433" fMax="1.0" fMin="0.0" />
-			<criteria name="null" type="single" class="simple" weight="0.567" fMax="1.0" fMin="0.0" />
+		<criteria name="null" type="complex" class="powerII" lambda="0.662" weight="0.273">
+			<criteria name="null" type="single" class="simple" weight="0.418" fMax="1.0" fMin="0.0" />
+			<criteria name="null" type="single" class="simple" weight="0.582" fMax="1.0" fMin="0.0" />
 		</criteria>
 	</criteria>
-	<criteria name="null" type="single" class="simple" weight="0.12" fMax="0.0" fMin="0.0" />
+	<criteria name="null" type="single" class="simple" weight="0.126" fMax="0.0" fMin="0.0" />
 </criteria>
