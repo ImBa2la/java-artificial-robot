@@ -89,7 +89,7 @@ public class Optimizer implements Constants {
 
 	// TODO Constants!!!
 	private final static int STEP = 5;
-	private final int LEVEL = 3;
+	private final int LEVEL = 10;
 
 	public void criteria(ComplexCriteria c) {
 		ComplexOperator op = c.getOperator();
@@ -190,13 +190,13 @@ public class Optimizer implements Constants {
 					cache.turnOffCache(cc);
 					cache.refreshCache();
 				}
-/*				for(Criteria child : cc.getChildren()) {
+				for(Criteria child : cc.getChildren()) {
 					queue.offer(new Pair<Criteria, Integer>(child, c.getSecond() + 1));
-				}*/
-				// Inverse order
-				for(int i = cc.getChildren().size() -1 ; i >= 0; i--) {
-					queue.offer(new Pair<Criteria, Integer>(cc.getChildren().get(i), c.getSecond() + 1));
 				}
+				// Inverse order
+/*				for(int i = cc.getChildren().size() -1 ; i >= 0; i--) {
+					queue.offer(new Pair<Criteria, Integer>(cc.getChildren().get(i), c.getSecond() + 1));
+				}*/
 			}
 		}
 	}

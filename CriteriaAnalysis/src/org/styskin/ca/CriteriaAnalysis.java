@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -459,7 +461,19 @@ public class CriteriaAnalysis extends JFrame {
 					try {
 						criteria = cr.clone();
 					} catch(CloneNotSupportedException ex) {}
-					double[][] F = Optimizer.getMatrix(criteria.getTotalSize(), 300);
+//					double[][] F = Optimizer.getMatrix(criteria.getTotalSize(), 300);
+					double[][] F = new double[300][criteria.getTotalSize()];
+					try {
+						Scanner inF = new Scanner(new File("F.txt"));
+						for(int i = 0; i < F.length; i++) {
+							for(int j = 0; j < F[i].length; j++) {
+								F[i][j] = inF.nextDouble();
+							}
+						}
+						inF.close();
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
 					Optimizer optimizer = new Optimizer();
 
 					JFileChooser fileChooser = new JFileChooser(new File("./"));
