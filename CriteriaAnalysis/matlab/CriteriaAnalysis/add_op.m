@@ -12,7 +12,7 @@ function out = add_op( v, u )
         end
     elseif ndims(u) == 3
         [n,nn, nnn] = size(u);
-        y = zeros(n,nn,'double');        
+        y = zeros(n,nn);        
         for i = 1:length(v)
             y(:,:) = y(:,:) + v(i).*u(:,:,i);
         end

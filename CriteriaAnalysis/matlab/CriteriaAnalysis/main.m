@@ -1,13 +1,14 @@
 function main()
-   lf = 0.6;
-   lk = 0.5;
+   lf = 0.55;
+   lk = 0.45;
    v = [0.3 0.7];
    
    [u1 u2] = meshgrid(0.1:0.05:0.9, 0.1:0.05:0.9); 
    z1 = exp_h(lf, lk, v, cat(3, u1,u2)); 
    z2 = exp_h(0.5, 0.5, v, cat(3, u1,u2)); 
+   z3 = pow_h(lf, lk, v, cat(3, u1,u2)); 
    surface(u1,u2,z1);
-   surface(u1,u2,z2);
+   surface(u1,u2,z3);
    
    
    
