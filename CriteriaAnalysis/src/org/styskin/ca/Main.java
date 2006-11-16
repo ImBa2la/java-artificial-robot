@@ -22,11 +22,11 @@ public class Main {
 	static Logger logger = Logger.getLogger(Main.class);
 
 	public void testCriteria() throws Exception {
-		Criteria criteria0 = CriteriaXMLParser.loadXML("cfg/criteria.xml");
-		Criteria criteria1 = CriteriaXMLParser.loadXML("cfg/criteria2.xml");
+		Criteria criteria0 = CriteriaXMLParser.loadXML("cfg/test0.xml");
+		Criteria criteria1 = CriteriaXMLParser.loadXML("cfg/test1.xml");
 		Criteria criteria2 = CriteriaXMLParser.loadXML("cfg/test2.xml");
 
-		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
+/*		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
 
 		PrintWriter outF = new PrintWriter("F.txt");
 		for(int i = 0; i < F.length; i++) {
@@ -35,7 +35,7 @@ public class Main {
 			}
 			outF.println();
 		}
-		outF.close();
+		outF.close();*/
 
 
 /*		double[][] F = new double[300][criteria0.getTotalSize()];
@@ -56,13 +56,14 @@ public class Main {
 
 		cr.clearCache();
 		logger.debug("" + cr.check() + criteria2);*/
+		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
 		Optimizer optimizer = new Optimizer();
-		System.setOut(new PrintStream(new FileOutputStream("outObxod3_2.txt")));
+		System.setOut(new PrintStream(new FileOutputStream("out5_1.txt")));
 		optimizer.optimize(criteria1, criteria0, F);
 		System.out.close();
-/*		System.setOut(new PrintStream(new FileOutputStream("out4.txt")));
+		System.setOut(new PrintStream(new FileOutputStream("out5_2.txt")));
 		optimizer.optimize(criteria2, criteria0, F);
-		System.out.close();*/
+		System.out.close();
 	}
 
 	/**
@@ -76,27 +77,31 @@ public class Main {
 		for(double x : cr.getValue()) {
 			logger.info(x);
 		}*/
-		(new Main()).test();
+		(new Main()).testCriteria();
 	}
 
 
 	public void test() throws Exception {
-		Criteria criteria0 = CriteriaXMLParser.loadXML("cfg/criteria.xml");
-		Criteria criteria1 = CriteriaXMLParser.loadXML("tree1.xml");
-		Criteria criteria2 = CriteriaXMLParser.loadXML("tree2.xml");
+		Criteria criteria0 = CriteriaXMLParser.loadXML("cfg/test0.xml");
+		Criteria criteria1 = CriteriaXMLParser.loadXML("cfg/test1.xml");
+		Criteria criteria2 = CriteriaXMLParser.loadXML("cfg/test2.xml");
 
-		double[][] F = new double[300][criteria0.getTotalSize()];
+/*		double[][] F = new double[300][criteria0.getTotalSize()];
 		Scanner inF = new Scanner(new File("F.txt"));
 		for(int i = 0; i < F.length; i++) {
 			for(int j = 0; j < F[i].length; j++) {
 				F[i][j] = inF.nextDouble();
 			}
 		}
-		inF.close();
+		inF.close();*/
+		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
 		CacheCriteria cache1 = new CacheCriteria(criteria1, criteria0, F);
 		CacheCriteria cache2 = new CacheCriteria(criteria2, criteria0, F);
 
-		System.out.printf("1 = %4.4f;\n2 = %4.4f", cache1.check(), cache2.check());
+		System.out.printf("1 = %4.4f;\n2 = %4.4f\n", cache1.check(), cache2.check());
+		cache1.checkOut();
+		System.out.println("----------------------");
+		cache2.checkOut();
 	}
 
 }

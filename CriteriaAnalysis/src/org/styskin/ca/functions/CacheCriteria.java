@@ -30,7 +30,7 @@ public class CacheCriteria {
 		int size = buildIndex(root, 0);
 		R = new double[size + 1][F.length];
 		buildSingle(root, 0);
-//		clearCache();
+		clearCache();
 		refreshCache();
 	}
 
@@ -148,15 +148,46 @@ public class CacheCriteria {
 		}
 	}
 
+	public String arrayOut(double[] m) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("{");
+		for(double x : m) {
+			sb.append(x).append(';');
+		}
+		sb.append('}');
+		return sb.toString();
+	}
+
+	public void checkOut() {
+		double[] Y = getValue();
+		double d = 0;
+		for(int i=0; i< base.length; i++) {
+			System.out.printf("%s => (%4.4f ==> %4.4f)\n", arrayOut(F[i]), base[i], Y[i]) ;
+			d += Math.abs(base[i]-Y[i]);
+		}
+		System.out.printf("Sum = %4.4f\n", d);
+	}
+
 	public double check() {
 		double d = 0;
 		double[] Y = getValue();
 		for(int i=0; i< base.length; i++) {
 			double t = Y[i] - base[i];
-			d += t*t;
+			d += Math.abs(t);
+		}
+		return d;
+	}
+/*	public double check() {
+		double d = 0;
+		double[] Y = getValue();
+		for(int i=0; i< base.length; i++) {
+			double t = Y[i] - base[i];
+			if (Math.abs(t) > d) {
+				d = Math.abs(t);
+			}
 		}
 		return Math.sqrt(d);
-	}
+	}*/
 
 	public double[] getValue(Criteria criteria) {
 		calcValue(criteria);

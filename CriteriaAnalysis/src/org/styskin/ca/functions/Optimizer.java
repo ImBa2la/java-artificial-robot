@@ -89,7 +89,7 @@ public class Optimizer implements Constants {
 
 	// TODO Constants!!!
 	private final static int STEP = 5;
-	private final int LEVEL = 10;
+	private final int LEVEL = 3;
 
 	public void criteria(ComplexCriteria c) {
 		ComplexOperator op = c.getOperator();
@@ -229,10 +229,11 @@ public class Optimizer implements Constants {
 		this.root = root;
 		cache = new CacheCriteria(root, base,  F);
 		optimize(root);
+		cache.checkOut();
 	}
 
 	public static double[][] getMatrix(int size, int length) {
-		double[] CASES = {0.2, 0.5, 0.8};
+		double[] CASES = {0.2, 0.6, 0.8};
 		int VAR_NUMBER = size;
 		long CASE_NUMBER = Math.round(Math.pow(CASES.length, VAR_NUMBER));
 
