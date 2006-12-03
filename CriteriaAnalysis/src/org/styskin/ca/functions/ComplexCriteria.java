@@ -27,7 +27,7 @@ public class ComplexCriteria extends Criteria {
 	public void removeChild(Criteria criteria) {
 		int index = children.indexOf(criteria);
 		children.remove(index);
-		operator.weights.remove(index);
+		operator.getWeights().remove(index);
 		operator.refresh();
 	}
 

@@ -6,17 +6,13 @@ import java.util.Map;
 
 import org.styskin.ca.functions.complex.AdditiveOperator;
 import org.styskin.ca.functions.complex.ComplexOperator;
-import org.styskin.ca.functions.complex.MultiplicativeOperator;
-import org.styskin.ca.functions.complex.PowerDoubleOperator;
-import org.styskin.ca.functions.complex.PowerIIOperator;
-import org.styskin.ca.functions.complex.PowerIOperator;
 
 public enum ComplexFunction {
-	ADDITIVE("add", AdditiveOperator.class),
-	MULTIPLICATIVE("mult", MultiplicativeOperator.class),
+	ADDITIVE("add", AdditiveOperator.class);
+/*	MULTIPLICATIVE("mult", MultiplicativeOperator.class),
 	POWER_I("powerI", PowerIOperator.class),
 	POWER_II("powerII", PowerIIOperator.class),
-	POWER_Double("powerD", PowerDoubleOperator.class);
+	POWER_Double("powerD", PowerDoubleOperator.class);*/
 
 	private String name;
 	private Class<? extends ComplexOperator> clazz;

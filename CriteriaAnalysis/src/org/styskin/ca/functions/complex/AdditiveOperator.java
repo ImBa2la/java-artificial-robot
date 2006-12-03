@@ -4,23 +4,15 @@ import java.util.List;
 
 
 public class AdditiveOperator extends ComplexOperator {
-
-	public AdditiveOperator(double L, List<Double> children)
-		throws Exception {
-		super(L, children);
-	}
+	
+	public AdditiveOperator() throws Exception {
+		super();
+	}	
 
 	public AdditiveOperator(List<Double> children) throws Exception {
 		super(children);
 	}
 
-	public AdditiveOperator(double L) throws Exception {
-		super(L);
-	}
-
-	public AdditiveOperator() throws Exception {
-		super();
-	}
 
 	@Override
 	public String operatorType() {
@@ -36,5 +28,15 @@ public class AdditiveOperator extends ComplexOperator {
 			result += weights.get(i) * X[i];
 		}
 		return result;
+	}
+
+	@Override
+	public double getKsi(double x) {
+		return x;
+	}
+
+	@Override
+	public double getPhi(double x) {
+		return x;
 	}
 }

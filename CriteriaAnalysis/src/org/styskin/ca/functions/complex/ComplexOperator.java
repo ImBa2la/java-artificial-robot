@@ -10,15 +10,15 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 	public static List<Class> complexOperators = new ArrayList<Class>();
 
 	static {
-		complexOperators.add(MultiplicativeOperator.class);
+/*		complexOperators.add(MultiplicativeOperator.class);
 		complexOperators.add(PowerDoubleOperator.class);
 		complexOperators.add(PowerIIOperator.class);
-		complexOperators.add(PowerIOperator.class);
+		complexOperators.add(PowerIOperator.class);*/
 	}
 
-	public double lambda;
+//	double lf, lk;
 
-	public List<Double> weights;
+	List<Double> weights;
 
 	void normalize() {
 		double sum = 0;
@@ -38,43 +38,34 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 		weights.add(weight);
 	}
 
-	public ComplexOperator(double L, List<Double> weights)
-		throws Exception {
-		lambda = L;
-		this.weights = weights;
-		normalize();
-	}
-
-	public ComplexOperator(List<Double> weights)
-		throws Exception {
-		this(0.5, weights);
-	}
-
-	public ComplexOperator(double L) throws Exception {
-		lambda = L;
-		weights = new ArrayList<Double>();
-	}
-
-	public ComplexOperator() throws Exception {
-		this(0.5);
-	}
-
 	public int getSize() {
 		return weights.size();
 	}
 
 	public String operatorType() {
-		return "";
+		return "Undefined";
+	}
+	
+	public ComplexOperator() throws Exception {
+		weights = new ArrayList<Double>();
+	}
+	
+	public ComplexOperator(List<Double> weights) throws Exception {
+		this.weights = weights;		
 	}
 
 	@Override
 	public ComplexOperator clone() throws CloneNotSupportedException {
 		ComplexOperator op = (ComplexOperator) super.clone();
-		op.weights = new ArrayList<Double>();
-		for(double x : this.weights) {
-			op.weights.add(x);
-		}
+		op.weights = new ArrayList<Double>(weights);
 		return op;
 	}
 
+	public List<Double> getWeights() {
+		return weights;
+	}
+	
+	public abstract double getPhi(double x);
+
+	public abstract double getKsi(double x);	
 }
