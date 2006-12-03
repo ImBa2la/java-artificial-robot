@@ -12,6 +12,7 @@ import java.util.Stack;
 import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.SingleCriteria;
+import org.styskin.ca.functions.complex.ComplexHOperator;
 import org.styskin.ca.functions.single.SingleOperator;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -53,12 +54,17 @@ public class CriteriaXMLParser {
 					e.printStackTrace();
 				}
 	    	} else {
-	    		double lambda = 0.5;
-	    		if(atts.getValue("lambda") != null) {
-	    			lambda = Double.valueOf(atts.getValue("lambda"));
+	    		double lPhi = 0.5;
+	    		double lKsi = 0.5;
+	    		if(atts.getValue("lPhi") != null) {
+	    			lPhi = Double.valueOf(atts.getValue("lPhi"));
+	    		}
+	    		if(atts.getValue("lKsi") != null) {
+	    			lKsi = Double.valueOf(atts.getValue("lKsi"));
 	    		}
 	    		try {
-					newCriteria = new ComplexCriteria(ComplexFunction.createOperator(atts.getValue("class"), lambda));
+					newCriteria = new ComplexCriteria(ComplexFunction.createOperator(atts.getValue("class")));
+					((ComplexHOperator)((ComplexCriteria) newCriteria).getOperator()).initialize(lPhi, lKsi);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -68,7 +74,7 @@ public class CriteriaXMLParser {
 		    	stack.push(newCriteria);
 	    	} else {
 	    		ComplexCriteria node = (ComplexCriteria) stack.peek();
-	    		double weight = Double.valueOf(atts.getValue("weight"));
+	    		double weight = Double.parseDouble(atts.getValue("weight"));
 	    		node.addChild(newCriteria, weight);
 		    	stack.push(newCriteria);
 	    	}
@@ -122,13 +128,13 @@ public class CriteriaXMLParser {
 	private static void saveNode(Criteria criteria, double weight, StringBuffer sb, PrintWriter out) throws Exception {
 		if (criteria instanceof ComplexCriteria) {
 			ComplexCriteria node = (ComplexCriteria) criteria;
-			out.printf("%s<criteria name=\"%s\" type=\"complex\" class=\"%s\" lambda=\"%s\" weight=\"%s\">\n",
+/*			out.printf("%s<criteria name=\"%s\" type=\"complex\" class=\"%s\" weight=\"%s\" lambda=\"%s\" >\n",
 					sb, criteria.getName(), ComplexFunction.getOperatorName(node.getOperator().getClass()) , NUMBER_FORMAT.format(node.getOperator().lambda),
-						NUMBER_FORMAT.format(weight));
+						NUMBER_FORMAT.format(weight));*/
 			int i = 0;
 			sb.append('\t');
 			for(Criteria cr : node.getChildren()) {
-				saveNode(cr, node.getOperator().weights.get(i++), sb, out);
+				saveNode(cr, node.getOperator().getWeights().get(i++), sb, out);
 			}
 			sb.delete(sb.length()-1, sb.length());
 			out.printf("%s</criteria>\n", sb);

@@ -32,4 +32,9 @@ public abstract class ComplexHOperator extends ComplexOperator {
 		return "H-type";
 	}
 
+	@Override
+	public void refresh() {
+		normalize();
+		initialize(lPhi, lKsi);
+	}
 }

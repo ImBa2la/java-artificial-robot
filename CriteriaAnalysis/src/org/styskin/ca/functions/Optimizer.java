@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Queue;
 
 import org.apache.log4j.Logger;
+import org.styskin.ca.functions.complex.ComplexHOperator;
 import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.model.Constants;
 import org.styskin.ca.model.Pair;
@@ -25,33 +26,19 @@ public class Optimizer implements Constants {
 
 	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c) {
 		boolean moved = false;
+		int S = c.getSize();
 
 		ComplexOperator op = c.getOperator();
 		cache.turnOffCache(c);
-
 		double f = cache.check();
-		op.lambda += h[0];
-		op.refresh();
-		if (cache.check() < f) {
-			V[0] += h[0];
-			moved = true;
-		} else {
-			op.lambda -= 2*h[0];
-			op.refresh();
-			if (cache.check() < f) {
-				V[0] -= h[0];
-				moved = true;
-			}
-		}
-
-		for(int i = 1; i < V.length; i++) {
-			op.weights.set(i-1, V[i] + h[i]);
+		for(int i = 0; i < S; i++) {
+			op.getWeights().set(i, V[i] + h[i]);
 			op.refresh();
 			if (cache.check() < f) {
 				V[i] += h[i];
 				moved = true;
 			} else {
-				op.weights.set(i-1, V[i] - h[i]);
+				op.getWeights().set(i, V[i] - h[i]);
 				op.refresh();
 				if (cache.check() < f) {
 					V[i] -= h[i];
@@ -59,11 +46,16 @@ public class Optimizer implements Constants {
 				}
 			}
 		}
-		op.lambda = V[0];
-		for(int i = 0; i < op.weights.size(); i++) {
-			op.weights.set(i, V[i+1]);
+		// Lambda optimization
+		if (op instanceof ComplexHOperator) {
+			ComplexHOperator o = (ComplexHOperator) op;
+			o.getLPhi();
+			
 		}
-
+		for(int i = 0; i < op.getWeights().size(); i++) {
+			op.getWeights().set(i, V[i]);
+		}
+		// lambda
 		op.refresh();
 		cache.refreshCache();
 		return moved;
@@ -78,39 +70,44 @@ public class Optimizer implements Constants {
 				return 1E6;
 			}
 		}
-		op.lambda = V[0];
-		for(int i = 0; i < op.weights.size(); i++) {
-			op.weights.set(i, V[i + 1]);
+		for(int i = 0; i < op.getWeights().size(); i++) {
+			op.getWeights().set(i, V[i]);
 		}
+		if(op instanceof ComplexHOperator) {
+			ComplexHOperator o = (ComplexHOperator) op;
+			int S = op.getWeights().size();
+			o.initialize(V[S], V[S+1]);			
+		}		
 		op.refresh();
 		return cache.check();
 	}
 
+	// TODO : Modify algorithm
 
-	// TODO Constants!!!
 	private final static int STEP = 5;
 	private final int LEVEL = 3;
 
 	public void criteria(ComplexCriteria c) {
 		ComplexOperator op = c.getOperator();
 
-		double[][] V = new double[2][c.getSize()+1];
+		double[][] V = new double[2][c.getSize()+2];
 		double[] h = new double[c.getSize()+1];
 		int step = 0;
 		int k = 0;
 
-		V[0][0] = c.getOperator().lambda;
-		V[1][0] = c.getOperator().lambda;
 
-		for(int i = 0; i < op.weights.size(); i++) {
-			V[1][i+1] = V[0][i+1] = op.weights.get(i);
+		for(int i = 0; i < op.getWeights().size(); i++) {
+			V[1][i] = V[0][i] = op.getWeights().get(i);
 		}
-
-		// TODO : constants
+		if(op instanceof ComplexHOperator) {
+			ComplexHOperator o = (ComplexHOperator) op;
+			int S = op.getWeights().size();
+			V[0][S] = V[1][S] = o.getLPhi();
+			V[0][S+1] = V[1][S+1] = o.getLKsi();				
+		}
 		for(int i = 0; i < h.length; i++) {
 			h[i] = 1E-3;
 		}
-
 		k = 0;
 		step = 1;
 		double f, fn;
@@ -171,10 +168,13 @@ public class Optimizer implements Constants {
 					for(ComplexOperator operator : operators) {
 						try {
 							op = operator.clone();
-							op.weights = new ArrayList<Double>();
-							op.weights.addAll(src.weights);
-							op.lambda = src.lambda;
-							op.refresh();
+							List<Double> w = new ArrayList<Double>();
+							w.addAll(src.getWeights());
+							op.setWeights(w);
+							if(op instanceof ComplexHOperator) {
+								ComplexHOperator o = (ComplexHOperator) op;
+								o.initialize(((ComplexHOperator)src).getLPhi(), ((ComplexHOperator)src).getLKsi());			
+							}
 						} catch(CloneNotSupportedException ex) {
 							logger.error("Operator clone exception");
 						}
@@ -193,10 +193,6 @@ public class Optimizer implements Constants {
 				for(Criteria child : cc.getChildren()) {
 					queue.offer(new Pair<Criteria, Integer>(child, c.getSecond() + 1));
 				}
-				// Inverse order
-/*				for(int i = cc.getChildren().size() -1 ; i >= 0; i--) {
-					queue.offer(new Pair<Criteria, Integer>(cc.getChildren().get(i), c.getSecond() + 1));
-				}*/
 			}
 		}
 	}
@@ -204,8 +200,8 @@ public class Optimizer implements Constants {
 	private void optimize(Criteria root) {
 		operators = new ArrayList<ComplexOperator>();
 		try {
-			for(Class clazz : ComplexOperator.complexOperators) {
-				operators.add((ComplexOperator) clazz.newInstance());
+			for(Class<? extends ComplexOperator> clazz : ComplexOperator.complexOperators) {
+				operators.add(clazz.newInstance());
 			}
 		} catch(Exception ex) {
 			logger.error("Cannot pre-create operator");
@@ -214,8 +210,8 @@ public class Optimizer implements Constants {
 		for(int i=0; i < 50; i++) {
 			iteration();
 //			logger.info(cache.check());
-//			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
-			System.out.printf("%4.4f\n", cache.check());
+			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
+//			System.out.printf("%4.4f\n", cache.check());
 		}
 	}
 
@@ -237,11 +233,11 @@ public class Optimizer implements Constants {
 		int VAR_NUMBER = size;
 		long CASE_NUMBER = Math.round(Math.pow(CASES.length, VAR_NUMBER));
 
-		long step = CASE_NUMBER / length - 10;
+		long step = 1; //CASE_NUMBER / length - 10;
 		double[][] F = new double[length][VAR_NUMBER];
 
 		int iF = 0;
-		for(long i=0; i < CASE_NUMBER; i+= step + Math.round(20*Math.random())) {
+		for(long i=0; i < CASE_NUMBER; i+= step /* + Math.round(20*Math.random())*/) {
 			if (iF >= length) {
 				break;
 			}

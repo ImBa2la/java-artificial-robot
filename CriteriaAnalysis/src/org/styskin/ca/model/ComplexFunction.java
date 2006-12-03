@@ -6,13 +6,13 @@ import java.util.Map;
 
 import org.styskin.ca.functions.complex.AdditiveOperator;
 import org.styskin.ca.functions.complex.ComplexOperator;
+import org.styskin.ca.functions.complex.ExponentalHOperator;
+import org.styskin.ca.functions.complex.PowerHOperator;
 
 public enum ComplexFunction {
-	ADDITIVE("add", AdditiveOperator.class);
-/*	MULTIPLICATIVE("mult", MultiplicativeOperator.class),
-	POWER_I("powerI", PowerIOperator.class),
-	POWER_II("powerII", PowerIIOperator.class),
-	POWER_Double("powerD", PowerDoubleOperator.class);*/
+	ADDITIVE("add", AdditiveOperator.class),
+	POWER_H("pow_h", PowerHOperator.class),
+	EXPONENTAL_H("exp_h", ExponentalHOperator.class);
 
 	private String name;
 	private Class<? extends ComplexOperator> clazz;
@@ -46,17 +46,13 @@ public enum ComplexFunction {
 		return createOperator(0.5);
 	}
 
-	public static ComplexOperator createOperator(String name, double L) throws Exception {
+	public static ComplexOperator createOperator(String name) throws Exception {
 		ComplexFunction function = nameing.get(name);
 		if (function == null) {
 			throw new Exception("No operator with name " + name + " were found.");
 		}
-		Constructor<? extends ComplexOperator> operatorConstructor = function.clazz.getConstructor(new Class[] {double.class});
-		return operatorConstructor.newInstance(L);
-	}
-
-	public static ComplexOperator createOperator(String name) throws Exception {
-		return createOperator(name, 0.5);
+		Constructor<? extends ComplexOperator> operatorConstructor = function.clazz.getConstructor(new Class[] {});
+		return operatorConstructor.newInstance();
 	}
 
 	public static String getOperatorName(Class<? extends ComplexOperator> clazz) throws Exception {

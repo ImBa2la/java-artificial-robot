@@ -1,16 +1,13 @@
 package org.styskin.ca;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.Optimizer;
-import org.styskin.ca.functions.complex.ComplexHOperator;
-import org.styskin.ca.functions.complex.ExponentalHOperator;
-import org.styskin.ca.functions.complex.PowerHOperator;
 import org.styskin.ca.model.CriteriaXMLParser;
 
 public class Main {
@@ -22,10 +19,9 @@ public class Main {
 	static Logger logger = Logger.getLogger(Main.class);
 
 	public void testCriteria() throws Exception {
-/*		Criteria criteria0 = CriteriaXMLParser.loadXML("cfg/test0.xml");
+		Criteria criteria0 = CriteriaXMLParser.loadXML("cfg/test0.xml");
 		Criteria criteria1 = CriteriaXMLParser.loadXML("cfg/test1.xml");
 		Criteria criteria2 = CriteriaXMLParser.loadXML("cfg/test2.xml");
-		*/
 
 /*		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
 
@@ -57,23 +53,23 @@ public class Main {
 
 		cr.clearCache();
 		logger.debug("" + cr.check() + criteria2);*/
-/*		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
+		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 80);
 		Optimizer optimizer = new Optimizer();
 		System.setOut(new PrintStream(new FileOutputStream("out5_1.txt")));
 		optimizer.optimize(criteria1, criteria0, F);
 		System.out.close();
 		System.setOut(new PrintStream(new FileOutputStream("out5_2.txt")));
 		optimizer.optimize(criteria2, criteria0, F);
-		System.out.close();*/
+		System.out.close();
 		
-		List<Double> w = new ArrayList<Double>();
+/*		List<Double> w = new ArrayList<Double>();
 		w.add(0.3);
 		w.add(0.7);
 		
 		ComplexHOperator op = new ExponentalHOperator(w);
 		op.initialize(0.3, 0.4);
 		
-		System.out.printf("%4.4f\n", op.getValue(new double[] {0.6, 0.6}));
+		System.out.printf("%4.4f\n", op.getValue(new double[] {0.6, 0.6}));*/
 	}
 
 	/**

@@ -173,9 +173,9 @@ public class CacheCriteria {
 		double[] Y = getValue();
 		for(int i=0; i< base.length; i++) {
 			double t = Y[i] - base[i];
-			d += Math.abs(t);
+			d += t*t;
 		}
-		return d;
+		return Math.sqrt(d);
 	}
 /*	public double check() {
 		double d = 0;

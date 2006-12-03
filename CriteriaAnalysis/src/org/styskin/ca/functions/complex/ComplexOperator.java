@@ -7,7 +7,7 @@ import org.styskin.ca.functions.Operator;
 
 public abstract class ComplexOperator extends Operator implements Cloneable {
 
-	public static List<Class> complexOperators = new ArrayList<Class>();
+	public static List<Class<? extends ComplexOperator>> complexOperators = new ArrayList<Class<? extends ComplexOperator>>();
 
 	static {
 /*		complexOperators.add(MultiplicativeOperator.class);
@@ -15,8 +15,6 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 		complexOperators.add(PowerIIOperator.class);
 		complexOperators.add(PowerIOperator.class);*/
 	}
-
-//	double lf, lk;
 
 	List<Double> weights;
 
@@ -51,7 +49,8 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 	}
 	
 	public ComplexOperator(List<Double> weights) throws Exception {
-		this.weights = weights;		
+		this.weights = weights;
+		normalize();
 	}
 
 	@Override
@@ -65,6 +64,11 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 		return weights;
 	}
 	
+	public void setWeights(List<Double> weights) {
+		this.weights = weights;
+		normalize();
+	}
+
 	public abstract double getPhi(double x);
 
 	public abstract double getKsi(double x);	
