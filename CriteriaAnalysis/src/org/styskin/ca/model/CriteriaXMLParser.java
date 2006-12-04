@@ -4,15 +4,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.SingleCriteria;
-import org.styskin.ca.functions.complex.ComplexHOperator;
 import org.styskin.ca.functions.single.SingleOperator;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -20,9 +18,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-public class CriteriaXMLParser {
-
-	private static final NumberFormat NUMBER_FORMAT = DecimalFormat.getInstance(Locale.US);
+public class CriteriaXMLParser implements Constants {
 
 	static class CriteriaXMLHandler extends DefaultHandler {
 
@@ -54,17 +50,16 @@ public class CriteriaXMLParser {
 					e.printStackTrace();
 				}
 	    	} else {
-	    		double lPhi = 0.5;
-	    		double lKsi = 0.5;
-	    		if(atts.getValue("lPhi") != null) {
-	    			lPhi = Double.valueOf(atts.getValue("lPhi"));
-	    		}
-	    		if(atts.getValue("lKsi") != null) {
-	    			lKsi = Double.valueOf(atts.getValue("lKsi"));
-	    		}
 	    		try {
+		    		Map<String, Double> lambda = new HashMap<String, Double>();
+		    		for(int i=0; i < atts.getLength(); i++) {
+		    			if (atts.getQName(i).startsWith("l")) {
+		    				double value = FORMAT.parse(atts.getValue(i)).doubleValue();	    				
+		    				lambda.put(atts.getQName(i), value);	    				
+		    			}
+		    		}	    		
 					newCriteria = new ComplexCriteria(ComplexFunction.createOperator(atts.getValue("class")));
-					((ComplexHOperator)((ComplexCriteria) newCriteria).getOperator()).initialize(lPhi, lKsi);
+					((ComplexCriteria) newCriteria).getOperator().load(lambda);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -97,11 +92,9 @@ public class CriteriaXMLParser {
 	    	}
 	    }
 
-
 	    public void characters(char ch[], int start, int length) {
 	    }
-
-
+	    
 		public Criteria getCriteria() {
 			return criteria;
 		}
@@ -128,9 +121,13 @@ public class CriteriaXMLParser {
 	private static void saveNode(Criteria criteria, double weight, StringBuffer sb, PrintWriter out) throws Exception {
 		if (criteria instanceof ComplexCriteria) {
 			ComplexCriteria node = (ComplexCriteria) criteria;
-/*			out.printf("%s<criteria name=\"%s\" type=\"complex\" class=\"%s\" weight=\"%s\" lambda=\"%s\" >\n",
-					sb, criteria.getName(), ComplexFunction.getOperatorName(node.getOperator().getClass()) , NUMBER_FORMAT.format(node.getOperator().lambda),
-						NUMBER_FORMAT.format(weight));*/
+			Map<String, Double> lambda = node.getOperator().save();
+			StringBuffer lambdaSB = new StringBuffer();
+			for(String name : lambda.keySet()) {
+				lambdaSB.append(name).append("=\"").append(FORMAT.format(lambda.get(name))).append("\" ");
+			}
+			out.printf("%s<criteria name=\"%s\" type=\"complex\" class=\"%s\" weight=\"%s\" %s >\n",
+					sb, criteria.getName(), ComplexFunction.getOperatorName(node.getOperator().getClass()) , FORMAT.format(weight), lambdaSB.toString());
 			int i = 0;
 			sb.append('\t');
 			for(Criteria cr : node.getChildren()) {
@@ -150,8 +147,7 @@ public class CriteriaXMLParser {
 				}
 			}
 			out.printf("%s<criteria name=\"%s\" type=\"single\" class=\"%s\" weight=\"%s\" %s/>\n",
-					sb, criteria.getName(), SingleFunction.getOperatorName(node.getOperator().getClass()),
-						NUMBER_FORMAT.format(weight), params);
+					sb, criteria.getName(), SingleFunction.getOperatorName(node.getOperator().getClass()),FORMAT.format(weight), params);
 		}
 	}
 

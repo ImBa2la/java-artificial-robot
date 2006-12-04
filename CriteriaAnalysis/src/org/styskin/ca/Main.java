@@ -1,8 +1,5 @@
 package org.styskin.ca;
 
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
@@ -55,7 +52,9 @@ public class Main {
 		logger.debug("" + cr.check() + criteria2);*/
 		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 80);
 		Optimizer optimizer = new Optimizer();
-		optimizer.optimize(criteria1, criteria0, F);		
+		optimizer.optimize(criteria1, criteria0, F);
+		System.out.printf("%s\n%s",criteria1, criteria0);
+		
 /*		Optimizer optimizer = new Optimizer();
 		System.setOut(new PrintStream(new FileOutputStream("out5_1.txt")));
 		optimizer.optimize(criteria1, criteria0, F);

@@ -1,6 +1,10 @@
 package org.styskin.ca.functions.complex;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.styskin.ca.model.Slice;
 
 
 public class AdditiveOperator extends ComplexOperator {
@@ -38,5 +42,45 @@ public class AdditiveOperator extends ComplexOperator {
 	@Override
 	public double getPhi(double x) {
 		return x;
+	}
+
+	@Override
+	public void load(Map<String, Double> parameters) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<String, Double> save() {
+		return new HashMap<String, Double>();
+	}
+	
+	class EmptySlice implements Slice {
+
+		public double get(int index) {
+			return 0;
+		}
+
+		public double getLowerBound(int index) {
+			return 0;
+		}
+
+		public double getUpperBound(int index) {
+			return 0;
+		}
+
+		public void set(int index, double value) {
+		}
+
+		public int size() {
+			return 0;
+		}		
+	}
+	
+	private EmptySlice emptySlice = new EmptySlice();
+
+	@Override
+	public Slice getParameters() {
+		return emptySlice;
 	}
 }

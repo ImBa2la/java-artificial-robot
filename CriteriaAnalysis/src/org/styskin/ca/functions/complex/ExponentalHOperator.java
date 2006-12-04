@@ -192,8 +192,7 @@ public class ExponentalHOperator extends ComplexHOperator {
 	}
 	
 	@Override
-	public void initialize(double lPhi, double lKsi) {
-		super.initialize(lPhi, lKsi);		
+	public void initialize() {
 		if(doubleEquals(lPhi, 0.5) && doubleEquals(lKsi, 0.5)) {
 			
 		} else if (doubleEquals(lPhi, 0.5) && doubleLess(lKsi, 0.5)) {

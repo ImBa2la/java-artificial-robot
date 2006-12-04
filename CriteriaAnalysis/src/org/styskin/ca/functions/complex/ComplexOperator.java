@@ -2,18 +2,18 @@ package org.styskin.ca.functions.complex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.styskin.ca.functions.Operator;
+import org.styskin.ca.model.Slice;
 
 public abstract class ComplexOperator extends Operator implements Cloneable {
 
 	public static List<Class<? extends ComplexOperator>> complexOperators = new ArrayList<Class<? extends ComplexOperator>>();
 
 	static {
-/*		complexOperators.add(MultiplicativeOperator.class);
-		complexOperators.add(PowerDoubleOperator.class);
-		complexOperators.add(PowerIIOperator.class);
-		complexOperators.add(PowerIOperator.class);*/
+		complexOperators.add(PowerHOperator.class);
+		complexOperators.add(ExponentalHOperator.class);
 	}
 
 	List<Double> weights;
@@ -78,4 +78,10 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 	public String toString() {
 		return operatorType();				
 	}
+	
+	public abstract void load(Map<String, Double> parameters);
+
+	public abstract Map<String, Double> save();
+	
+	public abstract Slice getParameters();
 }

@@ -25,6 +25,11 @@ public class PowerHOperator extends ComplexHOperator {
 	public double getPhi(double x) {
 		return pow(x, T);
 	}
+	
+	@Override
+	public String operatorType() {
+		return "pow-h";
+	}	
 
 	@Override
 	public double getValue(double[] X) throws Exception {
@@ -37,8 +42,7 @@ public class PowerHOperator extends ComplexHOperator {
 	}
 
 	@Override
-	public void initialize(double lPhi, double lKsi) {
-		super.initialize(lPhi, lKsi);
+	public void initialize() {
 		T  = log(lPhi)/log(1 - lPhi);
 		P  = log(lKsi)/log(1 - lKsi);
 	}

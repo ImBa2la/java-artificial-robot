@@ -1,6 +1,5 @@
 package org.styskin.ca.functions;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
