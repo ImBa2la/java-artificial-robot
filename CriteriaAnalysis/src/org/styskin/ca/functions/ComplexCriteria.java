@@ -1,5 +1,6 @@
 package org.styskin.ca.functions;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,17 +86,17 @@ public class ComplexCriteria extends Criteria {
 		criteria.setOperator(operator.clone());
 		return criteria;
 	}
-
-/*	@Override
+	
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("(").append(operator.operatorType()).append(", L=").append(FORMAT.format(operator.lambda)).append(' ');
+		sb.append("(").append(operator.toString()).append(' ');
 
 		int i = 0;
 		for(Criteria child : children) {
-			sb.append('{').append(FORMAT.format(operator.weights.get(i++))).append(" - ").append(child.toString()).append('}');
+			sb.append('{').append(FORMAT.format(operator.getWeights().get(i++))).append(" - ").append(child.toString()).append('}');
 		}
 		sb.append(')');
 		return sb.toString();
-	}*/
+	}
 }

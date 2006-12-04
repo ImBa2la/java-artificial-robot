@@ -49,8 +49,29 @@ public class Optimizer implements Constants {
 		// Lambda optimization
 		if (op instanceof ComplexHOperator) {
 			ComplexHOperator o = (ComplexHOperator) op;
-			o.getLPhi();
+			o.initialize(V[S] + h[S], V[S+1]);
+			if (cache.check() < f) {
+				V[S] += h[S];
+				moved = true;
+			} else {
+				o.initialize(V[S] - h[S], V[S+1]);
+				if (cache.check() < f) {
+					V[S] -= h[S];
+					moved = true;
+				}
+			}
 			
+			o.initialize(V[S], V[S+1] + h[S+1]);
+			if (cache.check() < f) {
+				V[S+1] += h[S+1];
+				moved = true;
+			} else {
+				o.initialize(V[S], V[S+1] - h[S+1]);
+				if (cache.check() < f) {
+					V[S+1] -= h[S+1];
+					moved = true;
+				}
+			}			
 		}
 		for(int i = 0; i < op.getWeights().size(); i++) {
 			op.getWeights().set(i, V[i]);
@@ -91,7 +112,7 @@ public class Optimizer implements Constants {
 		ComplexOperator op = c.getOperator();
 
 		double[][] V = new double[2][c.getSize()+2];
-		double[] h = new double[c.getSize()+1];
+		double[] h = new double[c.getSize()+2];
 		int step = 0;
 		int k = 0;
 

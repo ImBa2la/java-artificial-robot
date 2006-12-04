@@ -2,7 +2,9 @@ package org.styskin.ca.functions;
 
 import java.util.List;
 
-public abstract class Criteria implements Cloneable {
+import org.styskin.ca.model.Constants;
+
+public abstract class Criteria implements Cloneable, Constants {
 
 	private String name;
 

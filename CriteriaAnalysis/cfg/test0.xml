@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="windows-1251"?>
 
-<criteria name="Интегральный" type="complex" class="pow_h" lPhi="0.6" lKsi="0.6">
-	<criteria name="1.1.1" type="complex" class="pow_h" lPhi="0.6" lKsi="0.6" weight="0.5">
+<criteria name="Интегральный" type="complex" class="pow_h" lPhi="0.6" lKsi="0.5">
+	<criteria name="1.1.1" type="complex" class="pow_h" lPhi="0.6" lKsi="0.5" weight="0.5">
 		<criteria name="1.1.1.1" type="single" weight="0.6"/>
 		<criteria name="1.1.1.2" type="single" weight="0.4"/>
 	</criteria>
-	<criteria name="1.1.2" type="complex" class="pow_h" lPhi="0.6" lKsi="0.6" weight="0.5">
+	<criteria name="1.1.2" type="complex" class="pow_h" lPhi="0.5" lKsi="0.6" weight="0.5">
 		<criteria name="1.1.2.1" type="single" weight="0.2"/>
 		<criteria name="1.1.2.2" type="single" weight="0.8"/>
 	</criteria>

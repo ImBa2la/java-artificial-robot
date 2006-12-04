@@ -37,4 +37,10 @@ public abstract class ComplexHOperator extends ComplexOperator {
 		normalize();
 		initialize(lPhi, lKsi);
 	}
+	
+	@Override 
+	public String toString() {
+		return super.toString() + " : lPhi = " + FORMAT.format(lPhi) + ", lKsi = " + FORMAT.format(lKsi);
+	}
+	
 }

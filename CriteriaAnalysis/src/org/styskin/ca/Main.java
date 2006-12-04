@@ -55,12 +55,14 @@ public class Main {
 		logger.debug("" + cr.check() + criteria2);*/
 		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 80);
 		Optimizer optimizer = new Optimizer();
+		optimizer.optimize(criteria1, criteria0, F);		
+/*		Optimizer optimizer = new Optimizer();
 		System.setOut(new PrintStream(new FileOutputStream("out5_1.txt")));
 		optimizer.optimize(criteria1, criteria0, F);
 		System.out.close();
 		System.setOut(new PrintStream(new FileOutputStream("out5_2.txt")));
 		optimizer.optimize(criteria2, criteria0, F);
-		System.out.close();
+		System.out.close();*/
 		
 /*		List<Double> w = new ArrayList<Double>();
 		w.add(0.3);
