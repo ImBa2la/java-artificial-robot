@@ -80,18 +80,18 @@ public class ExponentalHOperator extends ComplexHOperator {
 				y += weights.get(i)*X[i];				
 			}
 			return (1-exp((-xMax*A)*y))/xMax;
-		} else if (doubleEquals(lKsi, 0.5) && doubleLess(lPhi, 0.5)) {
-			double y = 0;
-			for(int i=0; i < weights.size(); i++) {
-                y += weights.get(i)*log(C*X[i]/B-1);
-			}
-			return y/C;
 		} else if (doubleEquals(lKsi, 0.5) && doubleMore(lPhi, 0.5)) {
             double y = 0;
             for(int i=0; i < weights.size(); i++) {
             	y += weights.get(i) * log(1 - C*X[i]/B);
             }
             return -y/C;			
+		} else if (doubleEquals(lKsi, 0.5) && doubleLess(lPhi, 0.5)) {
+			double y = 0;
+			for(int i=0; i < weights.size(); i++) {
+                y += weights.get(i)*log(C*X[i]/B+1);
+			}
+			return y/C;
 		} else if (doubleLess(lPhi, 0.5) && doubleLess(lKsi, 0.5)) {			
             double y = 1;
             for(int i=0; i < weights.size(); i++) {
@@ -141,12 +141,12 @@ public class ExponentalHOperator extends ComplexHOperator {
 	}	
 	class FindXmaxLP1 implements Function {		
 		public double getValue(double x) {
-			return lPhi*x/(1+exp(x*(1-lPhi))) - x/(1+exp(x));
+			return -lPhi*x/(1-exp(-x*(1-lPhi))) + x/(1-exp(-x)); 
 		}
 	}	
 	class FindXmaxLP2 implements Function {		
 		public double getValue(double x) {
-			return lPhi*x/(1-exp(-x*(1-lPhi))) - x/(1-exp(-x)); 
+			return lPhi*x/(exp(x*(1-lPhi))-1) - x/(exp(x)-1);
 		}
 	}	
 	
@@ -201,15 +201,14 @@ public class ExponentalHOperator extends ComplexHOperator {
 		} else if (doubleEquals(lPhi, 0.5) && doubleMore(lKsi, 0.5)) {
 			xMax = findMinimum(new FindXmaxPL2(), EPS, 1 - EPS);
 	        A = -log(1-xMax)/xMax;
-		} else if (doubleEquals(lKsi, 0.5) && doubleLess(lPhi, 0.5)) {
+		} else if (doubleEquals(lKsi, 0.5) && doubleMore(lPhi, 0.5)) {
 			xMax = findMinimum(new FindXmaxLP1(), EPS, MAX_DOUBLE);
 	        C = xMax;
-	        B = xMax/(1-exp(-xMax)); 
-			
-		} else if (doubleEquals(lKsi, 0.5) && doubleMore(lPhi, 0.5)) {
+	        B = xMax/(1-exp(-xMax));
+		} else if (doubleEquals(lKsi, 0.5) && doubleLess(lPhi, 0.5)) {
 			xMax = findMinimum(new FindXmaxLP2(), EPS, MAX_DOUBLE);
 	        C = xMax;
-	        B = xMax/(1+exp(xMax));
+	        B = xMax/(exp(xMax)-1);
 		} else if (doubleLess(lPhi, 0.5) && doubleLess(lKsi, 0.5)) {
 			xMax = findMinimum(new FindXmax11(), EPS, MAX_DOUBLE);
 			A = findMinimum(new FindA11(), EPS, MAX_DOUBLE);

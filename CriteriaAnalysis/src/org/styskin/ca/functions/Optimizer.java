@@ -27,8 +27,7 @@ public class Optimizer implements Constants {
 	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c) {
 		boolean moved = false;
 		int SW = c.getSize();
-		int S = c.getSize() + c.getOperator().getParameters().size();
-		
+		int S = c.getSize() + c.getOperator().getParameters().size();		
 
 		ComplexOperator op = c.getOperator();
 		cache.turnOffCache(c);
@@ -48,7 +47,6 @@ public class Optimizer implements Constants {
 				}
 			}
 		}
-		// Lambda optimization
 		for(int i=SW; i < S; i++) {
 			op.getParameters().set(i - SW, V[i] + h[i]);
 			op.refresh();
@@ -75,6 +73,7 @@ public class Optimizer implements Constants {
 		return moved;
 	}
 
+	// TODO: define constant
 	private final static double VEPS = 1E-1;
 
 	private double getValue(double[] V, ComplexCriteria c, Criteria root) {
@@ -82,8 +81,13 @@ public class Optimizer implements Constants {
 		int SW = c.getSize(); 
 		int S = SW + c.getOperator().getParameters().size();
 		
-		for(int i=0; i < V.length; i++) {
+		for(int i=0; i < SW; i++) {
 			if(V[i] < VEPS || V[i] > 1-VEPS) {
+				return 1E6;
+			}
+		}
+		for(int i=SW; i < S; i++) {
+			if(V[i] < op.getParameters().getLowerBound(i-SW) || V[i] > op.getParameters().getUpperBound(i-SW)) {
 				return 1E6;
 			}
 		}
@@ -122,8 +126,7 @@ public class Optimizer implements Constants {
 		// TODO: modify
 		for(int i = 0; i < h.length; i++) {
 			h[i] = 1E-3;
-		}
-		
+		}		
 		k = 0;
 		step = 1;
 		double f, fn;

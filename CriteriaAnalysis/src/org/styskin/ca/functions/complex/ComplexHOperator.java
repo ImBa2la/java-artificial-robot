@@ -47,7 +47,8 @@ public abstract class ComplexHOperator extends ComplexOperator {
 	
 	public void load(Map<String, Double> parameters) {
 		lPhi = parameters.get("lPhi");
-		lKsi = parameters.get("lKsi");		
+		lKsi = parameters.get("lKsi");
+		initialize();
 	}
 
 	public Map<String, Double> save() {
@@ -70,11 +71,11 @@ public abstract class ComplexHOperator extends ComplexOperator {
 		}
 
 		public double getLowerBound(int index) {
-			return 0;
+			return 0.1;
 		}
 
 		public double getUpperBound(int index) {
-			return 1;
+			return 0.9;
 		}
 
 		public void set(int index, double value) {
