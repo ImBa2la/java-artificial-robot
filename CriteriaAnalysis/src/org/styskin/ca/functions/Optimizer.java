@@ -185,7 +185,7 @@ public class Optimizer implements Constants {
 					ComplexOperator minOperator = src, op = null;
 					double min = cache.check(), tempCheck;
 					for(ComplexOperator operator : operators) {
-						if(op instanceof ComplexHOperator) {
+						if(operator instanceof ComplexHOperator) {
 							try {
 								op = operator.clone();
 								List<Double> w = new ArrayList<Double>();
