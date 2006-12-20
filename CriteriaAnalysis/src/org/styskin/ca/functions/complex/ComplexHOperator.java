@@ -47,8 +47,8 @@ public abstract class ComplexHOperator extends ComplexOperator {
 	}
 
 	public void load(Map<String, Double> parameters) {
-		lPhi = parameters.get("lPhi");
-		lKsi = parameters.get("lKsi");
+		lPhi = parameters.containsKey("lPhi") ? parameters.get("lPhi") : 0.5 ;
+		lKsi = parameters.containsKey("lKsi") ? parameters.get("lKsi") : 0.5;
 		initialize();
 	}
 

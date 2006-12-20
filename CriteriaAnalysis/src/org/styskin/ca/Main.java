@@ -16,9 +16,9 @@ public class Main {
 	static Logger logger = Logger.getLogger(Main.class);
 
 	public void testCriteria() throws Exception {
-		Criteria criteria0 = CriteriaXMLParser.loadXML("cfg/test0.xml");
-		Criteria criteria1 = CriteriaXMLParser.loadXML("cfg/test1.xml");
-		Criteria criteria2 = CriteriaXMLParser.loadXML("cfg/test2.xml");
+		Criteria criteria0 = CriteriaXMLParser.loadXML("cfg/big0.xml");
+		Criteria criteria1 = CriteriaXMLParser.loadXML("cfg/big1.xml");
+//		Criteria criteria2 = CriteriaXMLParser.loadXML("cfg/test2.xml");
 
 /*		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
 
@@ -50,7 +50,7 @@ public class Main {
 
 		cr.clearCache();
 		logger.debug("" + cr.check() + criteria2);*/
-		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 80);
+		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
 		Optimizer optimizer = new Optimizer();
 		optimizer.optimize(criteria1, criteria0, F);
 		System.out.printf("%s\n%s",criteria1, criteria0);

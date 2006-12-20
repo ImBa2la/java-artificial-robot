@@ -37,13 +37,9 @@ public enum ComplexFunction {
 		classing.put(clazz, function);
 	}
 
-	public ComplexOperator createOperator(double L) throws Exception {
-		Constructor<? extends ComplexOperator> operatorConstructor = clazz.getConstructor(new Class[] {double.class});
-		return operatorConstructor.newInstance(L);
-	}
-
 	public ComplexOperator createOperator() throws Exception {
-		return createOperator(0.5);
+		Constructor<? extends ComplexOperator> operatorConstructor = clazz.getConstructor(new Class[] {});
+		return operatorConstructor.newInstance();
 	}
 
 	public static ComplexOperator createOperator(String name) throws Exception {

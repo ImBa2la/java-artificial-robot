@@ -28,7 +28,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import org.apache.log4j.BasicConfigurator;
 import org.styskin.ca.functions.Criteria;
@@ -398,10 +397,11 @@ public class CriteriaAnalysis extends JFrame {
 	 */
 	private JButton getAddComplexCriteriaButton() {
 		if (addComplexCriteriaButton == null) {
-			addComplexCriteriaButton = new JButton(new ImageIcon(this.getClass().getResource("/img/AddCCriteria.gif")));
+//			addComplexCriteriaButton = new JButton(new ImageIcon(this.getClass().getResource("/img/AddCCriteria.gif")));
+			addComplexCriteriaButton = new JButton(new ImageIcon("img/AddCCriteria.gif"));
 			addComplexCriteriaButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					System.out.println("actionPerformed()"); // TODO Auto-generated Event stub actionPerformed()
+					((CriteriaTreeForm) getJTabbedPane().getSelectedComponent()).addComplexCriteria();
 				}
 			});
 		}
@@ -415,10 +415,11 @@ public class CriteriaAnalysis extends JFrame {
 	 */
 	private JButton getAddSingleCriteriaButton() {
 		if (addSingleCriteriaButton == null) {
-			addSingleCriteriaButton = new JButton(new ImageIcon(this.getClass().getResource("/img/AddSCriteria.gif")));
+//			addSingleCriteriaButton = new JButton(new ImageIcon(this.getClass().getResource("/img/AddSCriteria.gif")));
+			addSingleCriteriaButton = new JButton(new ImageIcon("img/AddSCriteria.gif"));
 			addSingleCriteriaButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					System.out.println("actionPerformed()"); // TODO Auto-generated Event stub actionPerformed()
+					((CriteriaTreeForm) getJTabbedPane().getSelectedComponent()).addSingleCriteria();
 				}
 			});
 		}
@@ -432,7 +433,8 @@ public class CriteriaAnalysis extends JFrame {
 	 */
 	private JButton getRemoveCriteriaButton() {
 		if (removeCriteriaButton == null) {
-			removeCriteriaButton = new JButton(new ImageIcon(this.getClass().getResource("/img/DelCriteria.gif")));
+//			removeCriteriaButton = new JButton(new ImageIcon(this.getClass().getResource("/img/DelCriteria.gif")));
+			removeCriteriaButton = new JButton(new ImageIcon("img/DelCriteria.gif"));
 			removeCriteriaButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					if (getJTabbedPane().getSelectedComponent() != null) {

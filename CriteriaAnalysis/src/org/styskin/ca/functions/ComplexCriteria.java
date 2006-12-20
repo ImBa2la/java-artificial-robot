@@ -90,10 +90,9 @@ public class ComplexCriteria extends Criteria {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("(").append(operator.toString()).append(' ');
-
 		int i = 0;
 		for(Criteria child : children) {
-			sb.append('{').append(FORMAT.format(operator.getWeights().get(i++))).append(" - ").append(child.toString()).append('}');
+			sb.append("\n{").append(FORMAT.format(operator.getWeights().get(i++))).append(" - ").append(child.toString()).append('}');
 		}
 		sb.append(')');
 		return sb.toString();

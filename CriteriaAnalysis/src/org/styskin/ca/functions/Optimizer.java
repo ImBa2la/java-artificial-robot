@@ -228,11 +228,13 @@ public class Optimizer implements Constants {
 			logger.error("Cannot pre-create operator");
 		}
 		// TODO criteria of finish optimization
-		for(int i=0; i < 100; i++) {
+		double t = 1E10;
+		for(int i=0; t > 1E-3 && i < 1000; i++) {
 			iteration();
 //			logger.info(cache.check());
 //			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
-			System.out.printf("%4.4f\n", cache.check());
+			t = cache.check();
+			System.out.printf("%4.4f\n", t);
 		}
 	}
 
@@ -253,10 +255,8 @@ public class Optimizer implements Constants {
 		double[] CASES = {0.2, 0.6, 0.8};
 		int VAR_NUMBER = size;
 		long CASE_NUMBER = Math.round(Math.pow(CASES.length, VAR_NUMBER));
-
-		long step = 1; //CASE_NUMBER / length - 10;
+		long step = CASE_NUMBER / length - 10;
 		double[][] F = new double[length][VAR_NUMBER];
-
 		int iF = 0;
 		for(long i=0; i < CASE_NUMBER; i+= step /* + Math.round(20*Math.random())*/) {
 			if (iF >= length) {
