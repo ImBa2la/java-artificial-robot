@@ -1,5 +1,11 @@
 package org.styskin.ca;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
@@ -84,9 +90,43 @@ public class Main {
 		for(double x : cr.getValue()) {
 			logger.info(x);
 		}*/
-		(new Main()).testCriteria();
+//		(new Main()).testCriteria();
+		(new Main()).testFlats();		
+	}
+	
+	static class Optimize {
+		double[][] F;
+		double[] base;
+		
+		private Optimize() {
+			
+		}
+		
+		public static Optimize getInput(String file, Criteria cr) {
+			Optimize o = new Optimize();
+			o.F = new double[455][30];
+			o.base = new double[455];
+			try {
+				Scanner in = new Scanner(new BufferedInputStream(new FileInputStream(file)));
+				for(int i=0; i < o.F.length; i++) {
+					for(int j=0; j < o.F[i].length; j++) {
+						o.F[i][j] = in.nextDouble();						
+					}					
+				}
+				for(int i=0; i < o.F.length; i++) {
+					o.base[i] = in.nextDouble();					
+				}				
+			} catch(Exception ex) {}			
+			return o;
+		}		
 	}
 
+	public void testFlats() throws Exception {
+		Criteria cr = CriteriaXMLParser.loadXML("cfg/kv.xml");
+		Optimize op = Optimize.getInput("cfg/input.txt", cr);
+		Optimizer optimizer = new Optimizer();
+		optimizer.optimize(cr, op.base, op.F);
+	}
 
 	public void test() throws Exception {
 		Criteria criteria0 = CriteriaXMLParser.loadXML("cfg/test0.xml");

@@ -104,7 +104,7 @@ public class Optimizer implements Constants {
 	// TODO : Modify algorithm
 
 	private final static int STEP = 5;
-	private final int LEVEL = 3;
+	private final int LEVEL = 2;
 
 	public void criteria(ComplexCriteria c) {
 		ComplexOperator op = c.getOperator();
@@ -242,6 +242,7 @@ public class Optimizer implements Constants {
 		this.root = root;
 		cache = new CacheCriteria(root, base,  F);
 		optimize(root);
+		cache.checkOut();		
 	}
 
 	public void optimize(Criteria root, Criteria base, double[][] F) {
