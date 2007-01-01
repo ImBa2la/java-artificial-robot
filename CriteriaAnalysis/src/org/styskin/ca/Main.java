@@ -1,14 +1,18 @@
 package org.styskin.ca;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
+import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
@@ -98,25 +102,81 @@ public class Main {
 		double[][] F;
 		double[] base;
 		
+		private static NumberFormat FORMAT = NumberFormat.getNumberInstance();
+		
 		private Optimize() {
 			
 		}
 		
+		private static int getCriteriaSize(Criteria cr, Map<String, Integer> map, int begin) throws Exception {
+			if(cr instanceof ComplexCriteria) {
+				for(Criteria c : cr.getChildren()) {
+					begin = getCriteriaSize(c, map, begin);
+				}								
+			} else {
+				if(!map.containsKey(cr.getName())) {
+					map.put(cr.getName(), begin);
+				} else {
+					throw new Exception("duplicate");
+				}
+				begin++;
+			}
+			return begin;			
+		}
+		
+		private static Map<String, Integer> getCriteriaMap(Criteria cr) throws Exception {
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			getCriteriaSize(cr, map, 0);
+			return map;			
+		}
+		
+		
+		// TODO: Exception on data absence
 		public static Optimize getInput(String file, Criteria cr) {
 			Optimize o = new Optimize();
-			o.F = new double[455][30];
-			o.base = new double[455];
 			try {
-				Scanner in = new Scanner(new BufferedInputStream(new FileInputStream(file)));
-				for(int i=0; i < o.F.length; i++) {
-					for(int j=0; j < o.F[i].length; j++) {
-						o.F[i][j] = in.nextDouble();						
-					}					
-				}
-				for(int i=0; i < o.F.length; i++) {
-					o.base[i] = in.nextDouble();					
+				Map<String, Integer> map = getCriteriaMap(cr);
+				map.put("price", -1);
+				List<Integer> in_map = new ArrayList<Integer>();
+				
+				List<List<Double>> input = new ArrayList<List<Double>>();				
+				BufferedReader in = new BufferedReader(new FileReader(file));
+				StringTokenizer st;
+				
+				st = new StringTokenizer(in.readLine());
+				while(st.hasMoreTokens()) {
+					String key = st.nextToken(); 
+					if(map.containsKey(key)) {
+						in_map.add(map.get(key));						
+					}
 				}				
-			} catch(Exception ex) {}			
+				String s = null;
+				while((s = in.readLine()) != null) {
+					st = new StringTokenizer(s);
+					List<Double> d = new ArrayList<Double>();
+					input.add(d);
+					while(st.hasMoreTokens()) {
+						d.add(FORMAT.parse(st.nextToken()).doubleValue());
+					}
+					if(d.size() != in_map.size()) {
+						throw new Exception("Incorrect parameters number");						
+					}
+				}
+				o.F = new double[input.size()][map.size()-1];
+				o.base = new double[input.size()];				
+				for(int j=0; j < input.size(); j++) {
+					List<Double> d = input.get(j);
+					for(int i=0; i < d.size(); i++) {
+						if(in_map.get(i) < 0) {
+							o.base[j] = d.get(i);
+						} else {
+							o.F[j][in_map.get(i)] = d.get(i);
+						}
+					}
+				}				
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}			
 			return o;
 		}		
 	}

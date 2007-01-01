@@ -162,7 +162,7 @@ public class CacheCriteria {
 		double[] Y = getValue();
 		double d = 0;
 		for(int i=0; i< base.length; i++) {
-			System.out.printf("%s => (%4.4f ==> %4.4f)\n", arrayOut(F[i]), base[i], Y[i]) ;
+			System.out.printf("%4.4f\t%4.4f\n", base[i], Y[i]) ;
 			d += Math.abs(base[i]-Y[i]);
 		}
 		System.out.printf("Sum = %4.4f\n", d);

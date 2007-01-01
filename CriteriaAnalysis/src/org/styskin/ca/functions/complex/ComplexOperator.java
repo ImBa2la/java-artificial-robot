@@ -68,12 +68,10 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 		this.weights = weights;
 		normalize();
 	}
-
 	public abstract double getPhi(double x);
 
 	public abstract double getKsi(double x);	
-	
-	
+		
 	@Override
 	public String toString() {
 		return operatorType();				

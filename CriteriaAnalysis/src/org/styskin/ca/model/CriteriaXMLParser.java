@@ -10,8 +10,10 @@ import java.util.Stack;
 
 import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
+import org.styskin.ca.functions.IntegralCriteria;
 import org.styskin.ca.functions.SingleCriteria;
 import org.styskin.ca.functions.single.SingleOperator;
+import org.styskin.ca.math.Function;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -28,6 +30,18 @@ public class CriteriaXMLParser implements Constants {
 
 		boolean tag = false;
 	    int level = 0;
+	    
+	    Function function = null;
+	    
+	    public CriteriaXMLHandler() {
+	    	super();	    	
+	    }
+
+	    // TODO: Function in XML
+	    public CriteriaXMLHandler(Function f) {
+	    	super();
+	    	function = f;
+	    }	    
 
 	    public void startDocument() {}
 
@@ -57,8 +71,12 @@ public class CriteriaXMLParser implements Constants {
 		    				double value = FORMAT.parse(atts.getValue(i)).doubleValue();	    				
 		    				lambda.put(atts.getQName(i), value);	    				
 		    			}
-		    		}	    		
-					newCriteria = new ComplexCriteria(ComplexFunction.createOperator(atts.getValue("class")));
+		    		}
+		    		if(level == 0 && function != null) {
+		    			newCriteria = new IntegralCriteria(ComplexFunction.createOperator(atts.getValue("class")), function);
+		    		} else {
+		    			newCriteria = new ComplexCriteria(ComplexFunction.createOperator(atts.getValue("class")));
+		    		}
 					((ComplexCriteria) newCriteria).getOperator().load(lambda);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -102,7 +120,16 @@ public class CriteriaXMLParser implements Constants {
 
 	public static Criteria loadXML(File file) throws Exception {
         XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-        CriteriaXMLHandler handler = new CriteriaXMLHandler();
+        // TODO: Function in XML embeded         
+        CriteriaXMLHandler handler = new CriteriaXMLHandler(new Function() {
+			public double getValue(double x) {
+				return 3000+3000*x;
+/*				double a = Math.log(2)/0.8;
+				double b = 3000*Math.pow(2, -0.125);
+				return b*Math.exp(a*x);*/
+
+			}
+        });
 
         xmlReader.setContentHandler(handler);
         xmlReader.setErrorHandler(handler);

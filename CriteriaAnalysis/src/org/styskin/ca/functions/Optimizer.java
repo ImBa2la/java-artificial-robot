@@ -229,7 +229,7 @@ public class Optimizer implements Constants {
 		}
 		// TODO criteria of finish optimization
 		double t = 1E10;
-		for(int i=0; t > 1E-3 && i < 1000; i++) {
+		for(int i=0; t > 1E-3 && i < 30; i++) {
 			iteration();
 //			logger.info(cache.check());
 //			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
@@ -241,6 +241,7 @@ public class Optimizer implements Constants {
 	public void optimize(Criteria root, double[] base, double[][] F) {
 		this.root = root;
 		cache = new CacheCriteria(root, base,  F);
+		cache.checkOut();
 		optimize(root);
 		cache.checkOut();		
 	}
@@ -248,6 +249,7 @@ public class Optimizer implements Constants {
 	public void optimize(Criteria root, Criteria base, double[][] F) {
 		this.root = root;
 		cache = new CacheCriteria(root, base,  F);
+		cache.checkOut();		
 		optimize(root);
 		cache.checkOut();
 	}
