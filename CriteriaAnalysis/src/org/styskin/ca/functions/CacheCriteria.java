@@ -3,6 +3,10 @@
  */
 package org.styskin.ca.functions;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -167,6 +171,19 @@ public class CacheCriteria {
 		}
 		System.out.printf("Sum = %4.4f\n", d);
 	}
+	
+	public void checkOut2(int n) {
+		try {
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("out"+n+".out")));			
+			double[] Y = getValue();
+			for(int i=0; i< base.length; i++) {
+				out.printf("%4.4f\n", Y[i]) ;
+			}
+			out.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();			
+		}
+	}
 
 	public double check() {
 		double d = 0;
@@ -175,7 +192,7 @@ public class CacheCriteria {
 			double t = Y[i] - base[i];
 			d += t*t;
 		}
-		return Math.sqrt(d);
+		return Math.sqrt(d/Y.length);
 	}
 /*	public double check() {
 		double d = 0;

@@ -103,8 +103,8 @@ public class Optimizer implements Constants {
 
 	// TODO : Modify algorithm
 
-	private final static int STEP = 5;
-	private final int LEVEL = 2;
+	private final static int STEP = 3;
+	private final int LEVEL = 10;
 
 	public void criteria(ComplexCriteria c) {
 		ComplexOperator op = c.getOperator();
@@ -229,21 +229,23 @@ public class Optimizer implements Constants {
 		}
 		// TODO criteria of finish optimization
 		double t = 1E10;
-		for(int i=0; t > 1E-3 && i < 30; i++) {
+		for(int i=0; t > 1E-3 && i < 50; i++) {
 			iteration();
 //			logger.info(cache.check());
 //			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
 			t = cache.check();
 			System.out.printf("%4.4f\n", t);
+//			cache.checkOut2(i);			
 		}
 	}
 
 	public void optimize(Criteria root, double[] base, double[][] F) {
 		this.root = root;
 		cache = new CacheCriteria(root, base,  F);
-		cache.checkOut();
+//		cache.checkOut();
 		optimize(root);
-		cache.checkOut();		
+//		cache.checkOut();
+		System.out.println(root.toString());
 	}
 
 	public void optimize(Criteria root, Criteria base, double[][] F) {
