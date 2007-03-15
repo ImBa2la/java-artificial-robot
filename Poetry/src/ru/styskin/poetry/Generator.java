@@ -20,8 +20,10 @@ public class Generator {
 		int SIZE = 8;
 		for(int i=0; i < 4; i++) {
 			Line line = Line.getLine(dictionary, SIZE);
-			System.out.println(line);
-			System.out.println(Line.getLine(dictionary, SIZE, line.getWords().get(line.getWords().size()-1)));
+			System.out.write(line.toString().getBytes("MacCyrillic"));
+			System.out.println("");
+			System.out.write(Line.getLine(dictionary, SIZE, line.getWords().get(line.getWords().size()-1)).toString().getBytes("MacCyrillic"));
+			System.out.println("");
 		}
 
 	}

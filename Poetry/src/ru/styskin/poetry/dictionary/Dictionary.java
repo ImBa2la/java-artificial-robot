@@ -19,9 +19,17 @@ import ru.styskin.poetry.utils.StringUtils;
 
 public class Dictionary {
 	
-	private Map<SingletonString, Set<SingletonString>> phrase = new TreeMap<SingletonString, Set<SingletonString>>(SingletonString.getComparator());
-
-	private Map<SingletonString, Set<SingletonString>> phraseRev = new TreeMap<SingletonString, Set<SingletonString>>(SingletonString.getComparator());
+	public enum Direction {
+		FORWARD, BACKWARD
+	}
+	
+	private Map<Direction, Map<SingletonString, Set<SingletonString>>> phrase = new TreeMap<Direction, Map<SingletonString,Set<SingletonString>>>();
+	
+	{
+		for(Direction direction : Direction.values()) {
+			phrase.put(direction, new TreeMap<SingletonString, Set<SingletonString>>(SingletonString.getComparator()));
+		}
+	}
 	
 	private Map<SingletonString, SingletonString> rifms = new TreeMap<SingletonString, SingletonString>(SingletonString.getComparator());
 	
@@ -83,7 +91,6 @@ public class Dictionary {
 			}
 			for(int j=0; j < list.size() -1; j++) {
 				putWord(list.get(j), list.get(j+1));				
-				putWordRev(list.get(j), list.get(j+1));				
 			}
 		}
 		int fs = StringUtils.matchFromEnd(abstr.get(0).get(abstr.get(0).size()-1), abstr.get(1).get(abstr.get(1).size()-1));
@@ -110,23 +117,19 @@ public class Dictionary {
 	}
 	
 	private void putWord(SingletonString key, SingletonString value) {
-		Set<SingletonString> set = phrase.get(key);		
+		putWord(key, value, Direction.FORWARD);
+		putWord(value, key, Direction.BACKWARD);
+	}
+	
+	private void putWord(SingletonString key, SingletonString value, Direction direction) {
+		Set<SingletonString> set = phrase.get(direction).get(key);		
 		if(set == null) {
 			set = new TreeSet<SingletonString>(SingletonString.getComparator());
-			phrase.put(key, set);
+			phrase.get(direction).put(key, set);
 		}
 		set.add(value);
 	}
-	
-	private void putWordRev(SingletonString key, SingletonString value) {
-		Set<SingletonString> set = phraseRev.get(value);		
-		if(set == null) {
-			set = new TreeSet<SingletonString>(SingletonString.getComparator());
-			phraseRev.put(value, set);
-		}
-		set.add(key);
-	}
-	
+		
 	private void putRifm(SingletonString a, SingletonString b) {
 		a = getRifm(a);
 		b = getRifm(b);
@@ -148,12 +151,8 @@ public class Dictionary {
 		return frequency;
 	}
 
-	public Set<SingletonString> getPhrase(SingletonString s) {
-		return phrase.get(s);
-	}
-
-	public Set<SingletonString> getPhraseRev(SingletonString s) {
-		return phraseRev.get(s);
+	public Set<SingletonString> getPhrase(SingletonString s, Direction direction) {
+		return phrase.get(direction).get(s);
 	}
 
 	public Map<SingletonString, List<SingletonString>> getRifmsMap() {
