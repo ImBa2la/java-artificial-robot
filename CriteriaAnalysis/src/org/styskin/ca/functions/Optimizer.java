@@ -23,6 +23,9 @@ public class Optimizer implements Constants {
 	private Criteria root;
 
 	private List<ComplexOperator> operators;
+	
+	private boolean stopFlag = false;
+	private List<Double> trace;
 
 	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c) {
 		boolean moved = false;
@@ -102,9 +105,8 @@ public class Optimizer implements Constants {
 	}
 
 	// TODO : Modify algorithm
-
 	private final static int STEP = 3;
-	private final int LEVEL = 10;
+	private final int LEVEL = 100;
 
 	public void criteria(ComplexCriteria c) {
 		ComplexOperator op = c.getOperator();
@@ -123,7 +125,7 @@ public class Optimizer implements Constants {
 		for(int i = SW; i < S; i++) {			
 			V[1][i] = V[0][i] = op.getParameters().get(i - SW);
 		}
-		// TODO: modify
+		// XXX: modify STEP
 		for(int i = 0; i < h.length; i++) {
 			h[i] = 1E-3;
 		}		
@@ -174,7 +176,7 @@ public class Optimizer implements Constants {
 		queue.offer(new Pair<Criteria, Integer>(root, 1));
 		Pair<Criteria, Integer> c;
 		ComplexCriteria cc;
-		while((c = queue.poll()) != null) {
+		while((c = queue.poll()) != null && !stopFlag) {
 			if(c.getFirst() instanceof ComplexCriteria) {
 				cc = (ComplexCriteria) c.getFirst();
 //				logger("%d, ", c.getSecond());
@@ -227,33 +229,56 @@ public class Optimizer implements Constants {
 		} catch(Exception ex) {
 			logger.error("Cannot pre-create operator");
 		}
-		// TODO criteria of finish optimization
-		double t = 1E10;
-		for(int i=0; t > 1E-3 && i < 50; i++) {
+		// XXX criteria of finish optimization
+		double dt = 1E10, t = 0, tt = 0;
+		double PRECISION = cache.check() / 10000;
+		for(int i=0; !stopFlag && dt > PRECISION && i < 100; i++) {
 			iteration();
-//			logger.info(cache.check());
-//			System.out.printf("\nIteration #%d\nCheck = %4.4f\n%s\n", i, cache.check(), root);
+			tt = t;
 			t = cache.check();
-			System.out.printf("%4.4f\n", t);
-//			cache.checkOut2(i);			
+			dt = Math.abs(t - tt);
+			trace.add(t);
+			Thread.yield();
 		}
 	}
+	
+	public Optimizer(Criteria root) {
+		this.root = root;		
+	}
+	
 
-	public void optimize(Criteria root, double[] base, double[][] F) {
-		this.root = root;
-		cache = new CacheCriteria(root, base,  F);
-//		cache.checkOut();
-		optimize(root);
-//		cache.checkOut();
-		System.out.println(root.toString());
+	public void optimize(double[] base, double[][] F) {
+		cache = new CacheCriteria(root, base, F);
+		trace = new ArrayList<Double>();		
+		optimize(root);				
 	}
 
-	public void optimize(Criteria root, Criteria base, double[][] F) {
-		this.root = root;
-		cache = new CacheCriteria(root, base,  F);
-		cache.checkOut();		
+	public void optimize(Criteria base, double[][] F) {
+		cache = new CacheCriteria(root, base, F);
 		optimize(root);
-		cache.checkOut();
+	}
+	
+	public double getValue() {
+		return cache.check();		
+	}	
+	
+	// FIXME: aproximate with exponent ???
+	public double getApproximateValue() {
+		// trace, 10%
+		
+		return 0;		
+	}
+	
+	public List<Double> getTrace() {
+		return trace;		
+	}
+	
+	CacheCriteria getCacheCriteria() {
+		return cache;				
+	}
+	
+	public void stop() {
+		stopFlag = true;	
 	}
 
 	public static double[][] getMatrix(int size, int length) {

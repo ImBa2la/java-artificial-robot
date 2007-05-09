@@ -20,7 +20,7 @@ public class AdditiveOperator extends ComplexOperator {
 
 	@Override
 	public String operatorType() {
-		return "+";
+		return "add";
 	}
 
 	@Override
@@ -45,10 +45,7 @@ public class AdditiveOperator extends ComplexOperator {
 	}
 
 	@Override
-	public void load(Map<String, Double> parameters) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void load(Map<String, Double> parameters) {}
 
 	@Override
 	public Map<String, Double> save() {

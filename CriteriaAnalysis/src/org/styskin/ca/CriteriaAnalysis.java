@@ -475,7 +475,7 @@ public class CriteriaAnalysis extends JFrame {
 					} catch (Exception e2) {
 						e2.printStackTrace();
 					}
-					Optimizer optimizer = new Optimizer();
+					Optimizer optimizer = new Optimizer(criteria);
 
 					JFileChooser fileChooser = new JFileChooser(new File("./"));
 					fileChooser.showOpenDialog((Component) e.getSource());
@@ -484,11 +484,10 @@ public class CriteriaAnalysis extends JFrame {
 					try {
 						base = CriteriaXMLParser.loadXML(file);
 					} catch(Exception ex) {}
-					optimizer.optimize(criteria, base, F);
+					optimizer.optimize(base, F);
 					try {
 						CriteriaXMLParser.saveXML(criteria, "cfg/testOpt.xml");
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					JComponent treePanel = null;

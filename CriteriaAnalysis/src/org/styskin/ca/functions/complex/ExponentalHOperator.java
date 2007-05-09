@@ -26,7 +26,7 @@ public class ExponentalHOperator extends ComplexHOperator {
 	
 	@Override
 	public String operatorType() {
-		return "exp-h";
+		return "exp_h";
 	}
 	
 

@@ -14,6 +14,7 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 	static {
 		complexOperators.add(PowerHOperator.class);
 		complexOperators.add(ExponentalHOperator.class);
+		complexOperators.add(PowerIOperator.class);
 	}
 
 	List<Double> weights;

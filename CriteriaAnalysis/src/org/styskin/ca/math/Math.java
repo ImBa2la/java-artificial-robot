@@ -15,8 +15,7 @@ public class Math implements Constants {
 
 	public static boolean doubleLess(double a, double b) {
 		return doubleMore(b, a);		
-	}
-	
+	}	
 	
 	public static double findMinimum(Function f, double a, double b) {
 		double c;

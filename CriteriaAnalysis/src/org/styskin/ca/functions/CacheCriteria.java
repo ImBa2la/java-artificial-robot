@@ -10,11 +10,15 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author astyskin
  *
  */
 public class CacheCriteria {
+	
+	private static final Logger logger = Logger.getLogger(CacheCriteria.class); 
 
 	private Criteria root;
 
@@ -111,12 +115,13 @@ public class CacheCriteria {
 
 	private void setBase(Criteria c) {
 		base = new double[F.length];
-		// TODO rewrite try-catch block
 		try {
 			for(int i=0; i< F.length; i++) {
 				base[i] = c.getValues(F[i]);
 			}
-		} catch(Exception e) {}
+		} catch(Exception e) {
+			logger.error(e);			
+		}
 	}
 
 	public double[] getValue() {
@@ -141,10 +146,11 @@ public class CacheCriteria {
 					for(int l = 0; l < P.length; l++) {
 						P[l] = R[ind[l]][i];
 					}
-					// TODO
 					try {
 						R[me][i] = cc.getOperator().getValue(P);
-					} catch (Exception ex) {}
+					} catch (Exception ex) {
+						logger.error(ex);
+					}
 				}
 			} else {
 				cached.put(c, true);
@@ -166,10 +172,10 @@ public class CacheCriteria {
 		double[] Y = getValue();
 		double d = 0;
 		for(int i=0; i< base.length; i++) {
-			System.out.printf("%4.4f\t%4.4f\n", base[i], Y[i]) ;
+			logger.info(base[i] + " " + Y[i]);
 			d += Math.abs(base[i]-Y[i]);
 		}
-		System.out.printf("Sum = %4.4f\n", d);
+		logger.info("Sum = " + d);
 	}
 	
 	public void checkOut2(int n) {
@@ -225,10 +231,11 @@ public class CacheCriteria {
 			for(int l = 0; l < values[i].length; l++) {
 				values[i][l] = R[ind[l]][i];
 			}
-			// TODO
 			try {
 				R[me][i] = cr.getOperator().getValue(values[i]);
-			} catch (Exception ex) {}
+			} catch (Exception ex) {
+				logger.error(ex);
+			}
 		}
 		return values;
 	}

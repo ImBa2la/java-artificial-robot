@@ -6,7 +6,7 @@ import static java.lang.Math.log;
 
 public class PowerHOperator extends ComplexHOperator {	
 	
-	private double P, T;	
+	private double P, T;
 
 	public PowerHOperator() throws Exception{
 		super();
@@ -28,8 +28,8 @@ public class PowerHOperator extends ComplexHOperator {
 	
 	@Override
 	public String operatorType() {
-		return "pow-h";
-	}	
+		return "pow_h";
+	}
 
 	@Override
 	public double getValue(double[] X) throws Exception {

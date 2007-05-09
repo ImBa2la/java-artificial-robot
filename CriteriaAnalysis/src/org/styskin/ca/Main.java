@@ -1,21 +1,12 @@
 package org.styskin.ca;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
-import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
+import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
 public class Main {
 
@@ -61,8 +52,8 @@ public class Main {
 		cr.clearCache();
 		logger.debug("" + cr.check() + criteria2);*/
 		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
-		Optimizer optimizer = new Optimizer();
-		optimizer.optimize(criteria1, criteria0, F);
+		Optimizer optimizer = new Optimizer(criteria1);
+		optimizer.optimize(criteria0, F);
 		System.out.printf("%s\n%s",criteria1, criteria0);
 		
 /*		Optimizer optimizer = new Optimizer();
@@ -98,94 +89,14 @@ public class Main {
 		(new Main()).testFlats();		
 	}
 	
-	static class Optimize {
-		double[][] F;
-		double[] base;
-		
-		private static NumberFormat FORMAT = NumberFormat.getNumberInstance();
-		
-		private Optimize() {
-			
-		}
-		
-		private static int getCriteriaSize(Criteria cr, Map<String, Integer> map, int begin) throws Exception {
-			if(cr instanceof ComplexCriteria) {
-				for(Criteria c : cr.getChildren()) {
-					begin = getCriteriaSize(c, map, begin);
-				}								
-			} else {
-				if(!map.containsKey(cr.getName())) {
-					map.put(cr.getName(), begin);
-				} else {
-					throw new Exception("duplicate");
-				}
-				begin++;
-			}
-			return begin;			
-		}
-		
-		private static Map<String, Integer> getCriteriaMap(Criteria cr) throws Exception {
-			Map<String, Integer> map = new HashMap<String, Integer>();
-			getCriteriaSize(cr, map, 0);
-			return map;			
-		}
-		
-		
-		// TODO: Exception on data absence
-		public static Optimize getInput(String file, Criteria cr) {
-			Optimize o = new Optimize();
-			try {
-				Map<String, Integer> map = getCriteriaMap(cr);
-				map.put("price", -1);
-				List<Integer> in_map = new ArrayList<Integer>();
-				
-				List<List<Double>> input = new ArrayList<List<Double>>();				
-				BufferedReader in = new BufferedReader(new FileReader(file));
-				StringTokenizer st;
-				
-				st = new StringTokenizer(in.readLine());
-				while(st.hasMoreTokens()) {
-					String key = st.nextToken(); 
-					if(map.containsKey(key)) {
-						in_map.add(map.get(key));						
-					}
-				}				
-				String s = null;
-				while((s = in.readLine()) != null) {
-					st = new StringTokenizer(s);
-					List<Double> d = new ArrayList<Double>();
-					input.add(d);
-					while(st.hasMoreTokens()) {
-						d.add(FORMAT.parse(st.nextToken()).doubleValue());
-					}
-					if(d.size() != in_map.size()) {
-						throw new Exception("Incorrect parameters number");						
-					}
-				}
-				o.F = new double[input.size()][map.size()-1];
-				o.base = new double[input.size()];				
-				for(int j=0; j < input.size(); j++) {
-					List<Double> d = input.get(j);
-					for(int i=0; i < d.size(); i++) {
-						if(in_map.get(i) < 0) {
-							o.base[j] = d.get(i);
-						} else {
-							o.F[j][in_map.get(i)] = d.get(i);
-						}
-					}
-				}				
-			} catch(Exception ex) {
-				ex.printStackTrace();
-			}			
-			return o;
-		}		
-	}
 
 	public void testFlats() throws Exception {
 		Criteria cr = CriteriaXMLParser.loadXML("cfg/kv.xml");
 		Optimize op = Optimize.getInput("cfg/input.txt", cr);
-		Optimizer optimizer = new Optimizer();
-		optimizer.optimize(cr, op.base, op.F);
+		Optimizer optimizer = new Optimizer(cr);
+		optimizer.optimize(op.getBase(), op.getF());
+		CriteriaXMLParser.saveXML(cr, "flat2.xml");	
+		
 	}
 
 	public void test() throws Exception {

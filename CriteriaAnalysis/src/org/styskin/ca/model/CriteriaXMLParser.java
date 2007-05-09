@@ -1,12 +1,17 @@
 package org.styskin.ca.model;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.StringTokenizer;
 
 import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
@@ -21,6 +26,94 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 public class CriteriaXMLParser implements Constants {
+	
+	
+	public static class Optimize {
+		double[][] F;
+		double[] base;
+		
+		private static NumberFormat FORMAT = NumberFormat.getNumberInstance();
+		
+		private static int getCriteriaSize(Criteria cr, Map<String, Integer> map, int begin) throws Exception {
+			if(cr instanceof ComplexCriteria) {
+				for(Criteria c : cr.getChildren()) {
+					begin = getCriteriaSize(c, map, begin);
+				}								
+			} else {
+				if(!map.containsKey(cr.getName())) {
+					map.put(cr.getName(), begin);
+				} else {
+					throw new Exception("duplicate");
+				}
+				begin++;
+			}
+			return begin;			
+		}
+		
+		private static Map<String, Integer> getCriteriaMap(Criteria cr) throws Exception {
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			getCriteriaSize(cr, map, 0);
+			return map;			
+		}
+		
+		
+		// TODO: Exception on data absence
+		public static Optimize getInput(String file, Criteria cr) {
+			Optimize o = new Optimize();
+			try {
+				Map<String, Integer> map = getCriteriaMap(cr);
+				map.put("price", -1);
+				List<Integer> in_map = new ArrayList<Integer>();
+				
+				List<List<Double>> input = new ArrayList<List<Double>>();				
+				BufferedReader in = new BufferedReader(new FileReader(file));
+				StringTokenizer st;
+				
+				st = new StringTokenizer(in.readLine());
+				while(st.hasMoreTokens()) {
+					String key = st.nextToken(); 
+					if(map.containsKey(key)) {
+						in_map.add(map.get(key));						
+					}
+				}				
+				String s = null;
+				while((s = in.readLine()) != null) {
+					st = new StringTokenizer(s);
+					List<Double> d = new ArrayList<Double>();
+					input.add(d);
+					while(st.hasMoreTokens()) {
+						d.add(FORMAT.parse(st.nextToken()).doubleValue());
+					}
+					if(d.size() != in_map.size()) {
+						throw new Exception("Incorrect parameters number");						
+					}
+				}
+				o.F = new double[input.size()][map.size()-1];
+				o.base = new double[input.size()];				
+				for(int j=0; j < input.size(); j++) {
+					List<Double> d = input.get(j);
+					for(int i=0; i < d.size(); i++) {
+						if(in_map.get(i) < 0) {
+							o.base[j] = d.get(i);
+						} else {
+							o.F[j][in_map.get(i)] = d.get(i);
+						}
+					}
+				}				
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}			
+			return o;
+		}
+
+		public double[] getBase() {
+			return base;
+		}
+
+		public double[][] getF() {
+			return F;
+		}
+	}
 
 	static class CriteriaXMLHandler extends DefaultHandler {
 
@@ -37,7 +130,6 @@ public class CriteriaXMLParser implements Constants {
 	    	super();	    	
 	    }
 
-	    // TODO: Function in XML
 	    public CriteriaXMLHandler(Function f) {
 	    	super();
 	    	function = f;
@@ -124,13 +216,8 @@ public class CriteriaXMLParser implements Constants {
         CriteriaXMLHandler handler = new CriteriaXMLHandler(new Function() {
 			public double getValue(double x) {
 				return 2000+6000*x;
-/*				double a = Math.log(2)/0.8;
-				double b = 3000*Math.pow(2, -0.125);
-				return b*Math.exp(a*x);*/
-
 			}
         });
-
         xmlReader.setContentHandler(handler);
         xmlReader.setErrorHandler(handler);
 
@@ -154,7 +241,8 @@ public class CriteriaXMLParser implements Constants {
 				lambdaSB.append(name).append("=\"").append(FORMAT.format(lambda.get(name))).append("\" ");
 			}
 			out.printf("%s<criteria name=\"%s\" type=\"complex\" class=\"%s\" weight=\"%s\" %s >\n",
-					sb, criteria.getName(), ComplexFunction.getOperatorName(node.getOperator().getClass()) , FORMAT.format(weight), lambdaSB.toString());
+//					sb, criteria.getName(), ComplexFunction.getOperatorName(node.getOperator().getClass()) , FORMAT.format(weight), lambdaSB.toString());
+					sb, criteria.getName(), node.getOperator().operatorType(), FORMAT.format(weight), lambdaSB.toString());
 			int i = 0;
 			sb.append('\t');
 			for(Criteria cr : node.getChildren()) {
