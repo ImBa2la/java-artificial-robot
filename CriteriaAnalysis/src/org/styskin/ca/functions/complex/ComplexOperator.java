@@ -1,6 +1,10 @@
+/*
+ *$Id$
+ */
 package org.styskin.ca.functions.complex;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +64,26 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 		op.weights = new ArrayList<Double>(weights);
 		return op;
 	}
+	
+	
+	private static final Map<String, Double> equalParameters = new HashMap<String, Double>();
+	
+	static {
+		equalParameters.put("lambda", 0.5d);		
+		equalParameters.put("lKsi", 0.5d);		
+		equalParameters.put("lPhi", 0.5d);		
+	}
+	
+	public ComplexOperator cloneEquals() throws CloneNotSupportedException {
+		ComplexOperator op = (ComplexOperator) super.clone();
+		op.load(equalParameters);		
+		op.weights = new ArrayList<Double>(weights.size());
+		for(int i=0; i < weights.size(); i++) {
+			op.weights.add(1d);
+		}
+		op.normalize();
+		return op;
+	}	
 
 	public List<Double> getWeights() {
 		return weights;

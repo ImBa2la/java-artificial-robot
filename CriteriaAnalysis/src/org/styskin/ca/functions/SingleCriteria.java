@@ -1,3 +1,7 @@
+/*
+ *$Id$
+ */
+
 package org.styskin.ca.functions;
 
 import java.util.ArrayList;

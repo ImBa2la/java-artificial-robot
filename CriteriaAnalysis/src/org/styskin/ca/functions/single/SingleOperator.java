@@ -1,3 +1,6 @@
+/*
+ *$Id$
+ */
 package org.styskin.ca.functions.single;
 
 import org.styskin.ca.functions.Operator;

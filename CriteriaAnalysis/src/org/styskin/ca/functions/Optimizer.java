@@ -9,14 +9,16 @@ import java.util.List;
 import java.util.Queue;
 
 import org.apache.log4j.Logger;
-import org.styskin.ca.functions.complex.ComplexHOperator;
 import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.model.Constants;
 import org.styskin.ca.model.Pair;
+import org.styskin.ca.model.ValueLogger;
 
 public class Optimizer implements Constants {
 
 	static Logger logger = Logger.getLogger(Optimizer.class);
+	
+	private ValueLogger log = ValueLogger.getValueLogger();
 
 	private CacheCriteria cache;
 
@@ -179,10 +181,9 @@ public class Optimizer implements Constants {
 		while((c = queue.poll()) != null && !stopFlag) {
 			if(c.getFirst() instanceof ComplexCriteria) {
 				cc = (ComplexCriteria) c.getFirst();
-//				logger("%d, ", c.getSecond());
-				if (c.getSecond() < LEVEL) {
+//				if (c.getSecond() < LEVEL) {
 					criteria(cc);
-				} else {
+/*				} else {
 					ComplexOperator src = cc.getOperator();
 					ComplexOperator minOperator = src, op = null;
 					double min = cache.check(), tempCheck;
@@ -212,11 +213,12 @@ public class Optimizer implements Constants {
 					cc.setOperator(minOperator);
 					cache.turnOffCache(cc);
 					cache.refreshCache();
-				}
+				}*/
 				for(Criteria child : cc.getChildren()) {
 					queue.offer(new Pair<Criteria, Integer>(child, c.getSecond() + 1));
 				}
 			}
+			Thread.yield();
 		}
 	}
 
@@ -232,12 +234,18 @@ public class Optimizer implements Constants {
 		// XXX criteria of finish optimization
 		double dt = 1E10, t = 0, tt = 0;
 		double PRECISION = cache.check() / 10000;
+		t = cache.check();
+		trace.add(t);
+
+		log.log(t);
 		for(int i=0; !stopFlag && dt > PRECISION && i < 100; i++) {
 			iteration();
 			tt = t;
 			t = cache.check();
 			dt = Math.abs(t - tt);
 			trace.add(t);
+			
+			log.log(t);
 			Thread.yield();
 		}
 	}
@@ -264,8 +272,7 @@ public class Optimizer implements Constants {
 	
 	// FIXME: aproximate with exponent ???
 	public double getApproximateValue() {
-		// trace, 10%
-		
+		// trace, 10%		
 		return 0;		
 	}
 	

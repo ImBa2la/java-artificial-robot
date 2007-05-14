@@ -1,3 +1,6 @@
+/*
+ *$Id$
+ */
 package org.styskin.ca.functions.complex;
 
 import java.util.HashMap;

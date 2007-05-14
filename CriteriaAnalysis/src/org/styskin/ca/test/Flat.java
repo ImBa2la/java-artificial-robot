@@ -1,12 +1,17 @@
 package org.styskin.ca.test;
 
+import java.io.FileWriter;
+import java.io.Writer;
+
 import junit.framework.TestCase;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
+import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.MultiOptimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
+import org.styskin.ca.model.ValueLogger;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
 public class Flat extends TestCase {
@@ -22,12 +27,24 @@ public class Flat extends TestCase {
 	
 	public void testFlats() throws Exception {
 		logger.info("Optimization started");		
-		Optimize op = Optimize.getInput("cfg/input.txt", flat);
+		Optimize op = Optimize.getInput("cfg/flat/input.txt", flat);
 /*		Optimizer optimizer = new Optimizer(flat);
 		optimizer.optimize(op.getBase(), op.getF());*/
+		
+		CacheCriteria c = new CacheCriteria(flat, op.getBase(), op.getF());
+		c.checkOut2(1);
+		
+		
 		MultiOptimizer optimizer = new MultiOptimizer(flat);
 		flat = optimizer.optimize(op.getBase(), op.getF());
-		CriteriaXMLParser.saveXML(flat, "flat.xml");		
+		CriteriaXMLParser.saveXML(flat, "flat.xml");
+		
+		c = new CacheCriteria(flat, op.getBase(), op.getF());
+		c.checkOut2(2);		
+		
+		Writer out = new FileWriter("out.txt");
+		ValueLogger.output(out);
+		out.close();
 		logger.info("Optimization finished");
 	}
 

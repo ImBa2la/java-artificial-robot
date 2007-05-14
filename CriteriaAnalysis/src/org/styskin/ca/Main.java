@@ -1,3 +1,6 @@
+/*
+ *$Id$
+ */
 package org.styskin.ca;
 
 import org.apache.log4j.BasicConfigurator;

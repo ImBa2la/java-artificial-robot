@@ -1,8 +1,11 @@
+/*
+ *$Id$
+ */
 package org.styskin.ca.model;
 
 public class Pair<T1, T2> {
-	T1 o1;
-	T2 o2;
+	private T1 o1;
+	private T2 o2;
 
 	public Pair(T1 o1, T2 o2) {
 		this.o1 = o1;
@@ -24,11 +27,16 @@ public class Pair<T1, T2> {
 	public void setSecond(T2 o2) {
 		this.o2 = o2;
 	}
+	
 	public boolean equals(Pair p2) {
 		return o1.equals(p2.getFirst()) && o2.equals(p2.getSecond());
 	}
 
 	public String toString() {
 		return "[" + o1.toString() + "; " + o2.toString() + "]";
+	}
+	
+	public static <T1,T2> Pair<T1, T2> makePair(T1 o1, T2 o2) {
+		return new Pair<T1, T2> (o1, o2);	
 	}
 }

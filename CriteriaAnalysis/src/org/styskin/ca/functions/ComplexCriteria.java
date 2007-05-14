@@ -1,3 +1,6 @@
+/*
+ *$Id$
+ */
 package org.styskin.ca.functions;
 
 import java.util.ArrayList;
@@ -51,7 +54,7 @@ public class ComplexCriteria extends Criteria {
 
 	@Override
 	public int getTotalSize() {
-		if(totalSize > 0) {
+		if(totalSize >= 0) {
 			return totalSize;
 		} else {
 			totalSize = 0;
@@ -81,10 +84,22 @@ public class ComplexCriteria extends Criteria {
 		for(Criteria child : children) {
 			childrenClone.add(child.clone());
 		}
-		criteria.setChildren(children);
+		criteria.setChildren(childrenClone);
 		criteria.setOperator(operator.clone());
 		return criteria;
 	}
+	
+	@Override
+	public Criteria cloneEquals() throws InstantiationException, IllegalAccessException, CloneNotSupportedException {
+		ComplexCriteria criteria = (ComplexCriteria) super.cloneEquals();
+		List<Criteria> childrenClone = new ArrayList<Criteria>();
+		for(Criteria child : children) {
+			childrenClone.add(child.cloneEquals());
+		}
+		criteria.setChildren(childrenClone);
+		criteria.setOperator(operator.cloneEquals());
+		return criteria;
+	}	
 	
 	@Override
 	public String toString() {

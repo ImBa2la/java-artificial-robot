@@ -1,3 +1,6 @@
+/*
+ *$Id$
+ */
 package org.styskin.ca.model;
 
 import java.lang.reflect.Constructor;
