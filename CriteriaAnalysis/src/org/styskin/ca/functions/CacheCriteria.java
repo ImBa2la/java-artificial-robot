@@ -7,7 +7,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -33,8 +33,9 @@ public class CacheCriteria {
 	private CacheCriteria(Criteria criteria, double[][] F) {
 		this.F = F;
 		root = criteria;
-		cached = new HashMap<Criteria, Boolean>();
-		index = new HashMap<Criteria, Integer>();
+		// XXX
+		cached = new IdentityHashMap<Criteria, Boolean>();
+		index = new IdentityHashMap<Criteria, Integer>();
 		int size = buildIndex(root, 0);
 		R = new double[size + 1][F.length];
 		buildSingle(root, 0);
@@ -93,7 +94,7 @@ public class CacheCriteria {
 	}
 
 	public void turnOffCache(Criteria criteria) {
-		cached.put(criteria, false);
+		cached.put(criteria, Boolean.FALSE);
 		renewCache(root);
 	}
 
@@ -109,7 +110,7 @@ public class CacheCriteria {
 	public void refreshCache() {
 		calcValue(root);
 		for(Criteria c : cached.keySet()) {
-			cached.put(c, true);
+			cached.put(c, Boolean.TRUE);
 		}
 	}
 
@@ -153,7 +154,7 @@ public class CacheCriteria {
 					}
 				}
 			} else {
-				cached.put(c, true);
+				cached.put(c, Boolean.TRUE);
 			}
 		}
 	}
