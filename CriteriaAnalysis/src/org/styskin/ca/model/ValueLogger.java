@@ -13,7 +13,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
+
 public abstract class ValueLogger {
+	
+	private static final Logger logger = Logger.getLogger(ValueLogger.class);
 	
 	private static final long START = System.currentTimeMillis();
 	
@@ -23,22 +27,19 @@ public abstract class ValueLogger {
 		
 		public Entry(double value) {
 			this.value = value;			
-		}
-		
+		}		
 	}
 	
-	private static Map<Integer, List<Entry>> log = new TreeMap<Integer, List<Entry>>(); 
+	private static final Map<Integer, List<Entry>> log = new TreeMap<Integer, List<Entry>>(); 
 	
-	private ValueLogger() {
-		
-	}
+	private ValueLogger() {}
 	
 	public static class ValueLoggerInner extends ValueLogger {
 		
 		private Integer index;
 		
 		private ValueLoggerInner(Integer index) {
-			this.index = index;			
+			this.index = index;
 			log.put(this.index, new ArrayList<Entry>());
 		}
 		
@@ -49,9 +50,9 @@ public abstract class ValueLogger {
 	
 	public abstract void log(double value);
 	
-	private static int index = 0;
+	private static Integer index = 0;
 	
-	public static ValueLogger getValueLogger() {
+	public static synchronized ValueLogger getValueLogger() {
 		return new ValueLoggerInner(index ++);
 	}
 	

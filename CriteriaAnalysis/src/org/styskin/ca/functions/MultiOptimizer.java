@@ -15,12 +15,16 @@ public class MultiOptimizer {
 	
 	private Criteria root;
 	
+	private int CHECKER = 0;
+	
 	class Checker implements Runnable {
 		
 		private Criteria root;
 		private Thread thread;
 		private double[] base;
 		private double[][] F;
+		
+		private int index;
 		
 		private Optimizer optimizer;
 		
@@ -32,6 +36,8 @@ public class MultiOptimizer {
 			}
 			this.base = base;
 			this.F = F;
+			
+			index = CHECKER ++;
 			
 			thread = new Thread(this);
 			thread.start();			
@@ -63,7 +69,11 @@ public class MultiOptimizer {
 		
 		public boolean isAlive() {
 			return thread.isAlive();
-		}	
+		}
+
+		public int getIndex() {
+			return index;
+		}
 		
 	}
 	
@@ -97,8 +107,8 @@ public class MultiOptimizer {
 		root = criteria;		
 	}
 	
-	private static final int THREAD_COUNT = 2;
-	private static final long SLEEP_TIMEOUT = 10000l;
+	private static final int THREAD_COUNT = 10;
+	private static final long SLEEP_TIMEOUT = 5000l;
 	
 	public Criteria optimize(double[] base, double[][] F) {
 		LinkedList<Checker> pool = new LinkedList<Checker>();
@@ -111,7 +121,7 @@ public class MultiOptimizer {
 
 			Map<Integer, Checker> q = new TreeMap<Integer, Checker>();
 			int Q = 0;			
-			Thread.sleep(5000);			
+			Thread.sleep(5000);
 			while(pool.size() > 0) {
 				Iterator<Checker> it = pool.iterator();
 				q.clear();
@@ -133,6 +143,7 @@ public class MultiOptimizer {
 						best = c;
 					}
 				}
+				logger.info(value + " n = " + best.getIndex() + " step=" + best.getTrace().size());
 				if(Q ++ < THREAD_COUNT) {
 					Iterator<Map.Entry<Integer, Checker>> ite = q.entrySet().iterator();
 					Criteria c1 = ite.next().getValue().getCriteria();

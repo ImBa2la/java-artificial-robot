@@ -233,7 +233,7 @@ public class Optimizer implements Constants {
 		}
 		// XXX criteria of finish optimization
 		double dt = 1E10, t = 0, tt = 0;
-		double PRECISION = cache.check() / 10000;
+		double PRECISION = cache.check() / 20000;
 		t = cache.check();
 		trace.add(t);
 
@@ -258,7 +258,7 @@ public class Optimizer implements Constants {
 	public void optimize(double[] base, double[][] F) {
 		cache = new CacheCriteria(root, base, F);
 		trace = new ArrayList<Double>();		
-		optimize(root);				
+		optimize(root);
 	}
 
 	public void optimize(Criteria base, double[][] F) {
