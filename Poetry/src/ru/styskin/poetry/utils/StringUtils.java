@@ -2,6 +2,8 @@ package ru.styskin.poetry.utils;
 
 import java.util.StringTokenizer;
 
+import net.sf.snowball.ext.RussianStemmer;
+
 /**
  * User: smargolin
  * Date: 13.04.2005
@@ -102,5 +104,12 @@ public final class StringUtils {
     		result ++;
     	}
     	return result;    	
+    }
+    
+    public static String stem(String s) {
+		RussianStemmer russian = new RussianStemmer();
+		russian.setCurrent(s);
+		russian.stem();
+		return russian.getCurrent();    	
     }
 }

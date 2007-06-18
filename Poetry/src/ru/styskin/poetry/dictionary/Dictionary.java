@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -31,9 +32,14 @@ public class Dictionary {
 		}
 	}
 	
+			
+	
+	
 	private Map<SingletonString, SingletonString> rifms = new TreeMap<SingletonString, SingletonString>(SingletonString.getComparator());
 	
 	private Map<SingletonString, Integer> frequency = new TreeMap<SingletonString, Integer>(SingletonString.getComparator());
+	
+	private Map<SingletonString, Integer> frequencyStemmed = new TreeMap<SingletonString, Integer>(SingletonString.getComparator());	
 	
 	private Map<SingletonString, List<SingletonString>> rifmsMap;
 	
@@ -87,7 +93,8 @@ public class Dictionary {
 		for(int i=0; i < abstr.size(); i++) {
 			List<SingletonString> list = abstr.get(i);
 			for(int j=0; j < list.size(); j++) {
-				SetUtils.increment(frequency, list.get(j));				
+				SetUtils.increment(frequency, list.get(j));
+				SetUtils.increment(frequencyStemmed, SingletonString.getInstance(StringUtils.stem(list.get(j).getString())));
 			}
 			for(int j=0; j < list.size() -1; j++) {
 				putWord(list.get(j), list.get(j+1));				
@@ -149,6 +156,10 @@ public class Dictionary {
 
 	public Map<SingletonString, Integer> getFrequency() {
 		return frequency;
+	}	
+
+	public Map<SingletonString, Integer> getFrequencyStemmed() {
+		return frequencyStemmed;
 	}
 
 	public Set<SingletonString> getPhrase(SingletonString s, Direction direction) {

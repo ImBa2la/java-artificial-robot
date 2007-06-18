@@ -3,8 +3,8 @@ package ru.styskin.poetry.utils;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * TODO javadoc
@@ -12,12 +12,12 @@ import java.util.Map;
  * @author Egor Azanov, <a href="mailto:krondix@yandex-team.ru">
  */
 public class SingletonString implements Comparable<SingletonString> {
-    private static int ID_COUNTER;
-
     private String string;
     private Integer index;
     private int length;
     private int size;
+    
+    private static int SINGLETON_STRING_INDEX = 0;
 
     public int getLength() {
 		return length;
@@ -25,20 +25,15 @@ public class SingletonString implements Comparable<SingletonString> {
 
 	private SingletonString(String string) {
         this.string = string;
+        this.index = SINGLETON_STRING_INDEX ++;        
         this.length = string.length();
         size = calculateSize(string);
-        index = ID_COUNTER++;
     }
 
-    private static Map<String, Integer> refCount = Collections.synchronizedMap(new HashMap<String, Integer>());
-    private static Map<String, SingletonString> cache = Collections.synchronizedMap(new HashMap<String, SingletonString>());
-    private static Map<Integer, SingletonString> cacheByIndex = Collections.synchronizedMap(new HashMap<Integer, SingletonString>());
+    private static Map<String, SingletonString> cache = Collections.synchronizedMap(new WeakHashMap<String, SingletonString>());
+    private static Map<Integer, SingletonString> cacheByIndex = Collections.synchronizedMap(new WeakHashMap<Integer, SingletonString>());
 
     private static final Object monitor = new Object();
-
-    public static Map<String, Integer> getRefCount() {
-        return refCount;
-    }
 
     public synchronized static boolean hasInstance(String string) {
         return cache.containsKey(string);
@@ -51,9 +46,7 @@ public class SingletonString implements Comparable<SingletonString> {
                 singletonString = new SingletonString(string);
                 cache.put(string, singletonString);
                 cacheByIndex.put(singletonString.getIndex(), singletonString);
-                refCount.put(string, 0);
             }
-            refCount.put(string, refCount.get(string) + 1);
             return singletonString;
         }
     }
@@ -92,22 +85,13 @@ public class SingletonString implements Comparable<SingletonString> {
 
     public static void removeInstance(int index, String string) {
         synchronized (monitor) {
-            refCount.put(string, refCount.get(string) - 1);
-            if (refCount.get(string) == 0) {
-                //logger.debug("Removing string " + string);
-                cache.remove(string);
-                cacheByIndex.remove(index);
-                refCount.remove(string);
-            }
+            cache.remove(string);
+            cacheByIndex.remove(index);
         }
     }
 
     public static int getCacheByIndexSize() {
         return cacheByIndex.size();
-    }
-
-    public static int getRefCountSize() {
-        return refCount.size();
     }
 
     public static int getCacheSize() {
