@@ -24,16 +24,18 @@ public class Dictionary {
 		FORWARD, BACKWARD
 	}
 	
-	private Map<Direction, Map<SingletonString, Set<SingletonString>>> phrase = new TreeMap<Direction, Map<SingletonString,Set<SingletonString>>>();
+	
+	
+	
+/*	private Map<Direction, Map<SingletonString, Set<SingletonString>>> phrase = new TreeMap<Direction, Map<SingletonString,Set<SingletonString>>>();
 	
 	{
 		for(Direction direction : Direction.values()) {
 			phrase.put(direction, new TreeMap<SingletonString, Set<SingletonString>>(SingletonString.getComparator()));
 		}
-	}
+	} */
 	
-			
-	
+	private ChainContainer chainContainer = new ChainContainer();
 	
 	private Map<SingletonString, SingletonString> rifms = new TreeMap<SingletonString, SingletonString>(SingletonString.getComparator());
 	
