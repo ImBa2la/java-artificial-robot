@@ -1,22 +1,103 @@
 package ru.styskin.poetry.poem;
 
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
+import ru.styskin.poetry.dictionary.Dictionary.Direction;
 import ru.styskin.poetry.utils.SingletonString;
 
-public class Chain {
+public class Chain implements Comparable<Chain> {
 	
-	private List<SingletonString> chain;
+	private LinkedList<SingletonString> chain;
+	private int vocalLength;
 	
-	private Chain() {}
+	public Chain() {
+		chain = new LinkedList<SingletonString>();		
+	}
 	
-	public Chain(List<SingletonString> chain) {
+	public Chain(LinkedList<SingletonString> chain) {
 		this.chain = chain;
 	}
 	
+	public Chain(SingletonString s) {
+		chain = new LinkedList<SingletonString>();
+		chain.add(s);
+		vocalLength = s.getSize();
+	}
+	
+	public Chain(Chain chain) {
+		this.chain = new LinkedList<SingletonString>(chain.chain);
+		this.vocalLength = chain.vocalLength;
+	}
+	
+	public Chain(Chain chain, int begin, int end) {
+		this.chain = new LinkedList<SingletonString>();
+		for(int i = begin; i < end; i++) {
+			this.chain.add(chain.get(i));
+			vocalLength += chain.get(i).getSize();
+		}
+	}
+	
+	public Chain(List<SingletonString> chain, int begin, int end) {
+		this.chain = new LinkedList<SingletonString>();
+		for(int i = begin; i < end; i++) {
+			this.chain.add(chain.get(i));			
+			vocalLength += chain.get(i).getSize();
+		}
+	}
+	
+	public Chain getShift(Direction direction) {
+		if(this.size() == 1) {
+			return this;
+		} else if(direction == Direction.FORWARD) {
+			return new Chain(this, 1, chain.size());			
+		} else {
+			return new Chain(this, 0, chain.size()-1);
+		}
+	}
+	
+	
+	public SingletonString get(int i) {
+		return chain.get(i);		
+	}
+	
+	public void add(SingletonString s, Direction direction) {
+		if(direction == Direction.FORWARD) {
+			chain.addLast(s);
+		} else {
+			chain.addFirst(s);
+		}
+		vocalLength += s.getSize();
+	}
+	
+	public SingletonString remove(Direction direction) {
+		SingletonString s = direction == Direction.FORWARD? chain.removeLast() : chain.removeFirst();
+		vocalLength -= s.getSize();		
+		return s;
+	}	
+	
+	public SingletonString first() {
+		return chain.size() > 0? chain.get(0) : null;
+	}
+	
+	public SingletonString last() {
+		return chain.size() > 0? chain.get(chain.size() - 1) : null;
+	}
+	
+	public SingletonString getWord(Direction direction) {
+		return direction == Direction.FORWARD ? last() : first();
+	}
+	
+	
 	public int size() {
 		return chain.size();
+	}
+	
+	public int vocalLength() {
+		return vocalLength;
 	}
 	
 	public int compareTo(Chain c) {
@@ -29,29 +110,34 @@ public class Chain {
 		return Integer.valueOf(size()).compareTo(c.size());
 	}
 	
+	// Must be the same size
 	public static class ForwardComparator implements Comparator<Chain> {
 		public int compare(Chain c1, Chain c2) {
-			int i=c1.size()-2, j = c2.size()-2;
-			for(; i >=0 && j >=0; i--, j--) {
-				int cmp = c1.chain.get(i).compareTo(c2.chain.get(j));
+			Iterator<SingletonString> it1 = c1.chain.iterator();
+			Iterator<SingletonString> it2 = c1.chain.iterator();
+			int size = Math.min(c1.size(), c2.size()) - 1;			
+			for(int i=0; i < size; i++) {				
+				int cmp = it1.next().compareTo(it2.next());
 				if(cmp != 0) {
 					return cmp;
 				}
 			}
-			return i != j? Integer.valueOf(i).compareTo(j) : 0;
+			return 0;
 		}				
 	}
 	
 	public static class BackwardComparator implements Comparator<Chain> {
 		public int compare(Chain c1, Chain c2) {
-			int i=1, j = 1;
-			for(; i < c1.size()-1 && j < c2.size() - 1; i++, j ++) {
-				int cmp = c1.chain.get(i).compareTo(c2.chain.get(j));
+			ListIterator<SingletonString> it1 = c1.chain.listIterator(c1.chain.size());
+			ListIterator<SingletonString> it2 = c2.chain.listIterator(c2.chain.size());
+			int size = Math.min(c1.size(), c2.size()) - 1;			
+			for(int i=0; i < size; i++) {				
+				int cmp = it1.previous().compareTo(it2.previous());
 				if(cmp != 0) {
 					return cmp;
 				}
 			}
-			return c1.size() == c2.size()? 0 : Integer.valueOf(c1.size()).compareTo(c2.size());
+			return 0;
 		}			
 	}
 
@@ -67,5 +153,17 @@ public class Chain {
 			}
 		}
 		return c.size() == size();
+	}
+	
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(Character.toUpperCase(chain.getFirst().getString().charAt(0))).append(chain.getFirst().getString().substring(1));
+		Iterator<SingletonString> it = chain.iterator();
+		it.next();		
+		while(it.hasNext()) {
+			sb.append(' ').append(it.next());
+		}		
+		return sb.toString();
 	}
 }

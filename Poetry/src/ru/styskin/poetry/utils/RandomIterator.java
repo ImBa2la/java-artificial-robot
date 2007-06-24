@@ -13,8 +13,7 @@ public class RandomIterator<T> implements Iterator<T> {
 	public <S extends Collection<T>> RandomIterator(S collection, T ex) {
 		for(T e : collection) {
 			if(e != ex) {
-				sort.put(Math.random(), e);
-				
+				sort.put(Math.random(), e);				
 			}
 		}
 		it = sort.keySet().iterator();
@@ -30,5 +29,4 @@ public class RandomIterator<T> implements Iterator<T> {
 
 	public void remove() {
 	}
-
 }

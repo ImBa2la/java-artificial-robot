@@ -5,14 +5,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
+import ru.styskin.poetry.poem.Chain;
 import ru.styskin.poetry.utils.DefaultStringProcessor;
 import ru.styskin.poetry.utils.SetUtils;
 import ru.styskin.poetry.utils.SingletonString;
@@ -24,16 +24,9 @@ public class Dictionary {
 		FORWARD, BACKWARD
 	}
 	
+	private String path = "conf/blockwords.txt";	
 	
-	
-	
-/*	private Map<Direction, Map<SingletonString, Set<SingletonString>>> phrase = new TreeMap<Direction, Map<SingletonString,Set<SingletonString>>>();
-	
-	{
-		for(Direction direction : Direction.values()) {
-			phrase.put(direction, new TreeMap<SingletonString, Set<SingletonString>>(SingletonString.getComparator()));
-		}
-	} */
+	private Set<SingletonString> blockWords = new HashSet<SingletonString>();
 	
 	private ChainContainer chainContainer = new ChainContainer();
 	
@@ -44,6 +37,25 @@ public class Dictionary {
 	private Map<SingletonString, Integer> frequencyStemmed = new TreeMap<SingletonString, Integer>(SingletonString.getComparator());	
 	
 	private Map<SingletonString, List<SingletonString>> rifmsMap;
+	
+	public Dictionary() {
+		init();
+	}
+	
+	public void init() {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(path));
+			String s;
+			while( (s = in.readLine()) != null) {
+				blockWords.add(SingletonString.getInstance(s.trim().toLowerCase()));				
+			}			
+			in.close();
+		} catch(IOException ex) {
+			ex.printStackTrace();
+		}
+		
+	}
+	
 	
 	public void appendDictionary(File file) throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader(file));
@@ -98,9 +110,7 @@ public class Dictionary {
 				SetUtils.increment(frequency, list.get(j));
 				SetUtils.increment(frequencyStemmed, SingletonString.getInstance(StringUtils.stem(list.get(j).getString())));
 			}
-			for(int j=0; j < list.size() -1; j++) {
-				putWord(list.get(j), list.get(j+1));				
-			}
+			generateChains(list);
 		}
 		int fs = StringUtils.matchFromEnd(abstr.get(0).get(abstr.get(0).size()-1), abstr.get(1).get(abstr.get(1).size()-1));
 		int ft = StringUtils.matchFromEnd(abstr.get(0).get(abstr.get(0).size()-1), abstr.get(2).get(abstr.get(2).size()-1));
@@ -125,18 +135,15 @@ public class Dictionary {
 		}
 	}
 	
-	private void putWord(SingletonString key, SingletonString value) {
-		putWord(key, value, Direction.FORWARD);
-		putWord(value, key, Direction.BACKWARD);
-	}
-	
-	private void putWord(SingletonString key, SingletonString value, Direction direction) {
-		Set<SingletonString> set = phrase.get(direction).get(key);		
-		if(set == null) {
-			set = new TreeSet<SingletonString>(SingletonString.getComparator());
-			phrase.get(direction).put(key, set);
+	private void generateChains(List<SingletonString> list) {
+		for(int i=0; i < list.size(); i++ ) {
+			for(int j=2; j <=2 && i + j < list.size(); j++) {
+				if(j == 2 && (blockWords.contains(list.get(i)) || blockWords.contains(list.get(i+1)))) {
+					continue;
+				}
+				chainContainer.addChain(new Chain(list, i, i + j));
+			}
 		}
-		set.add(value);
 	}
 		
 	private void putRifm(SingletonString a, SingletonString b) {
@@ -164,8 +171,12 @@ public class Dictionary {
 		return frequencyStemmed;
 	}
 
-	public Set<SingletonString> getPhrase(SingletonString s, Direction direction) {
-		return phrase.get(direction).get(s);
+	public List<Chain> getPhrase(Chain c, Direction direction) {
+		return chainContainer.getChains(direction, c);
+	}
+	
+	public List<Chain> getStartPrases() {
+		return chainContainer.getStartChains();		
 	}
 
 	public Map<SingletonString, List<SingletonString>> getRifmsMap() {

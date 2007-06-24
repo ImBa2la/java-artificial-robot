@@ -50,12 +50,18 @@ public class ChainContainer {
 	}
 	
 	public List<Chain> getChains(Direction d, Chain original) {
-		List<Chain> variants = new ArrayList<Chain>();
+		List<Chain> variants = new ArrayList<Chain>(2);
 		for(Integer size :  phrases.get(d).keySet()) {
 			Set<Chain> chains = phrases.get(d).get(size).get(original);
-			variants.addAll(chains);
+			if(chains != null) {
+				variants.addAll(chains);
+			}
 		}
 		return variants;
+	}
+	
+	public List<Chain> getStartChains() {
+		return new ArrayList<Chain>(chains);
 	}
 
 }
