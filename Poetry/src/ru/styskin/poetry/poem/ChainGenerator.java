@@ -40,7 +40,7 @@ public class ChainGenerator {
 			}			
 			return true;
 		}
-		List<Chain> phrases = dictionary.getPhrase(chain.getShift(direction), direction);
+		List<Chain> phrases = dictionary.getPhrase(chain, direction);
 		Collections.shuffle(phrases);
 		for(Chain c : phrases) {
 			chain.add(c.getWord(direction), direction);

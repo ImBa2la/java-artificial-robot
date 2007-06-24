@@ -22,18 +22,19 @@ public class Generator {
 	}
 	
 	public void run() throws Exception {
-		init("../Karaoke/Џушкин");
+//		System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream("руки вверх.txt"))));
+		
+		
+		init("../Karaoke/ђуки ‚верх");
 /*		Dictionary d1 = dictionary;
 		init("../Karaoke/Алиса");
 		Dictionary d2 = dictionary;
 		Set<SingletonString> set = new HashSet<SingletonString>(d1.getFrequencyStemmed().keySet());
 		set.retainAll(d2.getFrequencyStemmed().keySet());*/
-		ChainGenerator generator = new ChainGenerator(dictionary, 10);
-		
+		ChainGenerator generator = new ChainGenerator(dictionary, 10);		
 
-		for(int i=0; i < 2; i++) {
+		for(int i=0; i < 500; i++) {
 			Chain chain = generator.generateChain(new Chain(), Direction.FORWARD);
-			System.out.println(chain);
 			List<SingletonString> list = new ArrayList<SingletonString>(dictionary.getRifms(chain.last()));
 			list.remove(chain.last());
 			Collections.shuffle(list);
@@ -43,22 +44,13 @@ public class Generator {
 				if(( r = generator.generateChain(r, Direction.BACKWARD)) != null) {
 					break;
 				}
-			}				
-			System.out.println(r);
+			}
+			if(r != null) {
+				System.out.println(chain);
+				System.out.println(r);
+			}
 		}
-		
-				
-		
-/*		int SIZE = 10;
-		for(int i=0; i < 4; i++) {
-			Line line = Line.getLine(dictionary, SIZE);
-			System.out.write(line.toString().getBytes());
-			System.out.println("");
-			System.out.write(Line.getLine(dictionary, SIZE, line.getWords().get(line.getWords().size()-1)).toString().getBytes());
-			System.out.println("");
-		}
-		*/
-
+		System.out.close();				
 	}
 	
 	private void init(String source) throws IOException {
