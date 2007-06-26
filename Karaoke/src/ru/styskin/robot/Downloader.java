@@ -2,8 +2,10 @@ package ru.styskin.robot;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.regex.Matcher;
@@ -11,9 +13,11 @@ import java.util.regex.Pattern;
 
 public class Downloader {
 	
-	private String url; 
+	private String url;
+	private String title;
 	
-	public Downloader(String url) {
+	public Downloader(String title, String url) {
+		this.title = title;
 		this.url = url;
 	}
 	
@@ -30,7 +34,8 @@ public class Downloader {
 				if(matcher.find()) {
 					s = matcher.group();
 					s = s.replace("<h1>", "").replace("</h1>", "").trim();
-					out = new PrintWriter(new BufferedWriter(new FileWriter(s + ".txt")));
+					String fileName = title + "/" + s + ".txt";
+					out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName))));
 				}
 				if(s.indexOf("<pre>") >= 0 && out != null) {
 					flag = true;

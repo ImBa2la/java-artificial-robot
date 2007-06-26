@@ -10,14 +10,16 @@ public class Robot implements Runnable {
 	
 	private String head;
 	private String enterance; 
+	private String title;
 	
-	public Robot(String head, String entarance) {
+	public Robot(String head, String entarance, String title) {
 		this.head = head;
-		this.enterance = entarance;		
+		this.enterance = entarance;
+		this.title = title;
 	}
 	
 	public static void main(String[] args) {
-		new Robot("http://www.karaoke.ru", "/base/362.htm").run();		
+		new Robot("http://www.karaoke.ru", "/base/67.htm", "Ä‏םא").run();		
 	}
 	                            
 	public void run() {
@@ -32,7 +34,7 @@ public class Robot implements Runnable {
 				if(matcher.find()) {
 					s = matcher.group();
 					s = s.substring(s.indexOf('=')+1);
-					new Downloader(head + s).run();					
+					new Downloader(title, head + s).run();					
 				}				
 			}			
 			in.close();
