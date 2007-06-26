@@ -137,7 +137,7 @@ public class Dictionary {
 	
 	private void generateChains(List<SingletonString> list) {
 		for(int i=0; i < list.size(); i++ ) {
-			for(int j=2; j <=3 && i + j < list.size(); j++) {
+			for(int j=2; j <=3 && i + j <= list.size(); j++) {
 				if(j == 2 && (blockWords.contains(list.get(i)) || blockWords.contains(list.get(i+1)))) {
 					continue;
 				}
