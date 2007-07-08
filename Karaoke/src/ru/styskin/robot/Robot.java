@@ -1,6 +1,7 @@
 package ru.styskin.robot;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.regex.Matcher;
@@ -19,11 +20,12 @@ public class Robot implements Runnable {
 	}
 	
 	public static void main(String[] args) {
-		new Robot("http://www.karaoke.ru", "/base/67.htm", "ƒюна").run();		
+		new Robot("http://www.karaoke.ru", "/base/186.htm", "—юткин").run();		
 	}
 	                            
 	public void run() {
-		
+		File dir = new File(title);
+		dir.mkdir();		
 		Pattern pattern = Pattern.compile("<a href=\\/song\\/\\d{1,5}\\.htm");
 		try {
 			URL url = new URL(head + enterance);
