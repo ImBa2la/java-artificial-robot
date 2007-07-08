@@ -20,13 +20,15 @@ public class Generator {
 	
 	private Dictionary dictionary;
 	private String title;
+	private int size;
 	
-	public Generator(String title) {
+	public Generator(String title, int size) {
 		this.title = title;
+		this.size = size;
 	}
 	
 	public static void main(String[] args) throws Exception {
-		(new Generator("ѕушкин")).run();
+		(new Generator("—юткин", 8)).run();
 	}
 	
 	public void run() throws Exception {
@@ -40,7 +42,7 @@ public class Generator {
 		Dictionary d2 = dictionary;
 		Set<SingletonString> set = new HashSet<SingletonString>(d1.getFrequencyStemmed().keySet());
 		set.retainAll(d2.getFrequencyStemmed().keySet());*/
-		ChainGenerator generator = new ChainGenerator(dictionary, 10);		
+		ChainGenerator generator = new ChainGenerator(dictionary, size);		
 
 		for(int i=0; i < 10; i++) {
 			Chain chain = generator.generateChain(new Chain(), Direction.FORWARD);
