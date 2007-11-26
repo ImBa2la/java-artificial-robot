@@ -34,7 +34,6 @@ public class UserDao extends JdbcDaoSupport {
 	}
 	
 	private void finishSessions() {
-		sessionTime = 30L;
 		getJdbcTemplate().update("insert into vkontakte_session (id, start_session, end_session)" +
 				" select id, last_session_date as start_session, last_seen_date as end_session from vkontakte_status " +
 				" where last_session_date is not null and last_seen_date + ? < NOW() and id in (select id from user_online)", new Object[] {sessionTime});
