@@ -36,10 +36,10 @@ public class UserDao extends JdbcDaoSupport {
 	private void finishSessions() {
 		getJdbcTemplate().update("insert into vkontakte_session (id, start_session, end_session)" +
 				" select id, last_session_date as start_session, last_seen_date as end_session from vkontakte_status " +
-				" where last_session_date is not null and last_seen_date + ? < NOW() and id in (select id from user_online)", new Object[] {sessionTime});
+				" where last_session_date is not null and last_seen_date + ? < NOW()", new Object[] {sessionTime});
 
 		getJdbcTemplate().update("update vkontakte_status set last_session_date = null " +
-				" where last_session_date is not null and (last_seen_date + ? < NOW() or id not in (select id from user_online))", new Object[] {sessionTime});
+				" where last_session_date is not null and last_seen_date + ? < NOW()", new Object[] {sessionTime});
 		
 		getJdbcTemplate().update("update vkontakte_status set last_seen_date = NOW() where id in (select id from user_online)");
 	}

@@ -10,7 +10,7 @@ public class RobotRunner {
 		Robot robot = (Robot) applicationContext.getBean("robot");
 		while(true) {
 			robot.run();
-			Thread.sleep(5*60*1000L);
+			Thread.sleep(2*60*1000L);
 		}
 	}
 
