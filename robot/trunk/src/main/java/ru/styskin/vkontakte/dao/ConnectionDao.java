@@ -9,7 +9,8 @@ public class ConnectionDao {
 	
 	private String cookie;	
 	
-	public URLConnection createConnection(String url) throws MalformedURLException, IOException {
+	public URLConnection createConnection(String url) throws MalformedURLException, IOException, InterruptedException {
+		Thread.sleep(500);		
 		URLConnection connection = new URL(url).openConnection();
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Cookie", cookie);

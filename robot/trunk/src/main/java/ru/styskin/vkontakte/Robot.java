@@ -6,25 +6,27 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import ru.styskin.vkontakte.dao.User;
+import ru.styskin.vkontakte.dao.UserDao;
 
-public class Robot implements Runnable {
+public class Robot implements Runnable, UserContainer {
 	
 	private static final Logger logger = Logger.getLogger(Robot.class); 
 	
 	private Map<Integer, User> users = new HashMap<Integer, User>();
 	
 	private FriendsChecker friendsChecker;
-	private OnlineChecker onlineChecker;
+	private FriendsOnlineChecker friendsOnlineChecker;
+	private UserDao userDao;
 	private int ownId;
 	
-	User addUser(int id) {
+	public User getUser(int id) {
 		User user = users.get(id);
 		if(user == null) {
 			user = new User(id);
 			users.put(id, user);
 		}
 		return user;		
-	}	
+	}
 	
 	public void addUser(User user) {
 		if(!users.containsKey(user.getId())) {
@@ -37,25 +39,29 @@ public class Robot implements Runnable {
 		this.friendsChecker = friendsChecker;
 	}
 
-	public void setOnlineChecker(OnlineChecker onlineChecker) {
-		this.onlineChecker = onlineChecker;
+	public void setFriendsOnlineChecker(FriendsOnlineChecker friendsOnlineChecker) {
+		this.friendsOnlineChecker = friendsOnlineChecker;
 	}
 
 	public void setOwnId(int ownId) {
 		this.ownId = ownId;
 	}
 	
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
 	public void run() {
-		User me = addUser(ownId);				
-		friendsChecker.workOn(me);
+		User me = getUser(ownId);				
+		friendsChecker.workOn(me, this);
+		friendsOnlineChecker.workOn(me, this);
+		userDao.saveUsers(users.values());		
+	}
+
+	public void setAll(Reducer<User> reduser) {
 		for(User u : users.values()) {
-			onlineChecker.workOn(u);
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				logger.error("Sleep interrupted", e);
-			}
-		}		
+			reduser.workOn(u);			
+		}
 	}	
 	
 }

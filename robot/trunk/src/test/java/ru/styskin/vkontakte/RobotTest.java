@@ -11,18 +11,15 @@ public class RobotTest extends AbstractDependencyInjectionSpringContextTests {
 		super();		
 		BasicConfigurator.configure();
 		super.setAutowireMode(AUTOWIRE_BY_NAME);
-	}
-	
+	}	
 	
 	public void testRobot() {
 		robot.run();
-	}
-	
+	}	
 
 	protected String[] getConfigLocations() {
-		return new String[] { "client.xml" };
+		return new String[] { "vkontakte.xml" };
 	}
-
 
 	public void setRobot(Robot robot) {
 		this.robot = robot;

@@ -20,5 +20,7 @@
 	<classpathentry kind="lib" path="lib/easymockclassextension.jar"/>
 	<classpathentry kind="lib" path="lib/spring-tx.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/c3p0-0.9.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.0.6-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

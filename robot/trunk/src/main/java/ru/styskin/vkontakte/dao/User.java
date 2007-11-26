@@ -5,6 +5,7 @@ import java.util.List;
 public class User {
 	
 	private int id;
+	private boolean online;
 	private String name;
 	private List<Integer> lazyFriends;
 	private List<User> friends;
@@ -17,6 +18,14 @@ public class User {
 		return id;
 	}
 	
+	public boolean isOnline() {
+		return online;
+	}
+	
+	public void setOnline(boolean online) {
+		this.online = online;
+	}
+
 	public String generateUrl() {
 		return "http://vkontakte.ru/profile.php?id=" + id;		
 	}

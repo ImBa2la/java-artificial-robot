@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans default-autowire="byName" default-lazy-init="true" >
+
+	<bean id="userDao" class="ru.styskin.vkontakte.dao.UserDao" >
+		<property name="sessionTime" value="${vkontakte.sessionTime}" />
+	</bean>
+	
+    <bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${local.driverClassName}"/>
+        <property name="jdbcUrl" value="${local.url}"/>
+        <property name="user" value="${local.username}"/>
+        <property name="password" value="${local.password}"/>
+        <property name="idleConnectionTestPeriod" value="120"/>
+    </bean>
+    
+</beans>
