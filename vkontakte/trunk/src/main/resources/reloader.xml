@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans default-autowire="byName" default-lazy-init="true" >
+	
+	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean" lazy-init="false">
+	    <property name="scheduledTimerTasks">
+	        <list>
+	            <ref bean="scheduledTask" />
+	        </list>
+	    </property>
+	</bean>
+
+	<bean id="scheduledTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+	    <property name="delay" value="20000" />
+	    <property name="period" value="${vkontakte.updateStatus}" />
+	    <property name="timerTask" ref="reloader" />
+	</bean>
+
+ 	<bean id="reloader" class="ru.styskin.vkontakte.Reloader" />
+</beans>

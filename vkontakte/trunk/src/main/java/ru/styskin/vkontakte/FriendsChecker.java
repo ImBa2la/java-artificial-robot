@@ -19,7 +19,7 @@ public class FriendsChecker implements Worker {
 
 	public void workOn(User user, UserContainer container) {
 		try {
-			Pattern pattern = Pattern.compile(".*<a href=\"profile\\.php\\?id=(\\d+)\">(.+)</a>.*");
+			Pattern pattern = Pattern.compile(".*<a href=\"profile\\.php\\?id=(\\d+)\">([^<>]+)</a>.*");
 			URLConnection connection = connectionDao.createConnection("http://vkontakte.ru/friend.php?id=" + user.getId());
 		    BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String line;
@@ -28,7 +28,9 @@ public class FriendsChecker implements Worker {
 				if(matcher.matches()) {
 					logger.info(matcher.group(1));
 					int userId = Integer.parseInt(matcher.group(1));
-					container.getUser(userId);
+					String name = matcher.group(2);
+					User u = container.getUser(userId);
+					u.setName(name);
 				}
 			}
 			logger.warn(user);

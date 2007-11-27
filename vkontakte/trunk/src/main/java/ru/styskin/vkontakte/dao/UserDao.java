@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 public class UserDao extends JdbcDaoSupport {
 	
-	private long sessionTime = 5*60L;
+	private String sessionTime = "500";
 	
 	@SuppressWarnings("unchecked")
 	private List<Integer> getUsers() {
@@ -20,9 +20,19 @@ public class UserDao extends JdbcDaoSupport {
 	
 	private void createUsers(Collection<User> users) {
 		for(User u : users) {
-			getJdbcTemplate().update("insert into vkontakte_status(id) values(?)", new Object[] { u.getId()});			
+			getJdbcTemplate().update("insert into vkontakte_status(id, name) values(?, ?)", new Object[] { u.getId(), u.getName()});
+			u.setUpdated(false);
 		}
 	}
+	
+	private void updateUsers(Collection<User> users) {
+		for(User u : users) {
+			if(u.isUpdated()) {
+				getJdbcTemplate().update("update vkontakte_status set name = ? where id = ?", new Object[] { u.getName(), u.getId()});
+				u.setUpdated(false);
+			}
+		}
+	}	
 	
 	private void usersOnline(Collection<User> users) {
 		getJdbcTemplate().execute("truncate table user_online");
@@ -36,10 +46,10 @@ public class UserDao extends JdbcDaoSupport {
 	private void finishSessions() {
 		getJdbcTemplate().update("insert into vkontakte_session (id, start_session, end_session)" +
 				" select id, last_session_date as start_session, last_seen_date as end_session from vkontakte_status " +
-				" where last_session_date is not null and last_seen_date + ? < NOW()", new Object[] {sessionTime});
+				" where last_session_date is not null and addtime(last_seen_date, ?) < NOW()", new Object[] {sessionTime});
 
 		getJdbcTemplate().update("update vkontakte_status set last_session_date = null " +
-				" where last_session_date is not null and last_seen_date + ? < NOW()", new Object[] {sessionTime});
+				" where last_session_date is not null and addtime(last_seen_date, ?) < NOW()", new Object[] {sessionTime});
 		
 		getJdbcTemplate().update("update vkontakte_status set last_seen_date = NOW() where id in (select id from user_online)");
 	}
@@ -57,12 +67,13 @@ public class UserDao extends JdbcDaoSupport {
 			}
 		}
 		createUsers(toCreate);
+		updateUsers(users);
 		usersOnline(users);
 		finishSessions();
 		startSessions();
 	}
 
-	public void setSessionTime(long sessionTime) {
+	public void setSessionTime(String sessionTime) {
 		this.sessionTime = sessionTime;
 	}	
 }

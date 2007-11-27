@@ -9,6 +9,8 @@ public class User {
 	private String name;
 	private List<Integer> lazyFriends;
 	private List<User> friends;
+	
+	private boolean updated = false;
 
 	public User(int id) {
 		this.id = id;
@@ -24,6 +26,25 @@ public class User {
 	
 	public void setOnline(boolean online) {
 		this.online = online;
+	}	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		if(this.name == null || !this.name.equals(name)) {
+			this.name = name;
+			updated = true;
+		}
+	}
+	
+	public boolean isUpdated() {
+		return updated;
+	}	
+
+	public void setUpdated(boolean updated) {
+		this.updated = updated;
 	}
 
 	public String generateUrl() {

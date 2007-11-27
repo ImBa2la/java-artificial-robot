@@ -1,5 +1,6 @@
-#Sun Nov 25 23:51:18 MSK 2007
+#Tue Nov 27 12:22:22 MSK 2007
 eclipse.preferences.version=1
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true
 org.springframework.ide.eclipse.core.builders.enable.aopreferencemodelbuilder=true
 org.springframework.ide.eclipse.core.validator.enable.org.springframework.ide.eclipse.beans.core.beansvalidator=true
 org.springframework.ide.eclipse.core.validator.enable.org.springframework.ide.eclipse.webflow.core.validator=true

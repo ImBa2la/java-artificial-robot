@@ -5,6 +5,9 @@
 	</configExtensions>
 	<configs>
 		<config>src/main/resources/client.xml</config>
+		<config>src/main/resources/dao.xml</config>
+		<config>src/main/resources/reloader.xml</config>
+		<config>src/main/resources/vkontakte.xml</config>
 	</configs>
 	<configSets>
 	</configSets>
