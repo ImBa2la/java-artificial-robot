@@ -1,6 +1,6 @@
 package ru.styskin.vkontakte;
 
-import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 public class RobotTest extends AbstractDependencyInjectionSpringContextTests {
@@ -9,7 +9,7 @@ public class RobotTest extends AbstractDependencyInjectionSpringContextTests {
 
 	public RobotTest() {
 		super();		
-		BasicConfigurator.configure();
+		DOMConfigurator.configure("bin/log4j-config.xml");
 		super.setAutowireMode(AUTOWIRE_BY_NAME);
 	}	
 	
