@@ -33,6 +33,7 @@ import org.styskin.ca.functions.complex.AdditiveOperator;
 import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.functions.single.SingleOperator;
 import org.styskin.ca.model.ComplexFunction;
+import org.styskin.ca.mvc.chart.Chart;
 
 public class CriteriaTreeForm extends JPanel {
 
@@ -218,7 +219,8 @@ public class CriteriaTreeForm extends JPanel {
 	 */
 	private JPanel getFunctionPanel() {
 		if (functionPanel == null) {
-			functionPanel = new JPanel();
+//			functionPanel = new JPanel();
+			functionPanel = Chart.getPanel();
 			functionPanel.setVisible(true);
 			functionPanel.setEnabled(false);
 		}
