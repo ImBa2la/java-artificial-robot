@@ -1,0 +1,14 @@
+unit Options;
+
+interface
+var
+  VerticalDependenceCriteria: Integer;
+  HorizontalDependenceCriteria: Integer;
+
+implementation
+
+initialization
+  VerticalDependenceCriteria := 0;
+  HorizontalDependenceCriteria := 0;
+end.
+ 
