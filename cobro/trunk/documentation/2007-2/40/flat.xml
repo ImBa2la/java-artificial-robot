@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<criteria name="price" type="complex" class="pow_I" weight="1" lambda="0.48"  >
+	<criteria name="position" type="complex" class="pow_I" weight="0.445" lambda="0.658"  >
+		<criteria name="region" type="complex" class="pow_I" weight="0.545" lambda="0.712"  >
+			<criteria name="n" type="single" class="simple" weight="0.016" fMax="0.0" fMin="0.0" />
+			<criteria name="ne" type="single" class="simple" weight="0.019" fMax="0.0" fMin="0.0" />
+			<criteria name="e" type="single" class="simple" weight="0.003" fMax="0.0" fMin="0.0" />
+			<criteria name="se" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+			<criteria name="s" type="single" class="simple" weight="0.002" fMax="0.0" fMin="0.0" />
+			<criteria name="sw" type="single" class="simple" weight="0.219" fMax="0.0" fMin="0.0" />
+			<criteria name="w" type="single" class="simple" weight="0.248" fMax="0.0" fMin="0.0" />
+			<criteria name="nw" type="single" class="simple" weight="0.244" fMax="0.0" fMin="0.0" />
+			<criteria name="c" type="single" class="simple" weight="0.249" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="distance" type="single" class="simple" weight="0.455" fMax="0.0" fMin="0.0" />
+	</criteria>
+	<criteria name="flat" type="complex" class="pow_I" weight="0.42" lambda="0.442"  >
+		<criteria name="room" type="complex" class="pow_I" weight="0.622" lambda="0.528"  >
+			<criteria name="1-room" type="complex" class="pow_I" weight="0.468" lambda="0.384"  >
+				<criteria name="1-live" type="single" class="simple" weight="0.218" fMax="0.0" fMin="0.0" />
+				<criteria name="1-kitchen" type="single" class="simple" weight="0.782" fMax="0.0" fMin="0.0" />
+			</criteria>
+			<criteria name="2-room" type="complex" class="pow_I" weight="0.003" lambda="0.371"  >
+				<criteria name="2-live" type="single" class="simple" weight="0.156" fMax="0.0" fMin="0.0" />
+				<criteria name="2-kitchen" type="single" class="simple" weight="0.844" fMax="0.0" fMin="0.0" />
+			</criteria>
+			<criteria name="3-room" type="complex" class="pow_I" weight="0.145" lambda="0.366"  >
+				<criteria name="3-live" type="single" class="simple" weight="0.638" fMax="0.0" fMin="0.0" />
+				<criteria name="3-kitchen" type="single" class="simple" weight="0.362" fMax="0.0" fMin="0.0" />
+			</criteria>
+			<criteria name="4-room" type="complex" class="pow_I" weight="0.384" lambda="0.673"  >
+				<criteria name="4-live" type="single" class="simple" weight="0.663" fMax="0.0" fMin="0.0" />
+				<criteria name="4-kitchen" type="single" class="simple" weight="0.337" fMax="0.0" fMin="0.0" />
+			</criteria>
+		</criteria>
+		<criteria name="floor" type="complex" class="pow_I" weight="0.378" lambda="0.489"  >
+			<criteria name="1" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+			<criteria name="last" type="single" class="simple" weight="0.502" fMax="0.0" fMin="0.0" />
+			<criteria name="any" type="single" class="simple" weight="0.498" fMax="0.0" fMin="0.0" />
+		</criteria>
+	</criteria>
+	<criteria name="house" type="complex" class="pow_I" weight="0.135" lambda="0.701"  >
+		<criteria name="n-floor" type="single" class="simple" weight="0.434" fMax="0.0" fMin="0.0" />
+		<criteria name="type" type="complex" class="pow_I" weight="0.566" lambda="0.413"  >
+			<criteria name="kirpich" type="single" class="simple" weight="0.725" fMax="0.0" fMin="0.0" />
+			<criteria name="panel" type="single" class="simple" weight="0.238" fMax="0.0" fMin="0.0" />
+			<criteria name="block" type="single" class="simple" weight="0.037" fMax="0.0" fMin="0.0" />
+		</criteria>
+	</criteria>
+</criteria>
