@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="windows-1251"?>
-
-<criteria name="Интегральный" type="complex" class="mult" lambda="0.6">
-	<criteria name="1" type="single" weight="1" class="linear" fMax="5" />
-	<criteria name="2" type="single" weight="1"  class="beta" P="1" Q="1" fMax="5"/>
-</criteria>

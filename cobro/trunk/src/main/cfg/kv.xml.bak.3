@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<criteria name="price" type="complex" class="pow_h" lPhi="0.5" lKsi="0.5">
+	<criteria name="position" type="complex" class="pow_h" lPhi="0.6" lKsi="0.5" weight="0.5">
+		<criteria name="region" type="complex" class="pow_h" lPhi="0.5" lKsi="0.7" weight="0.4">
+			<criteria name="n" type="single" weight="0.1"/>
+			<criteria name="ne" type="single" weight="0.1"/>
+			<criteria name="e" type="single" weight="0.1"/>
+			<criteria name="se" type="single" weight="0.1"/>
+			<criteria name="s" type="single" weight="0.1"/>
+			<criteria name="sw" type="single" weight="0.1"/>
+			<criteria name="w" type="single" weight="0.1"/>
+			<criteria name="nw" type="single" weight="0.1"/>
+			<criteria name="c" type="single" weight="0.2"/>
+		</criteria>
+		<criteria name="distance" type="single" weight="0.6"/>
+	</criteria>	
+	<criteria name="flat" type="complex" class="pow_h" lPhi="0.6" lKsi="0.5" weight="0.35">
+		<criteria name="room" type="complex" class="pow_h" lPhi="0.5" lKsi="0.7" weight="0.4">
+			<criteria name="1-room" type="complex" class="pow_h" lPhi="0.5" lKsi="0.5" weight="0.35">
+				<criteria name="1-live" type="single" weight="0.3"/>
+				<criteria name="1-kitchen" type="single" weight="0.7"/>
+			</criteria>
+			<criteria name="2-room" type="complex" class="pow_h" lPhi="0.5" lKsi="0.5" weight="0.25">
+				<criteria name="2-live" type="single" weight="0.3"/>
+				<criteria name="2-kitchen" type="single" weight="0.7"/>
+			</criteria>
+			<criteria name="3-room" type="complex" class="pow_h" lPhi="0.5" lKsi="0.5" weight="0.20">
+				<criteria name="3-live" type="single" weight="0.3"/>
+				<criteria name="3-kitchen" type="single" weight="0.7"/>
+			</criteria>
+			<criteria name="4-room" type="complex" class="pow_h" lPhi="0.5" lKsi="0.5" weight="0.20">
+				<criteria name="4-live" type="single" weight="0.3"/>
+				<criteria name="4-kitchen" type="single" weight="0.7"/>
+			</criteria>
+		</criteria>
+		<criteria name="floor" type="complex" class="pow_h" lPhi="0.5" lKsi="0.7" weight="0.6">
+			<criteria name="1" type="single" weight="0.2"/>
+			<criteria name="last" type="single" weight="0.3"/>
+			<criteria name="any" type="single" weight="0.5"/>
+		</criteria>		
+	</criteria>
+	<criteria name="house" type="complex" class="pow_h" lPhi="0.6" lKsi="0.5" weight="0.15">
+		<criteria name="n-floor" type="single" weight="0.2"/>
+		<criteria name="type" type="complex" class="pow_h" lPhi="0.5" lKsi="0.7" weight="0.8">
+			<criteria name="kirpich" type="single" weight="0.5"/>
+			<criteria name="panel" type="single" weight="0.3"/>
+			<criteria name="block" type="single" weight="0.2"/>
+		</criteria>		
+	</criteria>				
+</criteria>
