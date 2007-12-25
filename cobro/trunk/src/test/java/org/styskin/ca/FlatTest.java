@@ -1,4 +1,4 @@
-package org.styskin.ca.test;
+package org.styskin.ca;
 
 import java.io.FileWriter;
 import java.io.Writer;
@@ -14,9 +14,9 @@ import org.styskin.ca.model.CriteriaXMLParser;
 import org.styskin.ca.model.ValueLogger;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
-public class Flat extends TestCase {
+public class FlatTest extends TestCase {
 	
-	private static final Logger logger = Logger.getLogger(Flat.class);	
+	private static final Logger logger = Logger.getLogger(FlatTest.class);	
 	
 	private Criteria flat;
 	
