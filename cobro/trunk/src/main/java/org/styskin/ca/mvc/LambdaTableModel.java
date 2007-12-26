@@ -17,6 +17,11 @@ public class LambdaTableModel extends AbstractTableModel {
 		
 	Map<String, Double> lambda;
 	List<String> keys;
+	Runnable callback;
+	
+	public LambdaTableModel(Runnable callback) {
+		this.callback = callback;
+	}
 	
 	private ComplexOperator operator;
 	
@@ -36,7 +41,7 @@ public class LambdaTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		if(rowIndex > 0 && rowIndex < keys.size()) {
+		if(rowIndex >= 0 && rowIndex < keys.size()) {
 			switch(columnIndex) {
 			case 0:
 				return keys.get(rowIndex);
@@ -48,11 +53,12 @@ public class LambdaTableModel extends AbstractTableModel {
 	}
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-    	lambda.put(keys.get(rowIndex), (Double) aValue);    	    	
+    	lambda.put(keys.get(rowIndex), (Double) aValue);
+    	callback.run();
     }
 
     public void save() {
-    	operator.load(lambda);    	
+    	operator.load(lambda);
     }
     
     

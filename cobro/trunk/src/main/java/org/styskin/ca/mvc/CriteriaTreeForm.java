@@ -33,7 +33,7 @@ import org.styskin.ca.functions.complex.AdditiveOperator;
 import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.functions.single.SingleOperator;
 import org.styskin.ca.model.ComplexFunction;
-import org.styskin.ca.mvc.chart.Chart;
+import org.styskin.ca.mvc.chart.ComplexGraphPanel;
 
 public class CriteriaTreeForm extends JPanel {
 
@@ -50,6 +50,8 @@ public class CriteriaTreeForm extends JPanel {
 	private JPanel functionPanel = null;
 	
 	private LambdaTableModel lambdaTableModel = null;
+	
+	private ComplexGraphPanel complexGraphPanel = new ComplexGraphPanel();
 	
 	static class CriteriaRenderer extends DefaultTreeCellRenderer {
 
@@ -219,8 +221,7 @@ public class CriteriaTreeForm extends JPanel {
 	 */
 	private JPanel getFunctionPanel() {
 		if (functionPanel == null) {
-//			functionPanel = new JPanel();
-			functionPanel = Chart.getPanel();
+			functionPanel = complexGraphPanel.getPanel();
 			functionPanel.setVisible(true);
 			functionPanel.setEnabled(false);
 		}
@@ -316,9 +317,9 @@ public class CriteriaTreeForm extends JPanel {
 								newOperator.setWeights(op.getWeights());
 								newOperator.refresh();
 								criteria.setOperator(newOperator);
-							} else {
-								// Lambda
 							}
+							getLambdaTableModel().save();
+							updateComplexOperator(criteria);
 						} else {
 
 						}
@@ -427,7 +428,11 @@ public class CriteriaTreeForm extends JPanel {
 	
 	public LambdaTableModel getLambdaTableModel() {
 		if(lambdaTableModel == null) {
-			lambdaTableModel = new LambdaTableModel();
+			lambdaTableModel = new LambdaTableModel(new Runnable() {
+				public void run() {
+					enablePanelApplyChanges(true);
+				}
+			});
 			lambdaTableModel.setComplexOperator(((ComplexCriteria)this.getCriteria()).getOperator());			
 		}
 		return lambdaTableModel;
@@ -497,12 +502,19 @@ public class CriteriaTreeForm extends JPanel {
 		if (cr instanceof ComplexCriteria) {
 			ComplexCriteria criteria = (ComplexCriteria) cr;
 			getOperatorCombo().setSelectedItem( ComplexFunction.getFunction(criteria.getOperator().getClass()));
-			getLambdaTableModel().setComplexOperator(criteria.getOperator());
+			updateComplexOperator(criteria);
 		} else if (criteria instanceof SingleCriteria) {
 		}
 		enablePanelApplyChanges(false);
 	}
 
+
+
+	private void updateComplexOperator(ComplexCriteria criteria) {
+		getLambdaTableModel().setComplexOperator(criteria.getOperator());
+		getLambdaTableModel().fireTableDataChanged();
+		complexGraphPanel.updateChart(criteria.getOperator());
+	}
 
 
 	/**
