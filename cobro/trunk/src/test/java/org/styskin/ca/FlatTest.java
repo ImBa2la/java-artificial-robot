@@ -32,7 +32,7 @@ public class FlatTest extends TestCase {
 		optimizer.optimize(op.getBase(), op.getF());*/
 		
 		CacheCriteria c = new CacheCriteria(flat, op.getBase(), op.getF());
-		c.checkOut2(1);
+		c.checkOut2("out1.xml");
 		
 		
 		MultiOptimizer optimizer = new MultiOptimizer(flat);
@@ -40,7 +40,7 @@ public class FlatTest extends TestCase {
 		CriteriaXMLParser.saveXML(flat, "flat.xml");
 		
 		c = new CacheCriteria(flat, op.getBase(), op.getF());
-		c.checkOut2(2);		
+		c.checkOut2("out2.xml");		
 		
 		Writer out = new FileWriter("out.txt");
 		ValueLogger.output(out);
