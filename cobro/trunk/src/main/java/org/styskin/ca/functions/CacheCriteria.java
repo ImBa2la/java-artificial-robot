@@ -179,9 +179,9 @@ public class CacheCriteria {
 		logger.info("Sum = " + d);
 	}
 	
-	public void checkOut2(int n) {
+	public void checkOut2(String path) {
 		try {
-			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("out"+n+".out")));			
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path)));			
 			double[] Y = getValue();
 			for(int i=0; i< base.length; i++) {
 				out.printf("%4.4f\n", Y[i]) ;

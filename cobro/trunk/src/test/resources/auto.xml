@@ -1,0 +1,20 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans default-autowire="byName">
+
+	<bean name="auto" class="org.styskin.ca.utils.CriteriaFactory">
+		<property name="path" value="bin/auto/auto.xml" />
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="locations" value="classpath:auto.properties"/>
+	</bean>
+		
+	<bean name="autoDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${auto.driverClass}" />
+		<property name="jdbcUrl" value="${auto.jdbcUrl}" />
+		<property name="user" value="${auto.user}" />
+		<property name="password" value="${auto.password}" />
+	</bean>
+
+</beans>

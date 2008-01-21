@@ -25,10 +25,7 @@ public abstract class ComplexH1Operator extends ComplexOperator {
 		
 	}
 	
-	// TODO: for graph
-	@Override
 	public abstract double getKsi(double x);
-	@Override
 	public abstract double getPhi(double x);
 
 	

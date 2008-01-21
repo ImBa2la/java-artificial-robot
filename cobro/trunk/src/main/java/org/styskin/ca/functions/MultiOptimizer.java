@@ -9,7 +9,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import org.styskin.ca.model.Pair;
 
-public class MultiOptimizer {
+public class MultiOptimizer implements Optimizer {
 	
 	private static final Logger logger = Logger.getLogger(MultiOptimizer.class);
 	
@@ -26,7 +26,7 @@ public class MultiOptimizer {
 		
 		private int index;
 		
-		private Optimizer optimizer;
+		private SingleOptimizer optimizer;
 		
 		public Checker(Criteria root, double[] base, double[][] F) {
 			try {
@@ -44,7 +44,7 @@ public class MultiOptimizer {
 		}
 
 		public void run() {
-			optimizer = new Optimizer(root);			
+			optimizer = new SingleOptimizer(root);			
 			optimizer.optimize(base, F);
 		}
 

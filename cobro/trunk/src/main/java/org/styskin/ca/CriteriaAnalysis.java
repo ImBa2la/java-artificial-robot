@@ -34,7 +34,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.BasicConfigurator;
 import org.styskin.ca.functions.Criteria;
-import org.styskin.ca.functions.Optimizer;
+import org.styskin.ca.functions.SingleOptimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
 import org.styskin.ca.mvc.CriteriaTreeForm;
 
@@ -475,7 +475,7 @@ public class CriteriaAnalysis extends JFrame {
 					} catch (Exception e2) {
 						e2.printStackTrace();
 					}
-					Optimizer optimizer = new Optimizer(criteria);
+					SingleOptimizer optimizer = new SingleOptimizer(criteria);
 
 					JFileChooser fileChooser = new JFileChooser(new File("./"));
 					fileChooser.showOpenDialog((Component) e.getSource());

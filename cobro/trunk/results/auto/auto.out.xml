@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<criteria name="price" type="complex" class="pow_I" weight="1" lambda="0.123"  >
+	<criteria name="mark" type="complex" class="binary" weight="-0.246" lambda="0.594"  >
+		<criteria name="AUDI" type="single" class="simple" weight="0.015" fMax="0.0" fMin="0.0" />
+		<criteria name="BMW" type="single" class="simple" weight="0.004" fMax="0.0" fMin="0.0" />
+		<criteria name="CHEVROLET" type="single" class="simple" weight="0.053" fMax="0.0" fMin="0.0" />
+		<criteria name="CHRYSLER" type="single" class="simple" weight="0.054" fMax="0.0" fMin="0.0" />
+		<criteria name="DAEWOO" type="single" class="simple" weight="0.054" fMax="0.0" fMin="0.0" />
+		<criteria name="DODGE" type="single" class="simple" weight="0.054" fMax="0.0" fMin="0.0" />
+		<criteria name="FORD" type="single" class="simple" weight="0.055" fMax="0.0" fMin="0.0" />
+		<criteria name="GAZ" type="single" class="simple" weight="0.045" fMax="0.0" fMin="0.0" />
+		<criteria name="HONDA" type="single" class="simple" weight="0.047" fMax="0.0" fMin="0.0" />
+		<criteria name="HYUNDAI" type="single" class="simple" weight="0.046" fMax="0.0" fMin="0.0" />
+		<criteria name="KIA" type="single" class="simple" weight="0.049" fMax="0.0" fMin="0.0" />
+		<criteria name="LEXUS" type="single" class="simple" weight="0.022" fMax="0.0" fMin="0.0" />
+		<criteria name="MAZDA" type="single" class="simple" weight="0.033" fMax="0.0" fMin="0.0" />
+		<criteria name="MERCEDES" type="single" class="simple" weight="0.014" fMax="0.0" fMin="0.0" />
+		<criteria name="MITSUBISHI" type="single" class="simple" weight="0.05" fMax="0.0" fMin="0.0" />
+		<criteria name="NISSAN" type="single" class="simple" weight="0.049" fMax="0.0" fMin="0.0" />
+		<criteria name="OPEL" type="single" class="simple" weight="0.049" fMax="0.0" fMin="0.0" />
+		<criteria name="PEUGEOT" type="single" class="simple" weight="0.038" fMax="0.0" fMin="0.0" />
+		<criteria name="PORSCHE" type="single" class="simple" weight="0.003" fMax="0.0" fMin="0.0" />
+		<criteria name="RENAULT" type="single" class="simple" weight="0.045" fMax="0.0" fMin="0.0" />
+		<criteria name="SUBARU" type="single" class="simple" weight="0.036" fMax="0.0" fMin="0.0" />
+		<criteria name="TOYOTA" type="single" class="simple" weight="0.028" fMax="0.0" fMin="0.0" />
+		<criteria name="VAZ" type="single" class="simple" weight="0.059" fMax="0.0" fMin="0.0" />
+		<criteria name="VOLKSWAGEN" type="single" class="simple" weight="0.054" fMax="0.0" fMin="0.0" />
+		<criteria name="VOLVO" type="single" class="simple" weight="0.045" fMax="0.0" fMin="0.0" />
+	</criteria>
+	<criteria name="properties" type="complex" class="pow_I" weight="0.785" lambda="0.547"  >
+		<criteria name="body_type" type="complex" class="binary" weight="0.049" lambda="0.625"  >
+			<criteria name="ALLROAD" type="single" class="simple" weight="0.262" fMax="0.0" fMin="0.0" />
+			<criteria name="COUPE" type="single" class="simple" weight="0.221" fMax="0.0" fMin="0.0" />
+			<criteria name="HATCHBACK" type="single" class="simple" weight="0.001" fMax="0.0" fMin="0.0" />
+			<criteria name="MINI_WEN" type="single" class="simple" weight="0.207" fMax="0.0" fMin="0.0" />
+			<criteria name="SEDAN" type="single" class="simple" weight="0.093" fMax="0.0" fMin="0.0" />
+			<criteria name="UNIVERSAL" type="single" class="simple" weight="0.215" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="engine_type" type="complex" class="binary" weight="0.08" lambda="0.553"  >
+			<criteria name="CARBURETOR_GASOLINE" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+			<criteria name="DIESEL_SUPERCHARGING_GASOLINE" type="single" class="simple" weight="0.399" fMax="0.0" fMin="0.0" />
+			<criteria name="INJECTOR_GASOLINE" type="single" class="simple" weight="0.198" fMax="0.0" fMin="0.0" />
+			<criteria name="TURBO_SUPERCHARGING_GASOLINE" type="single" class="simple" weight="0.403" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="gear_type" type="complex" class="binary" weight="0.262" lambda="0.524"  >
+			<criteria name="ALL_WHEEL_DRIVE" type="single" class="simple" weight="0.524" fMax="0.0" fMin="0.0" />
+			<criteria name="FORWARD_CONTROL" type="single" class="simple" weight="0.476" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="transmission" type="complex" class="binary" weight="0.281" lambda="0.54"  >
+			<criteria name="AUTOMATIC" type="single" class="simple" weight="0.555" fMax="0.0" fMin="0.0" />
+			<criteria name="MECHANICAL" type="single" class="simple" weight="0.445" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="steering_wheel" type="complex" class="binary" weight="0.158" lambda="0.504"  >
+			<criteria name="LEFT" type="single" class="simple" weight="0.493" fMax="0.0" fMin="0.0" />
+			<criteria name="RIGHT" type="single" class="simple" weight="0.507" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="displacement" type="single" class="simple" weight="0.171" fMax="0.0" fMin="0.0" />
+	</criteria>
+	<criteria name="use" type="complex" class="pow_I" weight="0.461" lambda="0.646"  >
+		<criteria name="year" type="single" class="simple" weight="0.464" fMax="0.0" fMin="0.0" />
+		<criteria name="run" type="single" class="simple" weight="0.536" fMax="0.0" fMin="0.0" />
+	</criteria>
+</criteria>

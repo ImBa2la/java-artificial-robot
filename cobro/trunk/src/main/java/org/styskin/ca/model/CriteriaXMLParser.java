@@ -8,18 +8,28 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import javax.sql.DataSource;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.IntegralCriteria;
 import org.styskin.ca.functions.SingleCriteria;
+import org.styskin.ca.functions.complex.BinaryOperator;
 import org.styskin.ca.functions.single.SingleOperator;
 import org.styskin.ca.math.Function;
 import org.xml.sax.Attributes;
@@ -53,61 +63,110 @@ public class CriteriaXMLParser implements Constants {
 			return begin;			
 		}
 		
+		private static void getBinaryCriteria(Criteria cr, List<String> list) throws Exception {
+			if(cr instanceof ComplexCriteria) {
+				if(((ComplexCriteria)cr).getOperator() instanceof BinaryOperator) {
+					list.add(cr.getName());					
+				} else {				
+					for(Criteria c : cr.getChildren()) {
+						getBinaryCriteria(c, list);
+					}
+				}
+			}
+		}
+		
+		
 		private static Map<String, Integer> getCriteriaMap(Criteria cr) throws Exception {
 			Map<String, Integer> map = new HashMap<String, Integer>();
 			getCriteriaSize(cr, map, 0);
 			return map;			
 		}
 		
+		private static List<String> getBinaryMap(Criteria cr) throws Exception {
+			List<String> list = new ArrayList<String>();
+			getBinaryCriteria(cr, list);
+			return list;			
+		}		
 		
-		// TODO: Exception on data absence
-		public static Optimize getInput(String file, Criteria cr) {
+		public static Optimize getInput(String file, Criteria cr) throws Exception {
 			Optimize o = new Optimize();
-			try {
-				Map<String, Integer> map = getCriteriaMap(cr);
-				map.put("price", -1);
-				List<Integer> in_map = new ArrayList<Integer>();
-				
-				List<List<Double>> input = new ArrayList<List<Double>>();				
-				BufferedReader in = new BufferedReader(new FileReader(file));
-				StringTokenizer st;
-				
-				st = new StringTokenizer(in.readLine());
+			Map<String, Integer> map = getCriteriaMap(cr);
+			map.put("price", -1);
+			List<Integer> in_map = new ArrayList<Integer>();
+			
+			List<List<Double>> input = new ArrayList<List<Double>>();				
+			BufferedReader in = new BufferedReader(new FileReader(file));
+			StringTokenizer st;
+			
+			st = new StringTokenizer(in.readLine());
+			while(st.hasMoreTokens()) {
+				String key = st.nextToken(); 
+				if(map.containsKey(key)) {
+					in_map.add(map.get(key));						
+				}
+			}				
+			String s = null;
+			while((s = in.readLine()) != null) {
+				st = new StringTokenizer(s);
+				List<Double> d = new ArrayList<Double>();
+				input.add(d);
 				while(st.hasMoreTokens()) {
-					String key = st.nextToken(); 
-					if(map.containsKey(key)) {
-						in_map.add(map.get(key));						
-					}
-				}				
-				String s = null;
-				while((s = in.readLine()) != null) {
-					st = new StringTokenizer(s);
-					List<Double> d = new ArrayList<Double>();
-					input.add(d);
-					while(st.hasMoreTokens()) {
-						d.add(FORMAT.parse(st.nextToken()).doubleValue());
-					}
-					if(d.size() != in_map.size()) {
-						throw new Exception("Incorrect parameters number");						
+					d.add(FORMAT.parse(st.nextToken()).doubleValue());
+				}
+				if(d.size() != in_map.size()) {
+					throw new Exception("Incorrect parameters number");						
+				}
+			}
+			o.F = new double[input.size()][map.size()-1];
+			o.base = new double[input.size()];				
+			for(int j=0; j < input.size(); j++) {
+				List<Double> d = input.get(j);
+				for(int i=0; i < d.size(); i++) {
+					if(in_map.get(i) < 0) {
+						o.base[j] = d.get(i);
+					} else {
+						o.F[j][in_map.get(i)] = d.get(i);
 					}
 				}
-				o.F = new double[input.size()][map.size()-1];
-				o.base = new double[input.size()];				
-				for(int j=0; j < input.size(); j++) {
-					List<Double> d = input.get(j);
-					for(int i=0; i < d.size(); i++) {
-						if(in_map.get(i) < 0) {
-							o.base[j] = d.get(i);
-						} else {
-							o.F[j][in_map.get(i)] = d.get(i);
-						}
-					}
-				}				
-			} catch(Exception ex) {
-				ex.printStackTrace();
-			}			
+			}				
 			return o;
 		}
+		
+		public static Optimize getInput(DataSource dataSource, final String tableName, Criteria cr) throws Exception {
+			JdbcTemplate template = new JdbcTemplate(dataSource);			
+			final Optimize o = new Optimize();
+			final Map<String, Integer> map = getCriteriaMap(cr);
+			final List<String> binaryCriteria = getBinaryMap(cr);
+			map.put("price", -1);
+			int inputSize = template.queryForInt("select count(1) from " + tableName);
+			o.F = new double[inputSize][map.size()-1];
+			o.base = new double[inputSize];
+			template.execute(new ConnectionCallback() {
+				public Object doInConnection(Connection connection) throws SQLException, DataAccessException {
+					ResultSet rs = connection.createStatement().executeQuery("select * from " + tableName);
+					int index = 0;
+					while(rs.next()) {
+						Arrays.fill(o.F[index], 0);						
+						for(String binary : binaryCriteria) {
+							o.F[index][map.get(rs.getString(binary))] = 1;				
+						}
+						for(String name : map.keySet()) {
+							if(map.get(name) < 0) {
+								o.base[index] = rs.getDouble(name);
+							} else {
+								try {
+									o.F[index][map.get(name)] = rs.getDouble(name);
+								} catch (Exception e) {}
+							}
+						}
+						index ++;
+					}					
+					return null;
+				}
+			});	
+			return o;
+		}
+		
 
 		public double[] getBase() {
 			return base;
@@ -218,7 +277,7 @@ public class CriteriaXMLParser implements Constants {
         // TODO: Function in XML embeded         
         CriteriaXMLHandler handler = new CriteriaXMLHandler(new Function() {
 			public double getValue(double x) {
-				return 2000+6000*x;
+				return 30000+5000000*x;
 			}
         });
         xmlReader.setContentHandler(handler);

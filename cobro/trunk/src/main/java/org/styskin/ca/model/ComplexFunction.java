@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.styskin.ca.functions.complex.AdditiveOperator;
+import org.styskin.ca.functions.complex.BinaryOperator;
 import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.functions.complex.ExponentalHOperator;
 import org.styskin.ca.functions.complex.PowerHOperator;
@@ -17,7 +18,8 @@ public enum ComplexFunction {
 	ADDITIVE("add", AdditiveOperator.class),
 	POWER_H("pow_h", PowerHOperator.class),
 	EXPONENTAL_H("exp_h", ExponentalHOperator.class),
-	POWER_I("pow_I", PowerIOperator.class);
+	POWER_I("pow_I", PowerIOperator.class),
+	BINARY("binary", BinaryOperator.class);
 
 	private String name;
 	private Class<? extends ComplexOperator> clazz;

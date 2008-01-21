@@ -1,13 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/config"/>
+	<classpathentry kind="src" path="src/main/cfg"/>
+	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="src" path="src/main/img"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/main/config"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/junit.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.12.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.12.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.8a.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/test/ant-junit-1.6.5.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/activation.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/aopalliance.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/avalon-framework-4.1.5.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/c3p0-0.9.1.1.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/commons-cli-1.0.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/commons-dbcp-1.2.1.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/commons-lang-2.1.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/excalibur-configuration-1.2.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/fastutil-5.0.9.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/idldepend-1-0-0.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/javolution.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/jtds-1.2.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/logkit-2.0.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/mail.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/mtj.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/mysql-connector-java-5.1.5-bin.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/openorb-event-1.4.0.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/openorb-native-1.4.0.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/openorb-orb-1.4.0.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/openorb-orb-omg-1.4.0.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/openorb-orb-tools-1.4.0.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/openorb-tools-1.4.0.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/spring.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/spring-aop.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/spring-aspects.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/spring-beans.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/spring-context.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/spring-corba.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/spring-core.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/spring-dao.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/spring-jdbc.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/sqljdbc.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/test/easymock-2.0.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/test/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="/ir-utils/lib/test/spring-mock.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ir-utils"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

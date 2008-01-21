@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.Optimizer;
+import org.styskin.ca.functions.SingleOptimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
@@ -54,8 +55,8 @@ public class Main {
 
 		cr.clearCache();
 		logger.debug("" + cr.check() + criteria2);*/
-		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
-		Optimizer optimizer = new Optimizer(criteria1);
+		double[][] F = SingleOptimizer.getMatrix(criteria0.getTotalSize(), 300);
+		SingleOptimizer optimizer = new SingleOptimizer(criteria1);
 		optimizer.optimize(criteria0, F);
 		System.out.printf("%s\n%s",criteria1, criteria0);
 		
@@ -96,7 +97,7 @@ public class Main {
 	public void testFlats() throws Exception {
 		Criteria cr = CriteriaXMLParser.loadXML("cfg/kv.xml");
 		Optimize op = Optimize.getInput("cfg/input.txt", cr);
-		Optimizer optimizer = new Optimizer(cr);
+		Optimizer optimizer = new SingleOptimizer(cr);
 		optimizer.optimize(op.getBase(), op.getF());
 		CriteriaXMLParser.saveXML(cr, "flat2.xml");	
 		
@@ -115,7 +116,7 @@ public class Main {
 			}
 		}
 		inF.close();*/
-		double[][] F = Optimizer.getMatrix(criteria0.getTotalSize(), 300);
+		double[][] F = SingleOptimizer.getMatrix(criteria0.getTotalSize(), 300);
 		CacheCriteria cache1 = new CacheCriteria(criteria1, criteria0, F);
 		CacheCriteria cache2 = new CacheCriteria(criteria2, criteria0, F);
 
