@@ -179,17 +179,17 @@ public class CacheCriteria {
 		logger.info("Sum = " + d);
 	}
 	
-	public void checkOut2(String path) {
-		try {
-			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path)));			
-			double[] Y = getValue();
-			for(int i=0; i< base.length; i++) {
-				out.printf("%4.4f\n", Y[i]) ;
-			}
-			out.close();
-		} catch (IOException ex) {
-			ex.printStackTrace();			
+	public void checkOut2(String path) throws IOException {
+		double[] Y = getValue();
+		outputValues(path, Y);
+	}
+
+	public static void outputValues(String path, double[] Y) throws IOException {
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path)));			
+		for(int i=0; i< Y.length; i++) {
+			out.printf("%4.4f\n", Y[i]) ;
 		}
+		out.close();
 	}
 
 	public double check() {

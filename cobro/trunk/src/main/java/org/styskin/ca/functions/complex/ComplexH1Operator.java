@@ -64,6 +64,12 @@ public abstract class ComplexH1Operator extends ComplexOperator {
 
 		public void set(int index, double value) {
 			lambda = value;
+			if(lambda < getLowerBound(index)) {
+				lambda = getLowerBound(index);
+			}
+			if(lambda > getUpperBound(index)) {
+				lambda = getUpperBound(index);
+			}
 		}
 
 		public int size() {

@@ -83,6 +83,12 @@ public abstract class ComplexHOperator extends ComplexOperator {
 		}
 
 		public void set(int index, double value) {
+			if(value < getLowerBound(index)) {
+				value = getLowerBound(index);
+			}
+			if(value > getUpperBound(index)) {
+				value = getUpperBound(index);
+			}
 			switch (index) {
 			case 0:
 				lPhi = value;

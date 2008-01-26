@@ -23,7 +23,7 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 
 	List<Double> weights;
 
-	void normalize() {
+	public void normalize() {
 		double sum = 0;
 		for(double x : weights) {
 			sum += x;
@@ -89,10 +89,15 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 		return weights;
 	}
 	
+	public void setWeight(int index, double w) {
+		weights.set(index, w > EPS ? w: EPS);
+	}
+	
 	public void setWeights(List<Double> weights) {
 		this.weights = weights;
 		normalize();
 	}
+	
 	public abstract double getPhi(double x);
 
 	public abstract double getKsi(double x);	

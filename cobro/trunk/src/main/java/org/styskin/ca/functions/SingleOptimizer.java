@@ -40,13 +40,13 @@ public class SingleOptimizer implements Constants, Optimizer {
 		cache.turnOffCache(c);
 		double f = cache.check();
 		for(int i = 0; i < SW; i++) {
-			op.getWeights().set(i, V[i] + h[i]);
+			op.setWeight(i, V[i] + h[i]);
 			op.refresh();
 			if (cache.check() < f) {
 				V[i] += h[i];
 				moved = true;
 			} else {
-				op.getWeights().set(i, V[i] - h[i]);
+				op.setWeight(i, V[i] - h[i]);
 				op.refresh();
 				if (cache.check() < f) {
 					V[i] -= h[i];
@@ -99,7 +99,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 			}
 		}
 		for(int i = 0; i < SW; i++) {
-			op.getWeights().set(i, V[i]);
+			op.setWeight(i, V[i]);
 		}
 		for(int i = SW; i < S; i++) {
 			op.getParameters().set(i - SW, V[i]);						

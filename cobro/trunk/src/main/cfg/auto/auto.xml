@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 
 <criteria name="price" type="complex" class="pow_I" lambda="0.5">
-	<criteria name="mark" type="complex" class="binary" lambda="0.5" weight="0.5">
+<!--  	<criteria name="mark" type="complex" class="binary" lambda="0.5" weight="0.5">
 		<criteria name="AUDI" type="single" weight="0.1"/>
 		<criteria name="BMW" type="single" weight="0.1"/>
 		<criteria name="CHEVROLET" type="single" weight="0.1"/>
@@ -27,7 +27,7 @@
 		<criteria name="VAZ" type="single" weight="0.1"/>
 		<criteria name="VOLKSWAGEN" type="single" weight="0.1"/>
 		<criteria name="VOLVO" type="single" weight="0.1"/>
-	</criteria>	
+	</criteria>	 -->
 	<criteria name="properties" type="complex" class="pow_I" lambda="0.5" weight="0.5">
 		<criteria name="body_type" type="complex" class="binary" lambda="0.5" weight="0.5">
 			<criteria name="ALLROAD" type="single" weight="0.1"/>
@@ -56,9 +56,9 @@
 			<criteria name="RIGHT" type="single" weight="0.1"/>
 		</criteria>
 		<criteria name="displacement" type="single" weight="0.5"/>
-	</criteria>
+	</criteria> 
 	<criteria name="use" type="complex" class="pow_I" lambda="0.5" weight="0.5">
 		<criteria name="year" type="single" weight="0.5"/>
 		<criteria name="run" type="single" weight="0.5"/>
-	</criteria>				
+ </criteria>				
 </criteria>

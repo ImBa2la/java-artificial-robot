@@ -78,6 +78,10 @@ public class IntegralCriteria extends ComplexCriteria {
 			return op.getWeights();
 		}
 		
+		public void setWeight(int index, double w) {
+			op.setWeight(index, w);
+		}
+		
 		public void setWeights(List<Double> weights) {
 			op.setWeights(weights);
 		}
