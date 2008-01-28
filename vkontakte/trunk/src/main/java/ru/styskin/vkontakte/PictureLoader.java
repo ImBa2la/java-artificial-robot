@@ -22,16 +22,20 @@ public class PictureLoader extends TimerTask {
 		Triple<Integer, String, String> path = userDao.next();
 		if(path != null) {
 			try {
-				if(path.getC() != null) {
-					URL url = new URL(path.getC());
-					BufferedInputStream in = new BufferedInputStream(url.openConnection().getInputStream());
-					BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(this.path + "/" + path.getB()));
-					int c;
-					while( (c = in.read()) != -1) {
-						out.write(c);										
+				try {
+					if(path.getC() != null) {
+						URL url = new URL(path.getC());
+						BufferedInputStream in = new BufferedInputStream(url.openConnection().getInputStream());
+						BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(this.path + "/" + path.getB() + ".jpg"));
+						int c;
+						while( (c = in.read()) != -1) {
+							out.write(c);										
+						}
+						in.close();
+						out.close();
 					}
-					in.close();
-					out.close();
+				} catch (Exception e) {
+					logger.info("Cannot get", e);
 				}
 				userDao.setDone(path.getA());
 			} catch (Throwable e) {

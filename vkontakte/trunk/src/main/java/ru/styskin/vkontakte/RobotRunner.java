@@ -1,12 +1,12 @@
 package ru.styskin.vkontakte;
 
-import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class RobotRunner {
 	
 	public static void main(String[] args) throws Throwable {
-		BasicConfigurator.configure();		
+		DOMConfigurator.configure("bin/log4j-config.xml");
 		new ClassPathXmlApplicationContext(getContextPath());
 	}
 

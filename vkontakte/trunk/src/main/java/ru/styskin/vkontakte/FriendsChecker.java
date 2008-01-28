@@ -3,6 +3,7 @@ package ru.styskin.vkontakte;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -23,7 +24,7 @@ public class FriendsChecker implements Worker {
 	public void workOn(User user, UserContainer container) {
 		try {
 			Pattern namePattern = Pattern.compile(".*<a .*href=\"profile\\.php\\?id=(\\d+)\">([^<>]+)</a>.*");
-			Pattern picturePattern = Pattern.compile(".*<a .*href=\"profile\\.php\\?id=(\\d+)\"><IMG SRC='(.*)' ALT='' />)</a>.*");
+			Pattern picturePattern = Pattern.compile(".*<a .*href=\"profile\\.php\\?id=(\\d+)\"><IMG SRC='(.*)' ALT='' /></a>.*");
 			List<Pair<Pattern, ? extends PropertySetter<User, String>>> patterns = new ArrayList<Pair<Pattern,? extends PropertySetter<User,String>>>();
 			patterns.add(Pair.makePair(namePattern, new PropertySetter<User, String>() {
 				public void workOn(User u, String s) {
@@ -36,13 +37,13 @@ public class FriendsChecker implements Worker {
 				}
 			}));
 			URLConnection connection = connectionDao.createConnection("http://vkontakte.ru/friend.php?id=" + user.getId());
-		    BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		    BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("cp1251")));
 			String line;
 			while ((line = rd.readLine()) != null) {
 				for(Pair<Pattern, ? extends PropertySetter<User, String>> pair : patterns) {
 					Matcher matcher = pair.getFirst().matcher(line);
 					if(matcher.matches()) {
-						logger.info(matcher.group(1));
+						logger.info(matcher.group(2));
 						int userId = Integer.parseInt(matcher.group(1));
 						String value = matcher.group(2);
 						User u = container.getUser(userId);
