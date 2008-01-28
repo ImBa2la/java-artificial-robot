@@ -1,12 +1,17 @@
 package ru.styskin.vkontakte.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+
+import ru.styskin.utils.Triple;
 
 public class UserDao extends JdbcDaoSupport {
 	
@@ -20,7 +25,9 @@ public class UserDao extends JdbcDaoSupport {
 	
 	private void createUsers(Collection<User> users) {
 		for(User u : users) {
-			getJdbcTemplate().update("insert into vkontakte_status(id, name) values(?, ?)", new Object[] { u.getId(), u.getName()});
+			getJdbcTemplate().update("insert into vkontakte_status(id) values(?)", new Object[] { u.getId()});
+			getJdbcTemplate().update("insert into vkontakte_info(id, name, picture) values(?, ?, ?)", new Object[] { u.getId(), u.getName(), u.getPicture()});
+			getJdbcTemplate().update("insert into vkontakte_queue(uid, path) values(?, ?)", new Object[] { String.valueOf(u.getId()), u.getPicture()});
 			u.setUpdated(false);
 		}
 	}
@@ -28,7 +35,8 @@ public class UserDao extends JdbcDaoSupport {
 	private void updateUsers(Collection<User> users) {
 		for(User u : users) {
 			if(u.isUpdated()) {
-				getJdbcTemplate().update("update vkontakte_status set name = ? where id = ?", new Object[] { u.getName(), u.getId()});
+				getJdbcTemplate().update("update vkontakte_info set name = ?, picture = ? where id = ?", new Object[] { u.getName(), u.getPicture(), u.getId()});
+				getJdbcTemplate().update("insert into vkontakte_queue(uid, path) values(?, ?)", new Object[] { u.getId(), u.getPicture()});
 				u.setUpdated(false);
 			}
 		}
@@ -71,6 +79,25 @@ public class UserDao extends JdbcDaoSupport {
 		usersOnline(users);
 		finishSessions();
 		startSessions();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Triple<Integer, String, String> next() {
+		Triple<Integer, String, String> triple = null;
+		try {
+			triple = (Triple<Integer, String, String>) getJdbcTemplate().queryForObject("select id, uid, path from vkontakte_queue where id = ( select min(id) from vkontakte_queue where done = 0)", new RowMapper() {
+				public Object mapRow(ResultSet rs, int index) throws SQLException {				
+					return Triple.makeTriple(rs.getInt(1), rs.getString(2), rs.getString(3));
+				}						
+			});
+		} catch (Throwable e) {
+			logger.debug("No in queue", e);
+		}
+		return triple;
+	}
+	
+	public void setDone(int index) {
+		getJdbcTemplate().update("update vkontakte_queue set done = 1 where id = ?", new Object[] {index});
 	}
 
 	public void setSessionTime(String sessionTime) {

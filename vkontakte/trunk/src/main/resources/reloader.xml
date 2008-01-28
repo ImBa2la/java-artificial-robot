@@ -6,16 +6,22 @@
 	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean" lazy-init="false">
 	    <property name="scheduledTimerTasks">
 	        <list>
-	            <ref bean="scheduledTask" />
+	            <ref bean="robotTask" />
+	            <ref bean="pictureTask" />	            
 	        </list>
 	    </property>
 	</bean>
 
-	<bean id="scheduledTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+	<bean id="robotTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
 	    <property name="delay" value="20000" />
 	    <property name="period" value="${vkontakte.updateStatus}" />
-	    <property name="timerTask" ref="reloader" />
+	    <property name="timerTask" ref="robot" />
+	</bean>
+	
+	<bean id="pictureTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+	    <property name="delay" value="20000" />
+	    <property name="period" value="${vkontakte.updateStatus}" />
+	    <property name="timerTask" ref="pictureLoader" />
 	</bean>
 
- 	<bean id="reloader" class="ru.styskin.vkontakte.Reloader" />
 </beans>

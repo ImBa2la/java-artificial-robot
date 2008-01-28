@@ -2,13 +2,14 @@ package ru.styskin.vkontakte;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 
 import ru.styskin.vkontakte.dao.User;
 import ru.styskin.vkontakte.dao.UserDao;
 
-public class Robot implements Runnable, UserContainer {
+public class Robot extends TimerTask implements UserContainer {
 	
 	private static final Logger logger = Logger.getLogger(Robot.class); 
 	

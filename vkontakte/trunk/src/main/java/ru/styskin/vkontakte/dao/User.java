@@ -1,14 +1,18 @@
 package ru.styskin.vkontakte.dao;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.print.attribute.HashAttributeSet;
+
 
 public class User {
 	
 	private int id;
 	private boolean online;
 	private String name;
-	private List<Integer> lazyFriends;
-	private List<User> friends;
+	private String picture;
+	private Map<String, String> interests = new HashMap<String, String>();
 	
 	private boolean updated = false;
 
@@ -39,6 +43,26 @@ public class User {
 		}
 	}
 	
+	public void addInterest(String f, String v) {
+		interests.put(f, v);		
+		updated = true;
+	}
+	
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		if(this.picture == null || !this.picture.equals(picture)) {
+			this.picture = picture;
+			updated = true;
+		}
+	}
+
+	public Map<String, String> getInterests() {
+		return interests;
+	}
+
 	public boolean isUpdated() {
 		return updated;
 	}	
