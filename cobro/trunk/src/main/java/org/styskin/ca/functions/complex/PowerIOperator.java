@@ -33,8 +33,7 @@ public class PowerIOperator extends ComplexH1Operator {
 	@Override
 	public double getPhi(double x) {
 		return x;
-	}
-	
+	}	
 	
 	@Override
 	public double getValue(double[] X) throws Exception {

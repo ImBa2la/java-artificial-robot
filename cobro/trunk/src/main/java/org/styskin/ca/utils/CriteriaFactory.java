@@ -12,7 +12,7 @@ public class CriteriaFactory implements FactoryBean {
 		return CriteriaXMLParser.loadXML(path);
 	}
 
-	public Class getObjectType() {
+	public Class<?> getObjectType() {
 		return Criteria.class;
 	}
 

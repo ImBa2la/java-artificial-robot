@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.MultiOptimizer;
+import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
 import org.styskin.ca.model.ValueLogger;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
@@ -28,14 +29,14 @@ public class FlatTest extends TestCase {
 	public void testFlats() throws Exception {
 		logger.info("Optimization started");		
 		Optimize op = Optimize.getInput("cfg/flat/input.txt", flat);
-/*		Optimizer optimizer = new Optimizer(flat);
-		optimizer.optimize(op.getBase(), op.getF());*/
+//		Optimizer optimizer = new Optimizer(flat);
+//		optimizer.optimize(op.getBase(), op.getF());
 		
 		CacheCriteria c = new CacheCriteria(flat, op.getBase(), op.getF());
 		c.checkOut2("out1.xml");
 		
 		
-		MultiOptimizer optimizer = new MultiOptimizer(flat);
+		Optimizer optimizer = new MultiOptimizer(flat);
 		flat = optimizer.optimize(op.getBase(), op.getF());
 		CriteriaXMLParser.saveXML(flat, "flat.xml");
 		

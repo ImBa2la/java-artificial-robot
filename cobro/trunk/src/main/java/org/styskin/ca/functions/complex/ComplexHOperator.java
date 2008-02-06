@@ -97,6 +97,7 @@ public abstract class ComplexHOperator extends ComplexOperator {
 				lKsi = value;
 				break;
 			}
+			initialize();
 		}
 
 		public int size() {

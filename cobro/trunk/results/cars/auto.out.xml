@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<criteria name="price" type="complex" class="pow_I" weight="1" lambda="0.464"  >
+	<criteria name="origin" type="complex" class="binary" weight="0.158" lambda="0.821"  >
+		<criteria name="USA" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+		<criteria name="Europe" type="single" class="simple" weight="0.922" fMax="0.0" fMin="0.0" />
+		<criteria name="Japan" type="single" class="simple" weight="0.078" fMax="0.0" fMin="0.0" />
+	</criteria>
+	<criteria name="properties" type="complex" class="pow_I" weight="0" lambda="0.52"  >
+		<criteria name="mpg" type="single" class="simple" weight="0.107" fMax="0.0" fMin="0.0" />
+		<criteria name="cylinder" type="single" class="simple" weight="0.131" fMax="0.0" fMin="0.0" />
+		<criteria name="displace" type="single" class="simple" weight="0.237" fMax="0.0" fMin="0.0" />
+		<criteria name="hp" type="single" class="simple" weight="0.277" fMax="0.0" fMin="0.0" />
+		<criteria name="accel" type="single" class="simple" weight="0.248" fMax="0.0" fMin="0.0" />
+	</criteria>
+	<criteria name="year" type="single" class="simple" weight="0.369" fMax="0.0" fMin="0.0" />
+	<criteria name="weight" type="single" class="simple" weight="0.473" fMax="0.0" fMin="0.0" />
+</criteria>

@@ -1,0 +1,9 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans default-autowire="byName">
+
+	<bean name="cars" class="org.styskin.ca.utils.CriteriaFactory">
+		<property name="path" value="bin/cars/auto.xml" />
+	</bean>
+	
+</beans>

@@ -21,9 +21,7 @@ public abstract class ComplexH1Operator extends ComplexOperator {
 		super(weight);
 	}
 	
-	public void initialize() {
-		
-	}
+	public void initialize() {}
 	
 	public abstract double getKsi(double x);
 	public abstract double getPhi(double x);

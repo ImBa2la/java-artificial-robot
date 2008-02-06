@@ -26,10 +26,10 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 	public void normalize() {
 		double sum = 0;
 		for(double x : weights) {
-			sum += x;
+			sum += x > 0? x : 0;
 		}
 		for(int i = 0; i < weights.size(); i++) {
-			weights.set(i, weights.get(i)/sum);
+			weights.set(i, weights.get(i) > 0? weights.get(i)/sum: 0);
 		}
 	}
 

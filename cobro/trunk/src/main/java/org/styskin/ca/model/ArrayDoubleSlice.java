@@ -23,8 +23,7 @@ public class ArrayDoubleSlice implements Slice {
 	}
 	
 	public void set(int index, double value) {
-		assert(start + index > end);
-		
+		assert(start + index > end);		
 		array[start + index] = value;
 	}
 	
