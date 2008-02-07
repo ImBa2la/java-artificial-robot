@@ -28,6 +28,13 @@
 		<criteria name="VOLKSWAGEN" type="single" weight="0.1"/>
 		<criteria name="VOLVO" type="single" weight="0.1"/>
 	</criteria>	 -->
+	<criteria name="origin" type="complex" class="binary" lambda="0.5" weight="0.5">
+		<criteria name="europe" type="single" weight="0.1"/>
+		<criteria name="usa" type="single" weight="0.1"/>
+		<criteria name="russia" type="single" weight="0.1"/>
+		<criteria name="korea" type="single" weight="0.1"/>
+		<criteria name="japan" type="single" weight="0.1"/>
+	</criteria>	
 	<criteria name="properties" type="complex" class="pow_I" lambda="0.5" weight="0.5">
 		<criteria name="body_type" type="complex" class="binary" lambda="0.5" weight="0.5">
 			<criteria name="ALLROAD" type="single" weight="0.1"/>

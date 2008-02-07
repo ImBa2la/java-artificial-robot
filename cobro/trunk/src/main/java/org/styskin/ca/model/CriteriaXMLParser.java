@@ -277,7 +277,8 @@ public class CriteriaXMLParser implements Constants {
         // TODO: Function in XML embeded         
         CriteriaXMLHandler handler = new CriteriaXMLHandler(new Function() {
 			public double getValue(double x) {
-				return 8500*x + 1500;
+//				return 5000000*x;
+				return Math.exp(x/0.062);  //0.062*Math.log(x);
 			}
         });
         xmlReader.setContentHandler(handler);
