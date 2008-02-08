@@ -1,0 +1,2 @@
+2008-02-08 01:27:27,859 INFO   [MultiOptimizer main] 213256.8392359442 n = 21 step=133
+2008-02-08 01:27:32,859 INFO   [MultiOptimizer main] 213256.8392359442
