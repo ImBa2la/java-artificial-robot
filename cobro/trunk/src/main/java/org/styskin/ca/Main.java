@@ -55,8 +55,8 @@ public class Main {
 
 		cr.clearCache();
 		logger.debug("" + cr.check() + criteria2);*/
-		double[][] F = SingleOptimizer.getMatrix(criteria0.getTotalSize(), 300);
-		SingleOptimizer optimizer = new SingleOptimizer(criteria1);
+		double[][] F = Optimize.getMatrix(criteria0.getTotalSize(), 300);
+		Optimizer optimizer = new SingleOptimizer(criteria1);
 		optimizer.optimize(criteria0, F);
 		System.out.printf("%s\n%s",criteria1, criteria0);
 		
@@ -116,7 +116,7 @@ public class Main {
 			}
 		}
 		inF.close();*/
-		double[][] F = SingleOptimizer.getMatrix(criteria0.getTotalSize(), 300);
+		double[][] F = Optimize.getMatrix(criteria0.getTotalSize(), 300);
 		CacheCriteria cache1 = new CacheCriteria(criteria1, criteria0, F);
 		CacheCriteria cache2 = new CacheCriteria(criteria2, criteria0, F);
 

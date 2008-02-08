@@ -296,24 +296,4 @@ public class SingleOptimizer implements Constants, Optimizer {
 		stopFlag = true;	
 	}
 
-	public static double[][] getMatrix(int size, int length) {
-		double[] CASES = {0.2, 0.6, 0.8};
-		int VAR_NUMBER = size;
-		long CASE_NUMBER = Math.round(Math.pow(CASES.length, VAR_NUMBER));
-		long step = CASE_NUMBER / length - 10;
-		double[][] F = new double[length][VAR_NUMBER];
-		int iF = 0;
-		for(long i=0; i < CASE_NUMBER; i+= step /* + Math.round(20*Math.random())*/) {
-			if (iF >= length) {
-				break;
-			}
-			long mod = (CASE_NUMBER/CASES.length);
-			for(int j=0; j < VAR_NUMBER; j++) {
-				F[iF][j] = CASES[(int)((i / mod) %3)];
-				mod /= 3;
-			}
-			iF++;
-		}
-		return F;
-	}
 }
