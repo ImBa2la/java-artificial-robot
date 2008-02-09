@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<criteria name="integral" type="complex" class="pow_I" weight="1" lambda="0.452"  >
+	<criteria name="two" type="complex" class="pow_I" weight="0.165" lambda="0.458"  >
+		<criteria name="two-one" type="complex" class="pow_I" weight="0.394" lambda="0.595"  >
+			<criteria name="two-one-one" type="single" class="simple" weight="0.582" fMax="0.0" fMin="0.0" />
+			<criteria name="two-one-two" type="single" class="simple" weight="0.418" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="two-two" type="complex" class="pow_I" weight="0.606" lambda="0.335"  >
+			<criteria name="two-two-one" type="single" class="simple" weight="0.5" fMax="0.0" fMin="0.0" />
+			<criteria name="two-two-two" type="single" class="simple" weight="0.5" fMax="0.0" fMin="0.0" />
+		</criteria>
+	</criteria>
+	<criteria name="three" type="single" class="simple" weight="0.835" fMax="0.0" fMin="0.0" />
+</criteria>

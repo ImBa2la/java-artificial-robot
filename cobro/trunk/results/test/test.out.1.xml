@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<criteria name="integral" type="complex" class="pow_I" weight="1" lambda="0.383"  >
+	<criteria name="one" type="complex" class="pow_I" weight="0.508" lambda="0.424"  >
+		<criteria name="one-one" type="complex" class="pow_I" weight="0.584" lambda="0.571"  >
+			<criteria name="one-one-one" type="single" class="simple" weight="0.197" fMax="0.0" fMin="0.0" />
+			<criteria name="one-one-two" type="single" class="simple" weight="0.097" fMax="0.0" fMin="0.0" />
+			<criteria name="one-one-three" type="single" class="simple" weight="0.705" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="one-two" type="complex" class="pow_I" weight="0.416" lambda="0.469"  >
+			<criteria name="one-two-one" type="single" class="simple" weight="0.3" fMax="0.0" fMin="0.0" />
+			<criteria name="one-two-two" type="single" class="simple" weight="0.7" fMax="0.0" fMin="0.0" />
+		</criteria>
+	</criteria>
+	<criteria name="two" type="complex" class="pow_I" weight="0.136" lambda="0.556"  >
+		<criteria name="two-one" type="complex" class="pow_I" weight="0.393" lambda="0.545"  >
+			<criteria name="two-one-one" type="single" class="simple" weight="0.595" fMax="0.0" fMin="0.0" />
+			<criteria name="two-one-two" type="single" class="simple" weight="0.405" fMax="0.0" fMin="0.0" />
+		</criteria>
+		<criteria name="two-two" type="complex" class="pow_I" weight="0.607" lambda="0.216"  >
+			<criteria name="two-two-one" type="single" class="simple" weight="0.501" fMax="0.0" fMin="0.0" />
+			<criteria name="two-two-two" type="single" class="simple" weight="0.499" fMax="0.0" fMin="0.0" />
+		</criteria>
+	</criteria>
+	<criteria name="three" type="single" class="simple" weight="0.356" fMax="0.0" fMin="0.0" />
+</criteria>

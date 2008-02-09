@@ -4,8 +4,10 @@
 package org.styskin.ca.model;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -86,7 +88,35 @@ public class CriteriaXMLParser implements Constants {
 			List<String> list = new ArrayList<String>();
 			getBinaryCriteria(cr, list);
 			return list;			
-		}		
+		}
+		
+		private static void buildName(Criteria cr, StringBuilder sb) {
+			if(cr instanceof ComplexCriteria) {
+				for(Criteria c : cr.getChildren()) {
+					buildName(c, sb);										
+				}
+			} else {
+				sb.append('\t').append(cr.getName());
+			}
+		}
+		
+		public static void saveInput(String file, Criteria cr, double[][] F, double[] B) throws Exception {
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+			out.print("price");
+			StringBuilder sb = new StringBuilder();
+			buildName(cr, sb);
+			out.println(sb.toString());
+			for(int i=0; i < F.length; i++) {
+				out.print(FORMAT.format(B[i]));
+				for(int j=0; j < F[i].length; j++) {
+					out.print('\t');
+					out.print(FORMAT.format(F[i][j]));
+				}
+				out.println();
+			}
+			out.close();
+		}
+		
 		
 		public static Optimize getInput(String file, Criteria cr) throws Exception {
 			Optimize o = new Optimize();
@@ -103,6 +133,8 @@ public class CriteriaXMLParser implements Constants {
 				String key = st.nextToken(); 
 				if(map.containsKey(key)) {
 					in_map.add(map.get(key));						
+				} else {
+					in_map.add(-2);
 				}
 			}				
 			String s = null;
@@ -113,18 +145,15 @@ public class CriteriaXMLParser implements Constants {
 				while(st.hasMoreTokens()) {
 					d.add(FORMAT.parse(st.nextToken()).doubleValue());
 				}
-				if(d.size() != in_map.size()) {
-					throw new Exception("Incorrect parameters number");						
-				}
 			}
 			o.F = new double[input.size()][map.size()-1];
 			o.base = new double[input.size()];				
 			for(int j=0; j < input.size(); j++) {
 				List<Double> d = input.get(j);
 				for(int i=0; i < d.size(); i++) {
-					if(in_map.get(i) < 0) {
+					if(in_map.get(i) == -1) {
 						o.base[j] = d.get(i);
-					} else {
+					} else if(in_map.get(i) >= 0) {
 						o.F[j][in_map.get(i)] = d.get(i);
 					}
 				}
@@ -297,8 +326,9 @@ public class CriteriaXMLParser implements Constants {
         // TODO: Function in XML embeded         
         CriteriaXMLHandler handler = new CriteriaXMLHandler(new Function() {
 			public double getValue(double x) {
-//				return 5000000*x;
-				return Math.exp(x/0.062);  //0.062*Math.log(x);
+//AUTO				return 5000000*x;
+//AUTO				return Math.exp(x/0.062);  //0.062*Math.log(x);
+					return x;				
 			}
         });
         xmlReader.setContentHandler(handler);
