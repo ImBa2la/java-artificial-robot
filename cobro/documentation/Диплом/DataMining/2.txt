@@ -1,0 +1,484 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a
+Relation:     QueryResult
+Instances:    824
+Attributes:   10
+              price
+              origin
+              engine_type
+              body_type
+              gear_type
+              steering_wheel
+              transmission
+              displacement
+              run
+              year
+Test mode:    split 80% train, remainder test
+
+=== Classifier model (full training set) ===
+
+Linear Node 0
+    Inputs    Weights
+    Threshold    0.17883871461561784
+    Node 1    -0.5273175152698513
+    Node 2    0.7543313582743388
+    Node 3    1.2443501882971646
+    Node 4    0.4670609712041911
+    Node 5    -2.0884948332433786
+    Node 6    -0.6522481676474954
+    Node 7    -0.5836940905825603
+    Node 8    1.247103860067043
+    Node 9    0.8183292426777666
+    Node 10    0.6662714700823094
+    Node 11    -0.5219999409331981
+Sigmoid Node 1
+    Inputs    Weights
+    Threshold    -0.29542019975693046
+    Attrib origin=japan    0.9683924854156276
+    Attrib origin=europe    -2.1640703657969453
+    Attrib origin=usa    -1.8226155242838349
+    Attrib origin=russia    2.6138288488557886
+    Attrib origin=korea    1.3799913676507434
+    Attrib engine_type=INJECTOR_GASOLINE    0.5921559626455809
+    Attrib engine_type=DIESEL_SUPERCHARGING_GASOLINE    1.1956694893111213
+    Attrib engine_type=TURBO_SUPERCHARGING_GASOLINE    -0.19977641960365114
+    Attrib engine_type=CARBURETOR_GASOLINE    -1.003197724062259
+    Attrib body_type=HATCHBACK    0.2826000162938453
+    Attrib body_type=SEDAN    0.3700289319397106
+    Attrib body_type=MINI_WEN    0.8555433288187282
+    Attrib body_type=UNIVERSAL    1.065104735201342
+    Attrib body_type=COUPE    1.4850295988539888
+    Attrib body_type=ALLROAD    -2.706069114522993
+    Attrib gear_type    1.5129783498630895
+    Attrib steering_wheel    -2.4121475876829614
+    Attrib transmission    0.21199182364834557
+    Attrib displacement    4.741775144921082
+    Attrib run    1.4209635505278404
+    Attrib year    -3.8239526439170626
+Sigmoid Node 2
+    Inputs    Weights
+    Threshold    -0.3482278462737063
+    Attrib origin=japan    0.468531446490581
+    Attrib origin=europe    0.6353010823574619
+    Attrib origin=usa    1.6271728422298757
+    Attrib origin=russia    -0.7200009953103509
+    Attrib origin=korea    -1.0739626013936652
+    Attrib engine_type=INJECTOR_GASOLINE    -0.35765711210656875
+    Attrib engine_type=DIESEL_SUPERCHARGING_GASOLINE    0.8823809972384089
+    Attrib engine_type=TURBO_SUPERCHARGING_GASOLINE    -0.4272223725691761
+    Attrib engine_type=CARBURETOR_GASOLINE    0.5654270582183448
+    Attrib body_type=HATCHBACK    1.086764609118222
+    Attrib body_type=SEDAN    0.9819015225893808
+    Attrib body_type=MINI_WEN    -0.33505931915665854
+    Attrib body_type=UNIVERSAL    0.668287861457468
+    Attrib body_type=COUPE    0.17632973504791866
+    Attrib body_type=ALLROAD    -1.3204279515437354
+    Attrib gear_type    0.3512944799552392
+    Attrib steering_wheel    0.13778742272947866
+    Attrib transmission    -0.5228937387857528
+    Attrib displacement    2.186077131732517
+    Attrib run    -4.088336735033225
+    Attrib year    5.002063448690963
+Sigmoid Node 3
+    Inputs    Weights
+    Threshold    -0.8069659611318722
+    Attrib origin=japan    0.36861188400257516
+    Attrib origin=europe    1.0523141412085772
+    Attrib origin=usa    1.5826461601725395
+    Attrib origin=russia    -1.1683978332773661
+    Attrib origin=korea    0.6423936643909502
+    Attrib engine_type=INJECTOR_GASOLINE    0.765760409901628
+    Attrib engine_type=DIESEL_SUPERCHARGING_GASOLINE    -0.7390739069228006
+    Attrib engine_type=TURBO_SUPERCHARGING_GASOLINE    1.1713634871815573
+    Attrib engine_type=CARBURETOR_GASOLINE    0.4334157621500611
+    Attrib body_type=HATCHBACK    0.37905022597531063
+    Attrib body_type=SEDAN    2.0611347549779095
+    Attrib body_type=MINI_WEN    0.7705717324388446
+    Attrib body_type=UNIVERSAL    0.18143253786108565
+    Attrib body_type=COUPE    0.6745484537974966
+    Attrib body_type=ALLROAD    -0.7834763440139062
+    Attrib gear_type    -0.3623675713482796
+    Attrib steering_wheel    1.8759112745526048
+    Attrib transmission    4.231914325735056
+    Attrib displacement    6.618656031363572
+    Attrib run    0.7202040221926131
+    Attrib year    1.2687668742378988
+Sigmoid Node 4
+    Inputs    Weights
+    Threshold    -0.67433740365128
+    Attrib origin=japan    1.15103802994311
+    Attrib origin=europe    0.6817547948526413
+    Attrib origin=usa    -0.09798956865384109
+    Attrib origin=russia    -1.2100290466494603
+    Attrib origin=korea    1.4532274725969279
+    Attrib engine_type=INJECTOR_GASOLINE    0.9644299407579165
+    Attrib engine_type=DIESEL_SUPERCHARGING_GASOLINE    -0.7439733930607005
+    Attrib engine_type=TURBO_SUPERCHARGING_GASOLINE    0.5668700835926158
+    Attrib engine_type=CARBURETOR_GASOLINE    0.5795316794215661
+    Attrib body_type=HATCHBACK    0.6608830694502501
+    Attrib body_type=SEDAN    -1.406878537680078
+    Attrib body_type=MINI_WEN    -0.39627232186650285
+    Attrib body_type=UNIVERSAL    2.686076178069876
+    Attrib body_type=COUPE    0.91710265872244
+    Attrib body_type=ALLROAD    0.35476830664594433
+    Attrib gear_type    1.4097860535930036
+    Attrib steering_wheel    0.8309608983155006
+    Attrib transmission    0.799199735076673
+    Attrib displacement    5.555825973971211
+    Attrib run    2.265983715390562
+    Attrib year    4.732828695060952
+Sigmoid Node 5
+    Inputs    Weights
+    Threshold    -0.5910109647723303
+    Attrib origin=japan    -1.0292490466961448
+    Attrib origin=europe    -1.6430935020147899
+    Attrib origin=usa    0.4478300919881517
+    Attrib origin=russia    2.494969873202204
+    Attrib origin=korea    1.5477699188739213
+    Attrib engine_type=INJECTOR_GASOLINE    -0.305830927915064
+    Attrib engine_type=DIESEL_SUPERCHARGING_GASOLINE    0.8024088900572509
+    Attrib engine_type=TURBO_SUPERCHARGING_GASOLINE    0.1696755470263258
+    Attrib engine_type=CARBURETOR_GASOLINE    0.6303561544691944
+    Attrib body_type=HATCHBACK    -0.5640420309529477
+    Attrib body_type=SEDAN    0.6386424533827846
+    Attrib body_type=MINI_WEN    0.575583838457654
+    Attrib body_type=UNIVERSAL    2.046376393071266
+    Attrib body_type=COUPE    -0.1960108292043513
+    Attrib body_type=ALLROAD    -0.08324966481469949
+    Attrib gear_type    1.6702744765556243
+    Attrib steering_wheel    1.1384783899165754
+    Attrib transmission    -1.1523789939450533
+    Attrib displacement    0.3651070051816234
+    Attrib run    -1.795177395739369
+    Attrib year    -1.7107784804553487
+Sigmoid Node 6
+    Inputs    Weights
+    Threshold    -0.6253856713005318
+    Attrib origin=japan    -1.2148342540873083
+    Attrib origin=europe    -0.8822423461211987
+    Attrib origin=usa    0.8515173649085314
+    Attrib origin=russia    3.2142699204031695
+    Attrib origin=korea    -0.2483937806725605
+    Attrib engine_type=INJECTOR_GASOLINE    0.6899448476647502
+    Attrib engine_type=DIESEL_SUPERCHARGING_GASOLINE    -0.5742631428914445
+    Attrib engine_type=TURBO_SUPERCHARGING_GASOLINE    0.5157597610810494
+    Attrib engine_type=CARBURETOR_GASOLINE    0.507549437681039
+    Attrib body_type=HATCHBACK    0.8957163088565361
+    Attrib body_type=SEDAN    0.28774302225738274
+    Attrib body_type=MINI_WEN    0.26709781109838937
+    Attrib body_type=UNIVERSAL    0.08815039014787669
+    Attrib body_type=COUPE    0.23296874720998076
+    Attrib body_type=ALLROAD    0.5042777091489882
+    Attrib gear_type    -0.2518011213797915
+    Attrib steering_wheel    1.7955249266281663
+    Attrib transmission    0.47378448499968767
+    Attrib displacement    -9.047861323793486
+    Attrib run    -0.2988045960643965
+    Attrib year    -2.830437072220496
+Sigmoid Node 7
+    Inputs    Weights
+    Threshold    -0.7754025251301001
+    Attrib origin=japan    0.5547588977360738
+    Attrib origin=europe    0.4759218842326886
+    Attrib origin=usa    1.8902759379810088
+    Attrib origin=russia    -0.7329125473620859
+    Attrib origin=korea    0.23077338067725847
+    Attrib engine_type=INJECTOR_GASOLINE    1.8799488892264065
+    Attrib engine_type=DIESEL_SUPERCHARGING_GASOLINE    -0.27772399362774014
+    Attrib engine_type=TURBO_SUPERCHARGING_GASOLINE    0.19185002535021972
+    Attrib engine_type=CARBURETOR_GASOLINE    -0.18453556926590078
+    Attrib body_type=HATCHBACK    0.1465227915211856
+    Attrib body_type=SEDAN    1.4499678657359696
+    Attrib body_type=MINI_WEN    0.1395466878031562
+    Attrib body_type=UNIVERSAL    1.6965603365166297
+    Attrib body_type=COUPE    -0.07467154583631679
+    Attrib body_type=ALLROAD    -0.08362627873248071
+    Attrib gear_type    0.7734376925383122
+    Attrib steering_wheel    0.3037001706927384
+    Attrib transmission    0.4541468446933717
+    Attrib displacement    3.9639121066900307
+    Attrib run    -2.9181125858032
+    Attrib year    -5.7071164110364
+Sigmoid Node 8
+    Inputs    Weights
+    Threshold    -0.5358606173519808
+    Attrib origin=japan    -0.8297675917666774
+    Attrib origin=europe    -0.19951938037031577
+    Attrib origin=usa    1.5179217145133543
+    Attrib origin=russia    1.2756664504078614
+    Attrib origin=korea    -0.1552745644602534
+    Attrib engine_type=INJECTOR_GASOLINE    -0.02729602213851078
+    Attrib engine_type=DIESEL_SUPERCHARGING_GASOLINE    -0.034194274863826424
+    Attrib engine_type=TURBO_SUPERCHARGING_GASOLINE    0.313305524515947
+    Attrib engine_type=CARBURETOR_GASOLINE    0.7572482009810416
+    Attrib body_type=HATCHBACK    0.22038112340629498
+    Attrib body_type=SEDAN    0.6973578237981395
+    Attrib body_type=MINI_WEN    1.2524983152720273
+    Attrib body_type=UNIVERSAL    1.1565370795862482
+    Attrib body_type=COUPE    0.5373596096096636
+    Attrib body_type=ALLROAD    -1.8736851624284887
+    Attrib gear_type    1.5190850679323329
+    Attrib steering_wheel    0.8362237226300746
+    Attrib transmission    1.2933879269392135
+    Attrib displacement    -1.207128536138491
+    Attrib run    -2.971765508813706
+    Attrib year    -0.9018930546546644
+Sigmoid Node 9
+    Inputs    Weights
+    Threshold    -1.3638940718800308
+    Attrib origin=japan    1.2380494087764358
+    Attrib origin=europe    3.9808757298272397
+    Attrib origin=usa    -1.742640586932146
+    Attrib origin=russia    1.0123273842453588
+    Attrib origin=korea    -0.2684822484717664
+    Attrib engine_type=INJECTOR_GASOLINE    0.20961266311312018
+    Attrib engine_type=DIESEL_SUPERCHARGING_GASOLINE    1.8655841955739723
+    Attrib engine_type=TURBO_SUPERCHARGING_GASOLINE    -0.4913572056414408
+    Attrib engine_type=CARBURETOR_GASOLINE    1.239172953505082
+    Attrib body_type=HATCHBACK    -0.5275449555101638
+    Attrib body_type=SEDAN    2.2808285212114754
+    Attrib body_type=MINI_WEN    -2.7081732702997856
+    Attrib body_type=UNIVERSAL    -0.8793800145317906
+    Attrib body_type=COUPE    2.928838643389724
+    Attrib body_type=ALLROAD    4.4482161224641255
+    Attrib gear_type    -0.9409472489117383
+    Attrib steering_wheel    1.9055188436295611
+    Attrib transmission    -3.941000841739211
+    Attrib displacement    6.610985122377252
+    Attrib run    0.6213108031788284
+    Attrib year    8.384176679621097
+Sigmoid Node 10
+    Inputs    Weights
+    Threshold    -1.2112640356886175
+    Attrib origin=japan    1.8420185987576894
+    Attrib origin=europe    0.8861410802552783
+    Attrib origin=usa    0.3114034846298606
+    Attrib origin=russia    1.0414593927114506
+    Attrib origin=korea    -0.38188302743535174
+    Attrib engine_type=INJECTOR_GASOLINE    -0.9294490029478225
+    Attrib engine_type=DIESEL_SUPERCHARGING_GASOLINE    2.056030766550773
+    Attrib engine_type=TURBO_SUPERCHARGING_GASOLINE    1.1518839041154176
+    Attrib engine_type=CARBURETOR_GASOLINE    0.18732411297330095
+    Attrib body_type=HATCHBACK    -1.0880091186011178
+    Attrib body_type=SEDAN    0.6711029762460488
+    Attrib body_type=MINI_WEN    2.0462920395839586
+    Attrib body_type=UNIVERSAL    0.9906867199310411
+    Attrib body_type=COUPE    2.202434709240042
+    Attrib body_type=ALLROAD    0.1889809141627145
+    Attrib gear_type    -1.930812630717626
+    Attrib steering_wheel    0.646473418644598
+    Attrib transmission    0.3672123362339401
+    Attrib displacement    2.4280571713727226
+    Attrib run    3.7877462977494405
+    Attrib year    4.434930395257498
+Sigmoid Node 11
+    Inputs    Weights
+    Threshold    -1.681166139623384
+    Attrib origin=japan    1.422839060631194
+    Attrib origin=europe    1.3366505487845115
+    Attrib origin=usa    1.3724463768088633
+    Attrib origin=russia    -0.1335769102989999
+    Attrib origin=korea    1.0082659350109064
+    Attrib engine_type=INJECTOR_GASOLINE    -0.6367169949610415
+    Attrib engine_type=DIESEL_SUPERCHARGING_GASOLINE    1.9151058912140249
+    Attrib engine_type=TURBO_SUPERCHARGING_GASOLINE    -1.9092380000200826
+    Attrib engine_type=CARBURETOR_GASOLINE    3.8864479530511478
+    Attrib body_type=HATCHBACK    1.0604582685342496
+    Attrib body_type=SEDAN    2.340806718745267
+    Attrib body_type=MINI_WEN    0.6325687580085915
+    Attrib body_type=UNIVERSAL    2.474225351096671
+    Attrib body_type=COUPE    -0.09371334209951608
+    Attrib body_type=ALLROAD    0.36570743579531606
+    Attrib gear_type    -2.3003896012508616
+    Attrib steering_wheel    0.17829151408032734
+    Attrib transmission    0.19304582087054756
+    Attrib displacement    -9.478357814402338
+    Attrib run    -1.2822668024987502
+    Attrib year    2.98954977273921
+Class 
+    Input
+    Node 0
+
+
+Time taken to build model: 16.72 seconds
+
+=== Predictions on test split ===
+
+ inst#,    actual, predicted, error
+     1 864850     927892.126  63042.126
+     2 502250     431034.276 -71215.724
+     3 385000     403099.258  18099.258
+     4 502250     531987.983  29737.983
+     5 178850     259374.043  80524.043
+     6 135000     152731.182  17731.182
+     7 999999     832405.973 -167593.027
+     8 110000     -165437.542 -275437.542
+     9 480000     533750.409  53750.409
+    10 215000     383369.752 168369.752
+    11 730100     657776.072 -72323.928
+    12 286650     193255.417 -93394.583
+    13 597800     652980.513  55180.513
+    14 195000     149559.522 -45440.478
+    15 539000     469489.123 -69510.877
+    16 520000     590840.854  70840.854
+    17 575750     636592.314  60842.314
+    18 385000     562303.73  177303.73 
+    19 335000     379222.937  44222.937
+    20 290000     372549.066  82549.066
+    21 869750     978195.765 108445.765
+    22 463050     374049.474 -89000.526
+    23 520000     653228.646 133228.646
+    24 370000     559375.201 189375.201
+    25 210000     221030.597  11030.597
+    26 210000     162919.883 -47080.117
+    27 882000     696734.161 -185265.839
+    28 619000     716246.47   97246.47 
+    29 361375     332530.53  -28844.47 
+    30 160000     121796.703 -38203.297
+    31 943250     679783.632 -263466.368
+    32 333200     311426.411 -21773.589
+    33 784000     715419.617 -68580.383
+    34 530000     598886.705  68886.705
+    35 362600     387145.179  24545.179
+    36 150000     146444.248  -3555.752
+    37 389550     529715.158 140165.158
+    38 806050     709975.123 -96074.877
+    39 754600     647814.378 -106785.622
+    40 348000     239700.888 -108299.112
+    41 664000     777587.042 113587.042
+    42 840000     834430.426  -5569.574
+    43 375000     798997.539 423997.539
+    44 180000     186954.425   6954.425
+    45 450000     344227.206 -105772.794
+    46 144550     216933.419  72383.419
+    47 490000     494671.778   4671.778
+    48 975100     689616.402 -285483.598
+    49 183750     283099.245  99349.245
+    50 690000     724451.766  34451.766
+    51 166600     133676.396 -32923.604
+    52 317500     531073.254 213573.254
+    53 113600     124087.028  10487.028
+    54 173800     172037.836  -1762.164
+    55 975100     847044.504 -128055.496
+    56 565000     657683.294  92683.294
+    57 659700     712334.507  52634.507
+    58 250000     413102.297 163102.297
+    59 695000     681279.456 -13720.544
+    60 894250     1017871.763 123621.763
+    61 151900     142703.105  -9196.895
+    62 585550     573727.51  -11822.49 
+    63 330000     439514.043 109514.043
+    64 502250     595430.329  93180.329
+    65 477750     667248.63  189498.63 
+    66 188650     234920.449  46270.449
+    67 416500     324444.779 -92055.221
+    68 176400     195982.628  19582.628
+    69 370000     405593.776  35593.776
+    70 520000     528327.194   8327.194
+    71 295000     225044.772 -69955.228
+    72 600225.5   635664.922  35439.422
+    73 340000     271142.338 -68857.662
+    74 785000     746783.838 -38216.162
+    75 610025.5   565166.619 -44858.881
+    76 310000     330066.035  20066.035
+    77 428750     633032.36  204282.36 
+    78 230000     -111732.802 -341732.802
+    79 570850     659661.818  88811.818
+    80 325000     500773.37  175773.37 
+    81 250000     286989.551  36989.551
+    82 240000     359401.155 119401.155
+    83 269475.5   233335.375 -36140.125
+    84 686000     626264.186 -59735.814
+    85 649000     652972.142   3972.142
+    86 365050     446888.968  81838.968
+    87 392000     368841.392 -23158.608
+    88 190000     125193.028 -64806.972
+    89 531650     574392.93   42742.93 
+    90 374850     524346.273 149496.273
+    91 855050     766288.092 -88761.908
+    92 144000      70703.856 -73296.144
+    93 299000     303480.705   4480.705
+    94 147000     153887.474   6887.474
+    95 536550     486865.713 -49684.287
+    96 525000     517043.857  -7956.143
+    97 521700     344340.769 -177359.231
+    98 399000     539531.091 140531.091
+    99 340000     330490.942  -9509.058
+   100 375000     243028.77  -131971.23
+   101 441000     557291.782 116291.782
+   102 262000     318492.945  56492.945
+   103 355000     369018.676  14018.676
+   104 800000     821038.545  21038.545
+   105 830550     643784.786 -186765.214
+   106 430000     367342.973 -62657.027
+   107 305000     471718.009 166718.009
+   108 977000     774157.186 -202842.814
+   109 665000     724451.766  59451.766
+   110 155000     242228.237  87228.237
+   111 130000     272681.46  142681.46 
+   112 380000     353245.992 -26754.008
+   113 882000     831164.33  -50835.67 
+   114 422000     460469.236  38469.236
+   115 750000     663748.236 -86251.764
+   116 515000     617141.971 102141.971
+   117 872200     889424.383  17224.383
+   118 757050     815120.436  58070.436
+   119 345000     360307.422  15307.422
+   120 210000     255969.379  45969.379
+   121 906500     831776.049 -74723.951
+   122 415000     613458.154 198458.154
+   123 720300     845270.636 124970.636
+   124 310000     381345.611  71345.611
+   125 649250     565527.286 -83722.714
+   126 125000     121922.636  -3077.364
+   127 462315     557468.225  95153.225
+   128 614950     514451.732 -100498.268
+   129 612500     539352.145 -73147.855
+   130 450000     397323.947 -52676.053
+   131 828100     773137.444 -54962.556
+   132 155000     239862.901  84862.901
+   133 488775     399714.513 -89060.487
+   134 209800     346581.551 136781.551
+   135 355000     393247.706  38247.706
+   136 764400     725768.687 -38631.313
+   137 125000     -155273.629 -280273.629
+   138 239000     295762.598  56762.598
+   139 343000     675693.429 332693.429
+   140 575750     554079.682 -21670.318
+   141 220475.5   316250.661  95775.161
+   142 632576     673579.27   41003.27 
+   143 463050     784290.248 321240.248
+   144 116000      85829.883 -30170.117
+   145 602700     679494.268  76794.268
+   146 450800     599446.233 148646.233
+   147 275625     250233.872 -25391.128
+   148 264600     421939.062 157339.062
+   149 300000     264765.774 -35234.226
+   150 350000     347836.725  -2163.275
+   151 558600     568406.642   9806.642
+   152 315000     366590.324  51590.324
+   153 535000     725396.796 190396.796
+   154 150000     305969.5   155969.5  
+   155 183750     155006.612 -28743.388
+   156 894250     867760.012 -26489.988
+   157 200000     151834.245 -48165.755
+   158 133000     294681.824 161681.824
+   159 637000     564386.446 -72613.554
+   160 345000     350735.841   5735.841
+   161 659050     694219.695  35169.695
+   162 319000     267644.635 -51355.365
+   163 160000     186408.293  26408.293
+   164 634550     698337.594  63787.594
+   165 105000      54068.741 -50931.259
+
+=== Evaluation on test split ===
+=== Summary ===
+
+Correlation coefficient                  0.8871
+Mean absolute error                  85000.2316
+Root mean squared error             113257.3704
+Relative absolute error                 43.3157 %
+Root relative squared error             47.954  %
+Total Number of Instances              165     
+

@@ -21,14 +21,14 @@ public class AutoTest extends SpringContextTestCase {
 	
 	private static final Logger logger = Logger.getLogger(AutoTest.class);
 	
-	private String namespace = "results/auto/";	
+	private String namespace = "results/autoEx/";	
 	private Criteria auto;
 	private DataSource autoDataSource;
 	
 	public void testAuto() throws Exception {
 		prepareDirs();		
 		logger.info("Optimization started");		
-		Optimize op = Optimize.getInput(autoDataSource, "car_v", auto);
+		Optimize op = Optimize.getInput(autoDataSource, "car_vc" + " limit 660, 165", auto);
 		CacheCriteria c = new CacheCriteria(auto, op.getBase(), op.getF());
 		CacheCriteria.outputValues(namespace + "out0.txt", op.getBase());		
 		c.checkOut2(namespace + "out1.txt");		

@@ -167,7 +167,8 @@ public class CriteriaXMLParser implements Constants {
 			final Map<String, Integer> map = getCriteriaMap(cr);
 			final List<String> binaryCriteria = getBinaryMap(cr);
 			map.put("price", -1);
-			int inputSize = template.queryForInt("select count(1) from " + tableName);
+//			int inputSize = template.queryForInt("select count(1) from " + tableName);
+			int inputSize = template.queryForInt("select count(1) from (select * from " + tableName + " ) a");
 			o.F = new double[inputSize][map.size()-1];
 			o.base = new double[inputSize];
 			template.execute(new ConnectionCallback() {
@@ -327,8 +328,8 @@ public class CriteriaXMLParser implements Constants {
         CriteriaXMLHandler handler = new CriteriaXMLHandler(new Function() {
 			public double getValue(double x) {
 //AUTO				return 5000000*x;
-//AUTO				return Math.exp(x/0.062);  //0.062*Math.log(x);
-					return x;				
+				return Math.exp(x/0.062);  //0.062*Math.log(x);
+//					return x;				
 			}
         });
         xmlReader.setContentHandler(handler);
