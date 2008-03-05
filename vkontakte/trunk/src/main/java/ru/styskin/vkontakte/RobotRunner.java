@@ -6,7 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class RobotRunner {
 	
 	public static void main(String[] args) throws Throwable {
-		DOMConfigurator.configure("bin/log4j-config.xml");
+		DOMConfigurator.configure("log4j-config.xml");
 		new ClassPathXmlApplicationContext(getContextPath());
 	}
 

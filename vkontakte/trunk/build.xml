@@ -1,0 +1,82 @@
+<project name="vkontakte" default="make-jar">
+	<property file="build.properties" />	
+	
+    <target name="init" depends="clean">
+        <mkdir dir="target"/>
+        <mkdir dir="target/classes"/>
+        <mkdir dir="target/test-classes"/>
+        <mkdir dir="target/test-report"/>
+        <mkdir dir="target/dist"/>
+        <mkdir dir="target/dist/lib"/>
+    </target>
+	
+    <target name="clean">
+        <delete dir="target"/>
+    </target>
+	
+	<path id="compile.classpath">
+        <fileset dir="lib">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+		
+    <target name="compile" depends="init">
+        <javac srcdir="${src.path}" destdir="target/classes"
+               source="1.5" encoding="windows-1251" debug="true"
+               target="1.5">
+            <classpath refid="compile.classpath"/>
+        </javac>
+        <javac srcdir="${test.path}" destdir="target/classes"
+               source="1.5" encoding="windows-1251" debug="true"
+               target="1.5">
+            <classpath refid="compile.classpath"/>
+        </javac>    	
+    </target>
+	
+    <target name="make-jar" depends="init, compile">
+
+        <jar destfile="target/dist/lib/${servant.name}.jar">
+            <fileset dir="target/classes"/>
+            <fileset dir="src/main/resources"/>
+            <fileset dir="src/test/resources"/>
+        </jar>
+
+        <copy todir="target/dist/lib">
+            <fileset dir="lib">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+
+        <copy todir="target/dist">
+            <fileset dir="src/main/config">
+                <include name="*.xml"/>
+                <include name="*.properties"/>
+            </fileset>
+            <fileset dir="src/test/config">
+                <include name="*.xml"/>
+                <include name="*.properties"/>
+            </fileset>        	
+            <fileset dir="src/main/script">
+                <include name="**/*.sh"/>
+                <include name="**/*.logrotate"/>
+            	<include name="**/*.pl"/>
+            	<include name="**/*.conf"/>            	
+            </fileset>
+            <fileset dir="src/main/sql">
+                <include name="**/*.sql"/>
+            </fileset>
+            <fileset dir="src/test/script">
+                <include name="**/*.sh"/>
+            </fileset>
+        </copy>
+    	
+    	<fixcrlf srcdir="target/dist" eol="lf" eof="remove" includes="**/*.sh, **/*.conf, **/*.xml, **/*.properties, **/*.pl, **/*.logrotate, **/*.sql"/>
+    	
+		<chmod perm="755">
+			<fileset dir="target/dist">
+				<include name="**/*.sh"/>
+			</fileset>
+		</chmod>     	
+    </target>	
+</project>
+        

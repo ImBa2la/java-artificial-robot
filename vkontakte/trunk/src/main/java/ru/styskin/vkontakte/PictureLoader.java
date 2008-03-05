@@ -17,6 +17,7 @@ public class PictureLoader extends TimerTask {
 	
 	private String path = "pictures";
 	private UserDao userDao;
+	private UserContainer container;
 	
 	public void run() {
 		Triple<Integer, String, String> path = userDao.next();
@@ -26,7 +27,9 @@ public class PictureLoader extends TimerTask {
 					if(path.getC() != null) {
 						URL url = new URL(path.getC());
 						BufferedInputStream in = new BufferedInputStream(url.openConnection().getInputStream());
-						BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(this.path + "/" + path.getB() + ".jpg"));
+						String name = container.getUser( Integer.parseInt(path.getB())).getName().trim();
+						name = name.substring(name.lastIndexOf(' ') + 1);
+						BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(this.path + "/" + name  + ".jpg"));
 						int c;
 						while( (c = in.read()) != -1) {
 							out.write(c);										
@@ -42,6 +45,11 @@ public class PictureLoader extends TimerTask {
 				logger.error("", e);
 			}			
 		}
+	}
+
+
+	public void setContainer(UserContainer container) {
+		this.container = container;
 	}
 
 
