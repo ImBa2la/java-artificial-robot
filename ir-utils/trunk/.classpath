@@ -4,45 +4,45 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3.8.1"/>
-	<classpathentry kind="lib" path="lib/test/junit-3.8.1.jar"/>
-	<classpathentry kind="lib" path="lib/avalon-framework-4.1.5.jar"/>
-	<classpathentry kind="lib" path="lib/commons-cli-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/commons-collections-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/commons-dbcp-1.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang-2.1.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/commons-pool-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/excalibur-configuration-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/idldepend-1-0-0.jar"/>
-	<classpathentry kind="lib" path="lib/logkit-2.0.jar"/>
-	<classpathentry kind="lib" path="lib/openorb-event-1.4.0.jar"/>
-	<classpathentry kind="lib" path="lib/openorb-native-1.4.0.jar"/>
-	<classpathentry kind="lib" path="lib/openorb-orb-1.4.0.jar"/>
-	<classpathentry kind="lib" path="lib/openorb-orb-omg-1.4.0.jar"/>
-	<classpathentry kind="lib" path="lib/openorb-orb-tools-1.4.0.jar"/>
-	<classpathentry kind="lib" path="lib/openorb-tools-1.4.0.jar"/>
-	<classpathentry kind="lib" path="lib/spring-corba.jar"/>
-	<classpathentry kind="lib" path="lib/sqljdbc.jar"/>
-	<classpathentry kind="lib" path="lib/ojdbc14.jar"/>
-	<classpathentry kind="lib" path="lib/jtds-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/aopalliance.jar"/>
-	<classpathentry kind="lib" path="lib/c3p0-0.9.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/fastutil-5.0.9.jar"/>
-	<classpathentry kind="lib" path="lib/javolution.jar"/>
-	<classpathentry kind="lib" path="lib/mtj.jar"/>
-	<classpathentry kind="lib" path="lib/spring.jar"/>
-	<classpathentry kind="lib" path="lib/spring-aop.jar"/>
-	<classpathentry kind="lib" path="lib/spring-aspects.jar"/>
-	<classpathentry kind="lib" path="lib/spring-beans.jar"/>
-	<classpathentry kind="lib" path="lib/spring-context.jar"/>
-	<classpathentry kind="lib" path="lib/spring-core.jar"/>
-	<classpathentry kind="lib" path="lib/spring-dao.jar"/>
-	<classpathentry kind="lib" path="lib/spring-jdbc.jar"/>
-	<classpathentry kind="lib" path="lib/test/ant-junit-1.6.5.jar"/>
-	<classpathentry kind="lib" path="lib/test/easymock-2.0.jar"/>
-	<classpathentry kind="lib" path="lib/test/spring-mock.jar"/>
-	<classpathentry kind="lib" path="lib/activation.jar"/>
-	<classpathentry kind="lib" path="lib/mail.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.15.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/test/junit-3.8.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/avalon-framework-4.1.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-cli-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-collections-3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-dbcp-1.2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-pool-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/excalibur-configuration-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/idldepend-1-0-0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/logkit-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/openorb-event-1.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/openorb-native-1.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/openorb-orb-1.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/openorb-orb-omg-1.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/openorb-orb-tools-1.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/openorb-tools-1.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-corba.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/sqljdbc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ojdbc14.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jtds-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/aopalliance.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/c3p0-0.9.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/fastutil-5.0.9.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/javolution.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/mtj.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-aop.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-aspects.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-beans.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-context.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-dao.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-jdbc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/test/ant-junit-1.6.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/test/easymock-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/test/spring-mock.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/activation.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/mail.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
