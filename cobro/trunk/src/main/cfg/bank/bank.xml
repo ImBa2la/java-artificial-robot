@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<criteria name="price" type="complex" class="pow_I" lambda="0.5">
+	<criteria name="A" type="complex" class="binary" lambda="0.5" weight="0.5">
+		<criteria name="A1" type="single" weight="0.1"/>
+		<criteria name="A2" type="single" weight="0.1"/>
+		<criteria name="A3" type="single" weight="0.1"/>
+	</criteria>
+	<criteria name="B" type="complex" class="binary" lambda="0.5" weight="0.5">
+		<criteria name="B1" type="single" weight="0.1"/>
+		<criteria name="B2" type="single" weight="0.1"/>
+		<criteria name="B3" type="single" weight="0.1"/>
+		<criteria name="B4" type="single" weight="0.1"/>
+		<criteria name="B5" type="single" weight="0.1"/>
+	</criteria>	
+	<criteria name="C" type="complex" class="binary" lambda="0.5" weight="0.5">
+		<criteria name="C1" type="single" weight="0.1"/>
+		<criteria name="C2" type="single" weight="0.1"/>
+		<criteria name="C3" type="single" weight="0.1"/>
+		<criteria name="C4" type="single" weight="0.1"/>
+	</criteria>	
+	<criteria name="D" type="complex" class="binary" lambda="0.5" weight="0.5">
+		<criteria name="D1" type="single" weight="0.1"/>
+		<criteria name="D2" type="single" weight="0.1"/>
+		<criteria name="D3" type="single" weight="0.1"/>
+		<criteria name="D4" type="single" weight="0.1"/>
+	</criteria>	
+	<criteria name="E" type="complex" class="binary" lambda="0.5" weight="0.5">
+		<criteria name="E1" type="single" weight="0.1"/>
+		<criteria name="E2" type="single" weight="0.1"/>
+		<criteria name="E3" type="single" weight="0.1"/>
+		<criteria name="E4" type="single" weight="0.1"/>
+	</criteria>
+	<criteria name="F" type="complex" class="binary" lambda="0.5" weight="0.5">
+		<criteria name="F1" type="single" weight="0.1"/>
+		<criteria name="F2" type="single" weight="0.1"/>
+		<criteria name="F3" type="single" weight="0.1"/>
+	</criteria>	
+<!-- 	
+	<criteria name="G" type="complex" class="binary" lambda="0.5" weight="0.5">
+		<criteria name="G1" type="single" weight="0.1"/>
+	</criteria> -->		
+</criteria>
