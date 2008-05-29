@@ -21,13 +21,13 @@ public class BankTest extends SpringContextTestCase {
 	
 	private static final Logger logger = Logger.getLogger(AutoTest.class);
 	
-	private String namespace = "results/bank/";	
+	private String namespace = "results/bank/industrials/";	
 	private Criteria bank;
 	
 	public void testBank() throws Exception {
 		prepareDirs();		
 		logger.info("Optimization started");		
-		Optimize op = Optimize.getInput("data.in", bank);
+		Optimize op = Optimize.getInput("src/main/cfg/bank/industrials.in", bank);
 		CacheCriteria c = new CacheCriteria(bank, op.getBase(), op.getF());
 		CacheCriteria.outputValues(namespace + "out0.txt", op.getBase());		
 		c.checkOut2(namespace + "out1.txt");

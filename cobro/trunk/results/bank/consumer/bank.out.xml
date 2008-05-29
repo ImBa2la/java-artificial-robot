@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<criteria name="price" type="complex" class="pow_I" weight="1" lambda="0.449"  >
+	<criteria name="A" type="complex" class="binary" weight="0" lambda="0.785"  >
+		<criteria name="A1" type="single" class="simple" weight="0.167" fMax="0.0" fMin="0.0" />
+		<criteria name="A2" type="single" class="simple" weight="0.383" fMax="0.0" fMin="0.0" />
+		<criteria name="A3" type="single" class="simple" weight="0.451" fMax="0.0" fMin="0.0" />
+	</criteria>
+	<criteria name="B" type="complex" class="binary" weight="0.405" lambda="0.616"  >
+		<criteria name="B1" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+		<criteria name="B2" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+		<criteria name="B3" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+		<criteria name="B4" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+		<criteria name="B5" type="single" class="simple" weight="1" fMax="0.0" fMin="0.0" />
+	</criteria>
+	<criteria name="C" type="complex" class="binary" weight="0.158" lambda="0.639"  >
+		<criteria name="C1" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+		<criteria name="C2" type="single" class="simple" weight="0.347" fMax="0.0" fMin="0.0" />
+		<criteria name="C3" type="single" class="simple" weight="0.653" fMax="0.0" fMin="0.0" />
+		<criteria name="C4" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+	</criteria>
+	<criteria name="D" type="complex" class="binary" weight="0" lambda="0.693"  >
+		<criteria name="D1" type="single" class="simple" weight="0.218" fMax="0.0" fMin="0.0" />
+		<criteria name="D2" type="single" class="simple" weight="0.096" fMax="0.0" fMin="0.0" />
+		<criteria name="D3" type="single" class="simple" weight="0.396" fMax="0.0" fMin="0.0" />
+		<criteria name="D4" type="single" class="simple" weight="0.29" fMax="0.0" fMin="0.0" />
+	</criteria>
+	<criteria name="E" type="complex" class="binary" weight="0.271" lambda="0.629"  >
+		<criteria name="E1" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+		<criteria name="E2" type="single" class="simple" weight="0" fMax="0.0" fMin="0.0" />
+		<criteria name="E3" type="single" class="simple" weight="0.432" fMax="0.0" fMin="0.0" />
+		<criteria name="E4" type="single" class="simple" weight="0.568" fMax="0.0" fMin="0.0" />
+	</criteria>
+	<criteria name="F" type="complex" class="binary" weight="0" lambda="0.746"  >
+		<criteria name="F1" type="single" class="simple" weight="0.434" fMax="0.0" fMin="0.0" />
+		<criteria name="F2" type="single" class="simple" weight="0.556" fMax="0.0" fMin="0.0" />
+		<criteria name="F3" type="single" class="simple" weight="0.009" fMax="0.0" fMin="0.0" />
+	</criteria>
+	<criteria name="G" type="complex" class="binary" weight="0.166" lambda="0.791"  >
+		<criteria name="GB" type="single" class="simple" weight="0.94" fMax="0.0" fMin="0.0" />
+		<criteria name="GM" type="single" class="simple" weight="0.059" fMax="0.0" fMin="0.0" />
+		<criteria name="GS" type="single" class="simple" weight="0.001" fMax="0.0" fMin="0.0" />
+	</criteria>
+</criteria>

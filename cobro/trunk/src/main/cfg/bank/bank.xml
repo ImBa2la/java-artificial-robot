@@ -36,8 +36,9 @@
 		<criteria name="F2" type="single" weight="0.1"/>
 		<criteria name="F3" type="single" weight="0.1"/>
 	</criteria>	
-<!-- 	
 	<criteria name="G" type="complex" class="binary" lambda="0.5" weight="0.5">
-		<criteria name="G1" type="single" weight="0.1"/>
-	</criteria> -->		
+		<criteria name="GB" type="single" weight="0.1"/>
+		<criteria name="GM" type="single" weight="0.1"/>
+		<criteria name="GS" type="single" weight="0.1"/>
+	</criteria>		
 </criteria>
