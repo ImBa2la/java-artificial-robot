@@ -64,6 +64,8 @@ class Game {
 
     function mungeFormData(&$formvars) {
         $formvars['Comment'] = trim($formvars['Comment']);
+        $formvars['userComment'] = trim($formvars['userComment']);
+        $formvars['userName'] = trim($formvars['userName']);
         $formvars['nameValue'] = trim($formvars['nameValue']);
         $formvars['score'] = trim($formvars['score']);
 	}
@@ -77,11 +79,24 @@ class Game {
         return true;
     }
     
+    function isValidCommentForm($formvars) {
+        $this->error = null;
+        if(strlen($formvars['userName']) == 0) {
+            $this->error = 'user_name_empty';
+            return false;
+        }
+        if(strlen($formvars['userComment']) == 0) {
+            $this->error = 'user_comment_empty';
+            return false; 
+        }
+        return true;
+    }
+    
+    
     function isValidGameForm($formvars) {
         $this->error = null;
         if(strlen($formvars['nameValue']) == 0) {
             $this->error = 'name_empty';
-            echo "name_empty";
             return false;
         }
         if(strlen($formvars['score']) == 0) {
@@ -93,21 +108,37 @@ class Game {
     }
     
     function addEntry($formvars) {
-        $_query = sprintf("insert into online(val, game_id, mnt) select '%s' as val,%s as game_id , TIMESTAMPDIFF(MINUTE,start_time, NOW()) as mnt from game where game_id = %s",
-                mysql_escape_string($formvars['Comment']), $this->gameId, $this->gameId);
+        $_query = sprintf("insert into online(val, game_id, mnt) select '%s' as val,%s as game_id , (TIMESTAMPDIFF(MINUTE,start_time, NOW()) + 45*%s ) as mnt from game where game_id = %s",
+                mysql_escape_string($formvars['Comment']), $this->gameId, $this->period, $this->gameId);
         return $this->sql->query($_query);
     }
     
+    function addComment($formvars) {
+        $_query = sprintf("insert into comment(name, val, game_id) values('%s', '%s', %s)",
+                mysql_escape_string($formvars['userName']), mysql_escape_string($formvars['userComment']), $this->gameId);
+        return $this->sql->query($_query);
+    }
+    
+    
     function getEntries() {
         $this->sql->query(sprintf("select * from online where game_id = %s order by add_time ". ($this->archive == 0 ? "DESC": ""), $this->gameId),
-			SQL_ALL,
-			SQL_ASSOC
-		);
+			     SQL_ALL,
+			     SQL_ASSOC
+		    );
         return $this->sql->record;
     }
     
-    function displayGame($data = array()) {
+    function getComments() {
+        $this->sql->query(sprintf("select * from comment where game_id = %s order by add_time", $this->gameId),
+  			SQL_ALL,
+	   		SQL_ASSOC
+		);
+        return $this->sql->record;
+    }    
+    
+    function displayGame($data = array(), $comments = array()) {
         $this->tpl->assign('data', $data);
+        $this->tpl->assign('comments', $comments);
         $this->tpl->assign('game', $this);
         $this->tpl->display('game2.tpl');
     }

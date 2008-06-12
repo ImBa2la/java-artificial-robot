@@ -32,12 +32,19 @@ switch($_action) {
         $game->editEntity($_POST);
         break;
     case 'submit':
-		$game->mungeFormData($_POST);
+      	$game->mungeFormData($_POST);
         if($game->isValidForm($_POST)) {
             $game->addEntry($_POST);
         }
         break;
+    case 'comment':
+		    $game->mungeFormData($_POST);
+        if($game->isValidCommentForm($_POST)) {
+            $game->addComment($_POST);
+        }
+        break;
 }
-$game->displayGame($game->getEntries());
+
+$game->displayGame($game->getEntries(), $game->getComments());
 
 ?>

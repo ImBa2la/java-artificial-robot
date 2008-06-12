@@ -19,3 +19,15 @@ CREATE TABLE online (
   game_id int(11) default NULL,
   PRIMARY KEY  (id)
 ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS comment;
+
+CREATE TABLE comment (
+  id int(11) NOT NULL auto_increment,
+  name text,
+  val text,
+  add_time timestamp NOT NULL default CURRENT_TIMESTAMP,
+  game_id int(11) default NULL,
+  PRIMARY KEY  (id)
+) ENGINE=InnoDB;
+

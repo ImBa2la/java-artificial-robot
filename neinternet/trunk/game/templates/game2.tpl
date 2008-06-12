@@ -41,14 +41,6 @@
 <form action="{$smarty.server.SCRIPT_NAME}?gameId={$smarty.get.gameId}" method="post">
 <input type="hidden" name="action" value="game" />
 <table border="1">
-    {if $error ne ""}
-        <tr>
-            <td bgcolor="yellow" colspan="2">
-                {if $error eq "name_empty"} You must supply a name.{/if}
-                {if $error eq "score_empty"} You must supply a score.{/if}
-            </td>
-        </tr>
-    {/if}
     <tr>
         <td>Name:</td>
         <td><input type="text" name="nameValue" value="{$game->name}" size="40"></td>
@@ -56,7 +48,17 @@
     <tr>
         <td valign="top">Score:</td>
         <td><textarea name="score" cols="40" rows="10">{$game->score}</textarea></td>
-    </tr>     <tr>
+    </tr>     
+    </tr>     
+    <tr>
+        <td>Period start time:</td>
+        <td><input type="text" name="start_time" value="{$game->start|date_format:"%Y-%m-%d %H:%M:%S"}" size="40"></td>
+    </tr>
+    <tr>
+        <td>Period:</td>
+        <td><input type="text" name="start_time" value="{$game->period}" size="40"></td>
+    </tr>
+    <tr>
         <td colspan="2" align="center"><input type="submit" value="Submit"></td>
     </tr>
 </table>
@@ -66,6 +68,37 @@
 						
                           <td id="unit_anounces_reportazh">
                            	  <p class="unit_anounces_name">≈сли вы хотите разместить материалы в своем блоге, пожалуйста размещайте ссылку на <a href="http://www.neinternet.ru/">www.neinternet.ru</a></p>
+                           	  
+<form action="{$smarty.server.SCRIPT_NAME}?gameId={$smarty.get.gameId}" method="post">
+<input type="hidden" name="action" value="comment" />
+<table border="1">
+    {if $error ne ""}
+        <tr>
+            <td bgcolor="yellow" colspan="2">
+                {if $error eq "user_name_empty"} You must supply a name.
+                {/if}
+                {if $error eq "user_comment_empty"} You must supply a comment.
+                {/if}
+            </td>
+        </tr>
+    {/if}
+    <tr>
+        <td>Name:</td>
+        <td><input type="text" name="userName" value="" size="40"></td>        
+    </tr>
+    <tr>
+        <td>Comment:</td>
+        <td>
+        <textarea name="userComment" wrap="logical" rows="3" cols="40">
+        </textarea>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+    </tr>
+</table>
+</form>                                       	  
+                           	  
 							  
 							  {if $admin eq 'admin'}
 <form action="{$smarty.server.SCRIPT_NAME}?gameId={$smarty.get.gameId}" method="post">
@@ -123,7 +156,17 @@
     </tr>
 </table>
 </form>
-{/if}      
+{/if}  
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="unit_anounces_name">
+{foreach from=$comments item="entry"}
+        <tr>
+                <td class="unit_anounces_reportazh_comment">{$entry.name|escape}</td>
+                <td class="unit_anounces_reportazh_comment">{$entry.val|escape}</td>
+        </tr>
+{/foreach}
+</table>
+    
 								                         	  
                            	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="unit_anounces_name">
                             </table>
