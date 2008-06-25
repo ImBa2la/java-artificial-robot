@@ -54,7 +54,7 @@ function load() {
     
     $str = $_GET["word"];
 
-    $stX = 1 + $d * round((imagesx($im) - print_word($str,$map, $im, $y, $w, $h, false, 1, 1, $d)) / (2*$d));
+    $stX = 1 + $d * floor((imagesx($im) - print_word($str,$map, $im, $y, $w, $h, false, 1, 1, $d)) / (2*$d));
     $stY = 1 + 12 * $d;
     print_word($str,$map, $im, $y, $w, $h, true, $stX, $stY, $d);
 	imagepng($im);
