@@ -40,7 +40,33 @@ public final class IteratorUtils {
 	public static <T> Iterator<T> map(IntIterator list, TransformI2O<T> mapper) {
 		return new MapperI2O<T>(list, mapper);
 	}
-
+	
+	public static <T> T reduce(Binar<T, T, T> transfom, Iterator<T> it, T init) {
+		T current = init;
+		while(it.hasNext()) {
+			current = transfom.transform(current, it.next());
+		}
+		return current;
+	}
+	
+	public static <T> T reduce(Binar<T, T, T> transfom, Iterable<T> it, T init) {
+		return reduce(transfom, it.iterator(), init);		
+	}
+	
+	public static <T> T reduce(Binar<T, T, T> transfom, Iterator<T> it) {
+		if(!it.hasNext())
+			return null;		
+		T current = it.next();
+		while(it.hasNext()) {
+			current = transfom.transform(current, it.next());
+		}
+		return current;
+	}
+	
+	public static <T> T reduce(Binar<T, T, T> transfom, Iterable<T> it) {
+		return reduce(transfom, it.iterator());		
+	}
+	
 	public static String joinMap(IntIterator list, TransformI2O<String> mapper, final String delimiter) {
 		StringBuilder b = new StringBuilder();
 		if (list.hasNext())
@@ -337,4 +363,16 @@ public final class IteratorUtils {
 		public void remove() {
 		}
 	}
+	
+	public static final Binar<Double, Double, Double> DOUBLE_SUM = new Binar<Double, Double, Double>() {
+		public Double transform(Double a, Double b) {
+			return a + b;
+		}
+	};
+	
+	public static final Binar<Integer, Integer, Integer> INT_SUM = new Binar<Integer, Integer, Integer>() {
+		public Integer transform(Integer a, Integer b) {
+			return a + b;
+		}
+	};
 }

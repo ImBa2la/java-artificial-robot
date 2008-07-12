@@ -141,4 +141,38 @@ public class SetUtils {
 		}
 		return map;
 	}
+	
+	public static <S> int find(S value, List<S> list, Comparator<S> comp) {
+		// list is sorted
+		int a = 0, b = list.size() -1, c;
+		while(b - a > 1) {
+			c = (a + b) /2;
+			int r = comp.compare(value, list.get(c));
+			if(r > 0)
+				a = c;
+			else if(r < 0)
+				b = c;
+			else
+				return c;									
+		}
+		return comp.compare(value, list.get(b)) == 0 ? b : a;
+	}
+
+	public static <S extends Comparable<? super S>> int find(S value, List<S> list) {
+		// list is sorted
+		int a = 0, b = list.size() -1, c;
+		while(b - a > 1) {
+			c = (a + b) /2;
+			int r = value.compareTo(list.get(c));
+			if(r > 0)
+				a = c;
+			else if(r < 0)
+				b = c;
+			else
+				return c;									
+		}
+		return value.compareTo(list.get(b)) == 0 ? b : a;
+		
+	}
+
 }
