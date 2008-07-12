@@ -1,0 +1,46 @@
+<project name="ir-utils" default="make-jar">
+    <target name="init">
+        <mkdir dir="target"/>
+        <mkdir dir="target/classes"/>
+        <mkdir dir="target/test-classes"/>
+        <mkdir dir="target/test-report"/>
+        <mkdir dir="target/dist"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="target"/>
+    </target>
+
+    <path id="compile.classpath">
+        <fileset dir="lib">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="lib/test">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="test.classpath">
+        <fileset dir="lib/test">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="compile" depends="">
+        <javac srcdir="src/main/java" destdir="target/classes"
+               source="1.5" encoding="windows-1251" debug="true"
+               target="1.5">
+            <classpath refid="compile.classpath"/>
+        </javac>
+    </target>
+
+    <target name="make-jar" depends="clean, init, fast-jar" />
+
+    <target name="fast-jar" depends="compile">
+        <jar destfile="target/dist/ir-utils.jar">
+            <fileset dir="target/classes"/>
+            <fileset dir="src/main/resources"/>
+            <manifest/>
+        </jar>
+    </target>
+</project>

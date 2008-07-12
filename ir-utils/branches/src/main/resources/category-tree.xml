@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+               http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+               http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
+       default-autowire="byName"
+       default-lazy-init="true"
+        >
+        
+	<bean name="categoryTree" class="ru.yandex.market.CategoryTree" />
+	
+    <bean name="categoryTreeDaoJdbc" class="ru.yandex.market.dao.CategoryTreeDaoJdbc">
+        <property name="dataSource" ref="sovetDataSource" />
+        <property name="marketDataSource" ref="marketDataSource" />
+    </bean>
+    
+    <bean name="categoryTreeDaoXml" class="ru.yandex.market.dao.CategoryTreeDaoXml">
+        <property name="xmlFilePath" value="${mbo.path}"/>
+        <property name="loadCategoryTreeFileName" value="${mbo.tovar_categories}" />
+        <property name="hyperToMatcherMapFileName" value="${mbo.map_hyper_to_matcher}" />
+    </bean>
+    
+    <bean name="categoryTreeDao" class="ru.yandex.utils.spring.IfThenElseFactoryBean">
+    	<property name="condition" value="${mbo.useXml}" />
+    	<property name="trueBean" ref="categoryTreeDaoXml" />
+    	<property name="falseBean" ref="categoryTreeDaoJdbc" />
+    </bean>    
+    
+    
+    <bean id="marketDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${matcher_loger.matcher.jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${matcher_loger.matcher.jdbc.url}"/>
+        <property name="user" value="${matcher_loger.matcher.username}"/>
+        <property name="password" value="${matcher_loger.matcher.password}"/>
+        <property name="testConnectionOnCheckout" value="true"/>
+    </bean>
+    
+    <bean id="sovetDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${mapper_user.tovar.jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${mapper_user.tovar.jdbc.url}"/>
+        <property name="user" value="${mapper_user.tovar.username}"/>
+        <property name="password" value="${mapper_user.tovar.password}"/>
+        <property name="testConnectionOnCheckout" value="true"/>
+    </bean>
+    
+</beans>
