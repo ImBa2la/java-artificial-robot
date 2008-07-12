@@ -1,3 +1,5 @@
-#Sun Jul 08 11:31:54 MSD 2007
+#Sun Jul 13 00:42:11 MSD 2008
 eclipse.preferences.version=1
+encoding//src/main/data/ru_RU.dic=koi8-r
+encoding/<project>=UTF-8
 instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true

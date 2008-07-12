@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans default-autowire="byName" default-lazy-init="true" >
+
+	
+
+	<bean name="dictionary" class="ru.styskin.dict.DictFactory">
+		<property name="fileName" value="${dict.rus.file}" />
+		<property name="encoding" value="${dict.rus.encoding}" />
+	</bean>
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="markov.properties" />
+	</bean>	
+</beans>
