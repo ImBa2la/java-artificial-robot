@@ -2,7 +2,7 @@ package ru.styskin.poetry.utils;
 
 import java.util.StringTokenizer;
 
-import net.sf.snowball.ext.RussianStemmer;
+import org.tartarus.snowball.ext.russianStemmer;
 
 /**
  * User: smargolin
@@ -107,7 +107,7 @@ public final class StringUtils {
     }
     
     public static String stem(String s) {
-		RussianStemmer russian = new RussianStemmer();
+		russianStemmer russian = new russianStemmer();
 		russian.setCurrent(s);
 		russian.stem();
 		return russian.getCurrent();    	
