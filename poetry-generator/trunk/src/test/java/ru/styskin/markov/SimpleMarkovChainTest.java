@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import ru.styskin.dict.Dict;
 import ru.yandex.utils.IteratorUtils;
+import ru.yandex.utils.Pair;
 import ru.yandex.utils.Transform;
 import ru.yandex.utils.spring.SpringContextTestCase;
 
@@ -30,7 +31,26 @@ public class SimpleMarkovChainTest extends SpringContextTestCase {
 			c.add(' ');
 			return c;
 		}
+	};
+	
+	private final Transform<String, Collection<Integer>> S2C2 = new Transform<String, Collection<Integer>> () {
+		public Collection<Integer> transform(String val) {
+			val = val.toLowerCase();
+			if(val.indexOf('/') >= 0) {
+				val = val.substring(0, val.indexOf('/'));
+			}
+			if(val.length() % 2 == 1)
+				val += " ";
+			Collection<Integer> c = new ArrayList<Integer>(2 + val.length());
+			c.add(code(' ', ' '));
+			for(int i=0; i < val.length(); i+=2) {
+				c.add(code(val.charAt(i), val.charAt(i+1)));
+			}
+			c.add(code(' ', ' '));
+			return c;
+		}
 	};	
+
 	
 	private final Transform<Collection<Character>, String> C2S = new Transform<Collection<Character>, String>() {
 		public String transform(Collection<Character> val) {
@@ -42,14 +62,44 @@ public class SimpleMarkovChainTest extends SpringContextTestCase {
 		}		
 	};
 	
+	private final Transform<Collection<Integer>, String> C2S2 = new Transform<Collection<Integer>, String>() {
+		public String transform(Collection<Integer> val) {
+			StringBuilder sb = new StringBuilder(val.size());
+			for(Integer c : val) {
+				Pair<Character, Character> p = decode(c);
+				sb.append(p.getFirst()).append(p.getSecond());
+			}
+			return sb.toString();
+		}		
+	};
+
+	
 	public void testMarkov() throws Exception {
 		SimpleMarkovChain<Character> markov = new SimpleMarkovChain<Character>(' ');
 		markov.init(IteratorUtils.mapI(dictionary.getWords(), S2C));
 		for(int i=0; i < 100; i ++) {		
-			logger.info(C2S.transform(markov.generateWord())); 
+//			logger.info(C2S.transform(markov.generateWord())); 
 		}
 	}
 	
+	public static Integer code(char a, char b) {
+		int i = a;
+		i <<= 16;
+		i |= b;
+		return i;
+	}
+	
+	public Pair<Character, Character> decode(int i) {
+		return new Pair<Character, Character>((char)(i>>>16),(char)i);
+	}
+	
+	public void testMarkov2() throws Exception {
+		SimpleMarkovChain<Integer> markov = new SimpleMarkovChain<Integer>(code(' ', ' '));
+		markov.init(IteratorUtils.mapI(dictionary.getWords(), S2C2));
+		for(int i=0; i < 100; i ++) {		
+			logger.info(C2S2.transform(markov.generateWord()).trim()); 
+		}
+	}
 
 	@Override
 	protected String[] getConfigLocations() {

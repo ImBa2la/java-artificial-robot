@@ -1,5 +1,8 @@
 package ru.styskin.markov;
 
+import static ru.yandex.utils.IteratorUtils.DOUBLE_SUM;
+import static ru.yandex.utils.IteratorUtils.reduce;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -8,8 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static ru.yandex.utils.IteratorUtils.*;
-import ru.yandex.utils.Binar;
 import ru.yandex.utils.IteratorUtils;
 import ru.yandex.utils.Pair;
 import ru.yandex.utils.SetUtils;
