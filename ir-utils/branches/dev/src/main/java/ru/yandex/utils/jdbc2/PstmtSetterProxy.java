@@ -9,16 +9,13 @@ import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.NClob;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.Ref;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.RowId;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
-import java.sql.SQLXML;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -338,114 +335,5 @@ public class PstmtSetterProxy implements PreparedStatement {
 	public void setQueryTimeout(final int seconds) throws SQLException {
 		pstmt.setQueryTimeout(seconds);
 	}
-
-	public boolean isClosed() throws SQLException {
-		return pstmt.isClosed();
-	}
-
-	public boolean isPoolable() throws SQLException {
-		return pstmt.isPoolable();
-	}
-
-	public boolean isWrapperFor(Class<?> iface) throws SQLException {
-		return pstmt.isWrapperFor(iface);
-	}
-
-	public void setAsciiStream(int parameterIndex, InputStream x, long length)
-			throws SQLException {
-		pstmt.setAsciiStream(parameterIndex, x, length);
-	}
-
-	public void setAsciiStream(int parameterIndex, InputStream x)
-			throws SQLException {
-		pstmt.setAsciiStream(parameterIndex, x);
-	}
-
-	public void setBinaryStream(int parameterIndex, InputStream x, long length)
-			throws SQLException {
-		pstmt.setBinaryStream(parameterIndex, x, length);
-	}
-
-	public void setBinaryStream(int parameterIndex, InputStream x)
-			throws SQLException {
-		pstmt.setBinaryStream(parameterIndex, x);
-	}
-
-	public void setBlob(int parameterIndex, InputStream inputStream, long length)
-			throws SQLException {
-		pstmt.setBlob(parameterIndex, inputStream, length);
-	}
-
-	public void setBlob(int parameterIndex, InputStream inputStream)
-			throws SQLException {
-		pstmt.setBlob(parameterIndex, inputStream);
-	}
-
-	public void setCharacterStream(int parameterIndex, Reader reader,
-			long length) throws SQLException {
-		pstmt.setCharacterStream(parameterIndex, reader, length);
-	}
-
-	public void setCharacterStream(int parameterIndex, Reader reader)
-			throws SQLException {
-		pstmt.setCharacterStream(parameterIndex, reader);
-	}
-
-	public void setClob(int parameterIndex, Reader reader, long length)
-			throws SQLException {
-		pstmt.setClob(parameterIndex, reader, length);
-	}
-
-	public void setClob(int parameterIndex, Reader reader) throws SQLException {
-		pstmt.setClob(parameterIndex, reader);
-	}
-
-	public void setNCharacterStream(int parameterIndex, Reader value,
-			long length) throws SQLException {
-		pstmt.setNCharacterStream(parameterIndex, value, length);
-	}
-
-	public void setNCharacterStream(int parameterIndex, Reader value)
-			throws SQLException {
-		pstmt.setNCharacterStream(parameterIndex, value);
-	}
-
-	public void setNClob(int parameterIndex, NClob value) throws SQLException {
-		pstmt.setNClob(parameterIndex, value);
-	}
-
-	public void setNClob(int parameterIndex, Reader reader, long length)
-			throws SQLException {
-		pstmt.setNClob(parameterIndex, reader, length);
-	}
-
-	public void setNClob(int parameterIndex, Reader reader) throws SQLException {
-		pstmt.setNClob(parameterIndex, reader);
-	}
-
-	public void setNString(int parameterIndex, String value)
-			throws SQLException {
-		pstmt.setNString(parameterIndex, value);
-	}
-
-	public void setPoolable(boolean poolable) throws SQLException {
-		pstmt.setPoolable(poolable);
-	}
-
-	public void setRowId(int parameterIndex, RowId x) throws SQLException {
-		pstmt.setRowId(parameterIndex, x);
-	}
-
-	public void setSQLXML(int parameterIndex, SQLXML xmlObject)
-			throws SQLException {
-		pstmt.setSQLXML(parameterIndex, xmlObject);
-	}
-
-	public <T> T unwrap(Class<T> iface) throws SQLException {
-		return pstmt.unwrap(iface);
-	}
-	
-	
-
 	
 }
