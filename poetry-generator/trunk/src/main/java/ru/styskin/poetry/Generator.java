@@ -1,11 +1,12 @@
 package ru.styskin.poetry;
 
-import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,20 +29,13 @@ public class Generator {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		(new Generator("Сюткин", 8)).run();
+		(new Generator("РџСѓС€РєРёРЅ", 8)).run();
 	}
 	
 	public void run() throws Exception {
-		System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(title + ".txt"))));
-		
-		
+		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(title + ".txt"), "UTF-8")));
 		init("../Karaoke/" + title);
 		System.err.println("Initialization successful");
-/*		Dictionary d1 = dictionary;
-		init("../Karaoke/Алиса");
-		Dictionary d2 = dictionary;
-		Set<SingletonString> set = new HashSet<SingletonString>(d1.getFrequencyStemmed().keySet());
-		set.retainAll(d2.getFrequencyStemmed().keySet());*/
 		ChainGenerator generator = new ChainGenerator(dictionary, size);		
 
 		for(int i=0; i < 10; i++) {
@@ -57,11 +51,11 @@ public class Generator {
 				}
 			}
 			if(r != null) {
-				System.out.println(chain);
-				System.out.println(r);
+				out.println(chain);
+				out.println(r);
 			}
 		}
-		System.out.close();				
+		out.close();				
 	}
 	
 	private void init(String source) throws IOException {

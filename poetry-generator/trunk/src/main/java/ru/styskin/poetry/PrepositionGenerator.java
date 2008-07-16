@@ -2,9 +2,10 @@ package ru.styskin.poetry;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,12 +21,14 @@ public class PrepositionGenerator {
 	
 	private DefaultStringProcessor stringProcessor = new DefaultStringProcessor();
 	
+	private String encoding = "cp1251";
+	
 	private Map<String, Integer> words = new HashMap<String, Integer>();
 
 	public static void main(String[] args) throws Exception {
 		PrepositionGenerator generator = new PrepositionGenerator();
-		generator.init("../Karaoke/’олстой");
-		generator.init("../Karaoke/„остоевский");
+		generator.init("../Karaoke/РџСѓС€РєРёРЅ");
+		generator.init("../Karaoke/Р”РѕСЃС‚РѕРµРІСЃРєРёР№");
 		generator.output(1000);
 	}
 
@@ -41,7 +44,7 @@ public class PrepositionGenerator {
 	}
 	
 	private void appendFile(File file) throws IOException {
-		BufferedReader in = new BufferedReader(new FileReader(file));
+		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
 		String s;
 		while( (s = in.readLine()) != null) {
 			for(String word : stringProcessor.splitString(s)) {

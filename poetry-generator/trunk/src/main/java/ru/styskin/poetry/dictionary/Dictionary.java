@@ -2,8 +2,9 @@ package ru.styskin.poetry.dictionary;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import org.springframework.core.io.ClassPathResource;
 
 import ru.styskin.poetry.poem.Chain;
 import ru.styskin.poetry.utils.DefaultStringProcessor;
@@ -20,11 +23,13 @@ import ru.styskin.poetry.utils.StringUtils;
 
 public class Dictionary {
 	
+	private String encoding = "cp1251";
+	
 	public enum Direction {
 		FORWARD, BACKWARD
 	}
 	
-	private String path = "conf/blockwords.txt";	
+	private String blockwordsPath = "blockwords.txt";	
 	
 	private Set<SingletonString> blockWords = new HashSet<SingletonString>();
 	
@@ -44,7 +49,7 @@ public class Dictionary {
 	
 	public void init() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(path));
+			BufferedReader in = new BufferedReader(new InputStreamReader((new ClassPathResource(blockwordsPath)).getInputStream(), encoding));
 			String s;
 			while( (s = in.readLine()) != null) {
 				blockWords.add(SingletonString.getInstance(s.trim().toLowerCase()));				
@@ -58,7 +63,7 @@ public class Dictionary {
 	
 	
 	public void appendDictionary(File file) throws IOException {
-		BufferedReader in = new BufferedReader(new FileReader(file));
+		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
 		DefaultStringProcessor processor = DefaultStringProcessor.getProcessor();
 		{
 			List<List<SingletonString>> abstr = new ArrayList<List<SingletonString>>();
