@@ -1,0 +1,138 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a
+Relation:     Book3
+Instances:    202
+Attributes:   6
+              0
+              1
+              2
+              3
+              4
+              5
+Test mode:    split 90% train, remainder test
+
+=== Classifier model (full training set) ===
+
+Sigmoid Node 0
+    Inputs    Weights
+    Threshold    -0.10720845110142217
+    Node 3    -0.766948082009342
+    Node 4    -3.8425548963540894
+    Node 5    -4.453069445709544
+    Node 6    -1.2790351912950555
+Sigmoid Node 1
+    Inputs    Weights
+    Threshold    -1.2837576175163765
+    Node 3    -1.6453851213099562
+    Node 4    -0.012498265965454804
+    Node 5    -0.8977671332307746
+    Node 6    -1.2741863130837596
+Sigmoid Node 2
+    Inputs    Weights
+    Threshold    -0.8911682590070631
+    Node 3    2.0167477917835885
+    Node 4    3.423648772231108
+    Node 5    4.918738685055327
+    Node 6    1.9133944291586833
+Sigmoid Node 3
+    Inputs    Weights
+    Threshold    -4.2852363335422865
+    Attrib 1    1.0884336060959445
+    Attrib 2    -1.944509364983249
+    Attrib 3    5.481976268808581
+    Attrib 4    -2.0098041933265645
+    Attrib 5    -2.1427645836747344
+Sigmoid Node 4
+    Inputs    Weights
+    Threshold    -8.33487963308266
+    Attrib 1    6.784477894359526
+    Attrib 2    -2.451020985479223
+    Attrib 3    2.742156834858069
+    Attrib 4    -4.81572611217873
+    Attrib 5    -1.5550089065881723
+Sigmoid Node 5
+    Inputs    Weights
+    Threshold    -10.874999977461808
+    Attrib 1    -1.2305487266910098
+    Attrib 2    -7.4418220943022035
+    Attrib 3    -5.189799914977745
+    Attrib 4    3.7084824879965894
+    Attrib 5    5.196804370404806
+Sigmoid Node 6
+    Inputs    Weights
+    Threshold    -4.202151636177005
+    Attrib 1    1.1765052721974838
+    Attrib 2    -2.3199140835452963
+    Attrib 3    8.805108615663075
+    Attrib 4    0.9309608632540798
+    Attrib 5    -5.376713732857974
+Class C
+    Input
+    Node 0
+Class A
+    Input
+    Node 1
+Class B
+    Input
+    Node 2
+
+
+Time taken to build model: 0.63 seconds
+
+=== Predictions on test split ===
+
+ inst#,    actual, predicted, error, probability distribution
+     1        2:A        1:C      +  *0.526  0.092  0.382
+     2        1:C        1:C         *0.541  0.266  0.194
+     3        1:C        1:C         *0.454  0.151  0.395
+     4        1:C        1:C         *0.546  0.291  0.163
+     5        3:B        1:C      +  *0.5    0.027  0.473
+     6        3:B        1:C      +  *0.524  0.134  0.342
+     7        1:C        1:C         *0.595  0.034  0.37 
+     8        1:C        3:B      +   0.284  0.13  *0.586
+     9        1:C        1:C         *0.642  0.155  0.203
+    10        3:B        1:C      +  *0.454  0.151  0.395
+    11        1:C        1:C         *0.526  0.092  0.382
+    12        3:B        1:C      +  *0.477  0.339  0.184
+    13        2:A        1:C      +  *0.529  0.346  0.125
+    14        1:C        1:C         *0.503  0.272  0.225
+    15        3:B        1:C      +  *0.504  0.329  0.167
+    16        1:C        1:C         *0.566  0.292  0.143
+    17        3:B        1:C      +  *0.544  0.24   0.215
+    18        1:C        1:C         *0.544  0.335  0.121
+    19        3:B        3:B          0.402  0.098 *0.5  
+    20        1:C        1:C         *0.484  0.209  0.307
+    21        3:B        3:B          0.303  0.137 *0.56 
+
+=== Evaluation on test split ===
+=== Summary ===
+
+Correctly Classified Instances          12               57.1429 %
+Incorrectly Classified Instances         9               42.8571 %
+Kappa statistic                          0.137 
+K&B Relative Info Score                292.2619 %
+K&B Information Score                    4.4119 bits      0.2101 bits/instance
+Class complexity | order 0              29.8839 bits      1.423  bits/instance
+Class complexity | scheme               28.7812 bits      1.3705 bits/instance
+Complexity improvement     (Sf)          1.1026 bits      0.0525 bits/instance
+Mean absolute error                      0.3822
+Root mean squared error                  0.4336
+Relative absolute error                 92.6199 %
+Root relative squared error             96.6794 %
+Total Number of Instances               21     
+
+=== Detailed Accuracy By Class ===
+
+TP Rate   FP Rate   Precision   Recall  F-Measure   Class
+  0.909     0.8        0.556     0.909     0.69     C
+  0         0          0         0         0        A
+  0.25      0.077      0.667     0.25      0.364    B
+
+=== Confusion Matrix ===
+
+  a  b  c   <-- classified as
+ 10  0  1 |  a = C
+  2  0  0 |  b = A
+  6  0  2 |  c = B
+
