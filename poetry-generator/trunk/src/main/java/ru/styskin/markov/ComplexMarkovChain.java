@@ -130,7 +130,7 @@ public class ComplexMarkovChain<T> implements MarkovChain<T> {
 	public Collection<T> generateWord() {
 		double r = Math.random();
 		int index = SetUtils.find(new Pair<List<T>, Double>(null, r), firstT, FIRST_CMP);
-		List<T> word = firstT.get(index).getFirst();
+		List<T> word = new ArrayList<T>(firstT.get(index).getFirst());
 		while(!acceptor.accept(word)) {
 			T next = getNextLetter(word);
 			word.add(next);

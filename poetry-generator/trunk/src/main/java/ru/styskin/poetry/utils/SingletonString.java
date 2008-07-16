@@ -119,31 +119,31 @@ public class SingletonString implements Comparable<SingletonString> {
     	return size;    	
     }
     
-    public static final String CONSONANT = "éöêíãøùçõôâïğëäæáòìñ÷";
-    public static final String VOCALIC = "àå¸èîóûışÿ";
+    public static final String CONSONANT = "Ğ¹Ñ†ĞºĞ½Ğ³ÑˆÑ‰Ğ·Ñ…ÑŠÑ„Ğ²Ğ¿Ñ€Ğ»Ğ´Ğ¶Ñ‡ÑĞ¼Ñ‚ÑŒĞ±";
+    public static final String VOCALIC = "Ğ°ĞµÑ‘Ğ¸Ğ¾ÑƒÑ‹ÑÑÑ";
 
     private static int CONSONANT_SET = 0;
     private static int VOCALIC_SET = 0;
     
     static {
     	for(int i=0; i < CONSONANT.length(); i++) {
-    		CONSONANT_SET |= 1 << CONSONANT.charAt(i) - 'à';
+    		CONSONANT_SET |= 1 << CONSONANT.charAt(i) - 'Ğ°';
     	}
     	for(int i=0; i < VOCALIC.length(); i++) {
-    		VOCALIC_SET |= 1 << VOCALIC.charAt(i) - 'à';
+    		VOCALIC_SET |= 1 << VOCALIC.charAt(i) - 'Ğ°';
     	}
     }
     
     private static int calculateSize(String s) {
     	int res = 0;
     	for(int i=0; i < s.length(); i++) {
-    		if((VOCALIC_SET & (1 << (s.charAt(i)-'à'))) > 0) {
+    		if((VOCALIC_SET & (1 << (s.charAt(i)-'Ğ°'))) > 0) {
     			res ++;    			
     		}
     	}
 		if(s.length() > 2 &&
-			(VOCALIC_SET & (1 << (s.charAt(s.length()-1)-'à'))) > 0 && 
-			(VOCALIC_SET & (1 << (s.charAt(s.length()-2)-'à'))) > 0) {
+			(VOCALIC_SET & (1 << (s.charAt(s.length()-1)-'Ğ°'))) > 0 && 
+			(VOCALIC_SET & (1 << (s.charAt(s.length()-2)-'Ğ°'))) > 0) {
 			res --;
 		}
     	return res;

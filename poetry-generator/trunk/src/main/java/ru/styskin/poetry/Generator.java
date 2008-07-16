@@ -29,7 +29,7 @@ public class Generator {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		(new Generator("Пушкин", 8)).run();
+		(new Generator("Некрасов", 8)).run();
 	}
 	
 	public void run() throws Exception {
