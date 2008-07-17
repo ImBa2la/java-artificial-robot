@@ -84,7 +84,7 @@ public class B {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String name = "B-small-attempt1";		
+		String name = "B-large";		
 		BufferedReader in = new BufferedReader(new FileReader(name + ".in"));
 		PrintWriter out = new PrintWriter(new BufferedWriter( new FileWriter(name + ".out")));
 		int n = Integer.parseInt(in.readLine());

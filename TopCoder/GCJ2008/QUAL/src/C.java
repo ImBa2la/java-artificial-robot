@@ -95,7 +95,7 @@ public class C {
 	
 	public static void main(String[] args) throws Exception {
 		Locale.setDefault(Locale.US);		
-		String name = "C-small-attempt0";		
+		String name = "C-large";		
 		BufferedReader in = new BufferedReader(new FileReader(name + ".in"));
 		PrintWriter out = new PrintWriter(new BufferedWriter( new FileWriter(name + ".out")));
 		int n = Integer.parseInt(in.readLine());

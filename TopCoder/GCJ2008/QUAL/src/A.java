@@ -52,7 +52,7 @@ public class A {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String name = "A-small-attempt1";		
+		String name = "A-large";		
 		BufferedReader in = new BufferedReader(new FileReader(name + ".in"));
 		PrintWriter out = new PrintWriter(new BufferedWriter( new FileWriter(name + ".out")));
 		int n = Integer.parseInt(in.readLine());
