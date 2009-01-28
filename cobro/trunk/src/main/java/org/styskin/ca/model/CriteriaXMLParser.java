@@ -117,20 +117,40 @@ public class CriteriaXMLParser implements Constants {
 			out.close();
 		}
 		
-		
+		public static double getDouble(String s) {
+//			return FORMAT.parse(v).doubleValue();
+			return Double.parseDouble(s);
+		}
 		public static Optimize getInput(String file, Criteria cr) throws Exception {
-			Optimize o = new Optimize();
+			return getInput(file, cr, 1).getFirst();			
+		}
+		
+		public static Pair<Optimize, Optimize> getInput(String file, Criteria cr, double ratio) throws Exception {
+			Optimize of = new Optimize();
+			Optimize os = new Optimize();
 			Map<String, Integer> map = getCriteriaMap(cr);
+			final List<String> binaryCriteria = getBinaryMap(cr);
+			
 			map.put("price", -1);
 			List<Integer> in_map = new ArrayList<Integer>();
 			
-			List<List<Double>> input = new ArrayList<List<Double>>();				
+			List<Double>[] inputP = new List[2];				
+			List<double[]>[] input = new List[2];
+			input[0] = new ArrayList<double[]>();
+			input[1] = new ArrayList<double[]>();
+			inputP[0] = new ArrayList<Double>();
+			inputP[1] = new ArrayList<Double>();
+			
+
 			BufferedReader in = new BufferedReader(new FileReader(file));
 			StringTokenizer st;
 			
 			st = new StringTokenizer(in.readLine());
 			while(st.hasMoreTokens()) {
 				String key = st.nextToken(); 
+				if(key.startsWith("\"")) {
+					key = key.substring(1, key.length()-1);
+				}
 				if(map.containsKey(key)) {
 					in_map.add(map.get(key));						
 				} else {
@@ -139,26 +159,41 @@ public class CriteriaXMLParser implements Constants {
 			}				
 			String s = null;
 			while((s = in.readLine()) != null) {
+				int ind = 0;
+				if(Math.random() > ratio)
+					ind = 1;
 				st = new StringTokenizer(s);
-				List<Double> d = new ArrayList<Double>();
-				input.add(d);
+				double[] d = new double[map.size()-1];
+				input[ind].add(d);
+				int i = 0;
 				while(st.hasMoreTokens()) {
-					d.add(FORMAT.parse(st.nextToken()).doubleValue());
+					String v = st.nextToken();
+					if(v.startsWith("\"")) {
+						v = v.substring(1, v.length()-1);
+					}
+					if(map.containsKey(v)) {
+						d[map.get(v)] = 1;
+					} else if(in_map.get(i) == -1) {
+						inputP[ind].add(getDouble(v));
+					} else if(in_map.get(i) >= 0) {
+						d[in_map.get(i)] = getDouble(v);
+					}
+					++ i;
 				}
 			}
-			o.F = new double[input.size()][map.size()-1];
-			o.base = new double[input.size()];				
-			for(int j=0; j < input.size(); j++) {
-				List<Double> d = input.get(j);
-				for(int i=0; i < d.size(); i++) {
-					if(in_map.get(i) == -1) {
-						o.base[j] = d.get(i);
-					} else if(in_map.get(i) >= 0) {
-						o.F[j][in_map.get(i)] = d.get(i);
-					}
-				}
-			}				
-			return o;
+			of.F = new double[input[0].size()][map.size()-1];
+			of.base = new double[input[0].size()];				
+			for(int j=0; j < input[0].size(); j++) {
+				of.F[j] = input[0].get(j);
+				of.base[j] = inputP[0].get(j);
+			}
+			os.F = new double[input[1].size()][map.size()-1];
+			os.base = new double[input[1].size()];				
+			for(int j=0; j < input[1].size(); j++) {
+				os.F[j] = input[1].get(j);
+				os.base[j] = inputP[1].get(j);
+			}
+			return Pair.makePair(of, os);
 		}
 		
 		public static Optimize getInput(DataSource dataSource, final String tableName, Criteria cr) throws Exception {
@@ -327,9 +362,9 @@ public class CriteriaXMLParser implements Constants {
         // TODO: Function in XML embeded         
         CriteriaXMLHandler handler = new CriteriaXMLHandler(new Function() {
 			public double getValue(double x) {
-//AUTO				return 5000000*x;
+				return 5000000*x; // AUTO
 //				return Math.exp(x/0.062);  //0.062*Math.log(x);
-					return x;				
+//					return x;				
 			}
         });
         xmlReader.setContentHandler(handler);

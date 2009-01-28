@@ -235,7 +235,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 		}
 		// XXX criteria of finish optimization
 		double dt = 1E10, t = 0, tt = 0;
-		double PRECISION = cache.check() / 20000;
+		double PRECISION = Math.min(cache.check() / 20000, 0.1);
 		t = cache.check();
 		trace.add(t);
 
@@ -248,7 +248,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 			trace.add(t);
 			
 			log.log(t);
-			logger.info("Step = " + i + ", value = " + t);
+//			logger.info("Step = " + i + ", value = " + t);
 			Thread.yield();
 		}
 	}

@@ -11,7 +11,9 @@ import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.MultiOptimizer;
 import org.styskin.ca.functions.Optimizer;
+import org.styskin.ca.functions.SingleOptimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
+import org.styskin.ca.model.Pair;
 import org.styskin.ca.model.ValueLogger;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
@@ -28,16 +30,22 @@ public class AutoTest extends SpringContextTestCase {
 	public void testAuto() throws Exception {
 		prepareDirs();		
 		logger.info("Optimization started");		
-		Optimize op = Optimize.getInput(autoDataSource, "car_vc" + " limit 660, 165", auto);
+//		Optimize op = Optimize.getInput(autoDataSource, "car_vc" + " limit 660, 165", auto);
+		Pair<Optimize, Optimize> opm = Optimize.getInput("bin/auto/cars.txt", auto, 0.3);
+		Optimize op = opm.getFirst();
 		CacheCriteria c = new CacheCriteria(auto, op.getBase(), op.getF());
 		CacheCriteria.outputValues(namespace + "out0.txt", op.getBase());		
 		c.checkOut2(namespace + "out1.txt");		
-		Optimizer optimizer = new MultiOptimizer(auto);
-//		Optimizer optimizer = new SingleOptimizer(auto);
+//		Optimizer optimizer = new MultiOptimizer(auto);
+		Optimizer optimizer = new SingleOptimizer(auto);
 		auto = optimizer.optimize(op.getBase(), op.getF());
 		CriteriaXMLParser.saveXML(auto, namespace + "auto.out.xml");
 		c = new CacheCriteria(auto, op.getBase(), op.getF());
-		c.checkOut2(namespace + "out2.txt");		
+//		c.checkOut2(namespace + "out2.txt");
+		CacheCriteria cross = new CacheCriteria(auto, opm.getSecond().getBase(), opm.getSecond().getF());
+		logger.info(c.check());
+		logger.info(cross.check());
+		logger.info(op.getF().length);
 		Writer out = new FileWriter(namespace + "auto.out.txt");
 		ValueLogger.output(out);
 		out.close();
