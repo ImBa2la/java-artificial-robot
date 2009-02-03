@@ -57,6 +57,7 @@ public class SingleCriteria extends Criteria {
 		return criteria;
 	}
 
+	//TODO: don't forget about this method
 /*	@Override
 	public String toString() {
 		return "x";

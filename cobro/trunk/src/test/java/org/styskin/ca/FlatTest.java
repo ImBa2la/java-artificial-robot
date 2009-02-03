@@ -23,18 +23,17 @@ public class FlatTest extends TestCase {
 	
 	protected void setUp() throws Exception {
 		BasicConfigurator.configure();
-		flat = CriteriaXMLParser.loadXML("cfg/flat/kv.xml");
+		flat = CriteriaXMLParser.loadXML("bin/flat/kv.xml");
 	}
 	
 	public void testFlats() throws Exception {
 		logger.info("Optimization started");		
-		Optimize op = Optimize.getInput("cfg/flat/input.txt", flat);
+		Optimize op = Optimize.getInput("bin/flat/input.txt", flat);
 //		Optimizer optimizer = new Optimizer(flat);
 //		optimizer.optimize(op.getBase(), op.getF());
 		
 		CacheCriteria c = new CacheCriteria(flat, op.getBase(), op.getF());
-		c.checkOut2("out1.xml");
-		
+		c.checkOut2("out1.xml");	
 		
 		Optimizer optimizer = new MultiOptimizer(flat);
 		flat = optimizer.optimize(op.getBase(), op.getF());

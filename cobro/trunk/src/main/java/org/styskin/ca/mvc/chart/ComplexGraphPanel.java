@@ -66,7 +66,6 @@ public class ComplexGraphPanel {
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		return chart;
-
 	}
 
 }

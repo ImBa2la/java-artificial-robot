@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,14 +32,21 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
-import org.styskin.ca.functions.SingleOptimizer;
+import org.styskin.ca.functions.MultiOptimizer;
+import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
+import org.styskin.ca.model.Pair;
+import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 import org.styskin.ca.mvc.CriteriaTreeForm;
 
 public class CriteriaAnalysis extends JFrame {
 
 	private static final long serialVersionUID = -785301931655824129L;
+	
+	private static final Logger logger = Logger.getLogger(CriteriaAnalysis.class);
 
 	static {
 		BasicConfigurator.configure();
@@ -237,8 +243,7 @@ public class CriteriaAnalysis extends JFrame {
 		if (cutMenuItem == null) {
 			cutMenuItem = new JMenuItem();
 			cutMenuItem.setText("Cut");
-			cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X,
-					Event.CTRL_MASK, true));
+			cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, true));
 		}
 		return cutMenuItem;
 	}
@@ -252,8 +257,7 @@ public class CriteriaAnalysis extends JFrame {
 		if (copyMenuItem == null) {
 			copyMenuItem = new JMenuItem();
 			copyMenuItem.setText("Copy");
-			copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
-					Event.CTRL_MASK, true));
+			copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK, true));
 		}
 		return copyMenuItem;
 	}
@@ -267,8 +271,7 @@ public class CriteriaAnalysis extends JFrame {
 		if (pasteMenuItem == null) {
 			pasteMenuItem = new JMenuItem();
 			pasteMenuItem.setText("Paste");
-			pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V,
-					Event.CTRL_MASK, true));
+			pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK, true));
 		}
 		return pasteMenuItem;
 	}
@@ -282,8 +285,7 @@ public class CriteriaAnalysis extends JFrame {
 		if (saveMenuItem == null) {
 			saveMenuItem = new JMenuItem();
 			saveMenuItem.setText("Save");
-			saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-					Event.CTRL_MASK, true));
+			saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, true));
 			saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					JFileChooser fileChooser = new JFileChooser(new File("./"));
@@ -461,34 +463,23 @@ public class CriteriaAnalysis extends JFrame {
 					Criteria criteria = null;
 					try {
 						criteria = cr.clone();
-					} catch(CloneNotSupportedException ex) {}
-//					double[][] F = Optimizer.getMatrix(criteria.getTotalSize(), 300);
-					double[][] F = new double[300][criteria.getTotalSize()];
-					try {
-						Scanner inF = new Scanner(new File("F.txt"));
-						for(int i = 0; i < F.length; i++) {
-							for(int j = 0; j < F[i].length; j++) {
-								F[i][j] = inF.nextDouble();
-							}
-						}
-						inF.close();
-					} catch (Exception e2) {
-						e2.printStackTrace();
+					} catch(CloneNotSupportedException ex) {
+						logger.error("Cannot clone selected criteria", ex);
+						return;
 					}
-					SingleOptimizer optimizer = new SingleOptimizer(criteria);
 
 					JFileChooser fileChooser = new JFileChooser(new File("./"));
 					fileChooser.showOpenDialog((Component) e.getSource());
 					File file = fileChooser.getSelectedFile();
-					Criteria base = null;
 					try {
-						base = CriteriaXMLParser.loadXML(file);
-					} catch(Exception ex) {}
-					optimizer.optimize(base, F);
-					try {
-						CriteriaXMLParser.saveXML(criteria, "cfg/testOpt.xml");
-					} catch (Exception e1) {
-						e1.printStackTrace();
+						Pair<Optimize, Optimize> opm = Optimize.getInput(file, criteria, 0.9);
+						Optimize op = opm.getFirst();
+						Optimizer optimizer = new MultiOptimizer(criteria);
+						criteria = optimizer.optimize(op.getBase(), op.getF());
+						CacheCriteria cross = new CacheCriteria(criteria, opm.getSecond().getBase(), opm.getSecond().getF());
+						logger.info(cross.check());											
+					} catch (Exception ex) {
+						logger.error("Cannot optimize selected criteria", ex);						
 					}
 					JComponent treePanel = null;
 					treePanel = new CriteriaTreeForm(criteria);

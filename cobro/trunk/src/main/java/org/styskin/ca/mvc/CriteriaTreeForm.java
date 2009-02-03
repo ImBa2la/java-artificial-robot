@@ -28,9 +28,10 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.apache.log4j.Logger;
 import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
+import org.styskin.ca.functions.IntegralCriteria;
 import org.styskin.ca.functions.SingleCriteria;
-import org.styskin.ca.functions.complex.AdditiveOperator;
 import org.styskin.ca.functions.complex.ComplexOperator;
+import org.styskin.ca.functions.complex.PowerIOperator;
 import org.styskin.ca.functions.single.SingleOperator;
 import org.styskin.ca.model.ComplexFunction;
 import org.styskin.ca.mvc.chart.ComplexGraphPanel;
@@ -114,8 +115,8 @@ public class CriteriaTreeForm extends JPanel {
 
 	{
 		try {
-			criteria = new ComplexCriteria(new AdditiveOperator());
-			criteria.setName("Интегральный критерий");
+			criteria = new IntegralCriteria(new PowerIOperator());
+			criteria.setName("price");
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}
@@ -302,14 +303,14 @@ public class CriteriaTreeForm extends JPanel {
 					Criteria cr = (Criteria) node.getUserObject();
 					ComplexCriteria parent = getCriteriaTree().getSelectionPath().getParentPath() == null ? null : (ComplexCriteria) ((DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getParentPath().getLastPathComponent()).getUserObject();
 					try {
+						cr.setName(getNameEdit().getText());
+						if (parent != null) {
+							double weight = NUMBER_FORMAT.parse(getWeightEdit().getText()).doubleValue();
+							parent.getOperator().getWeights().set(parent.getChildren().indexOf(cr), weight);
+						}						
 						if (cr instanceof ComplexCriteria) {
 							ComplexCriteria criteria = (ComplexCriteria) cr;
-							criteria.setName(getNameEdit().getText());
-							double weight = NUMBER_FORMAT.parse(getWeightEdit().getText()).doubleValue();
 							ComplexFunction function = (ComplexFunction) getOperatorCombo().getSelectedItem();
-							if (parent != null) {
-								parent.getOperator().getWeights().set(parent.getChildren().indexOf(criteria), weight);
-							}
 							ComplexOperator op = criteria.getOperator();
 							if (ComplexFunction.getFunction(op.getClass()) != function) {
 								ComplexOperator newOperator = function.createOperator();
@@ -320,8 +321,8 @@ public class CriteriaTreeForm extends JPanel {
 							}
 							getLambdaTableModel().save();
 							updateComplexOperator(criteria);
-						} else {
-
+						} else if(cr instanceof SingleCriteria) {
+							//XXX: still nothing
 						}
 						enablePanelApplyChanges(false);
 						getCriteriaTree().updateUI();
@@ -445,7 +446,7 @@ public class CriteriaTreeForm extends JPanel {
 	public void addComplexCriteria() {
 		ComplexCriteria cr = null;
 		try {
-			cr = new ComplexCriteria(new AdditiveOperator());
+			cr = new ComplexCriteria(new PowerIOperator());
 		} catch (Exception ex) {}
 		ComplexCriteria parent = getCriteriaTree().getSelectionPath() == null ? null : (ComplexCriteria) ((DefaultMutableTreeNode) getCriteriaTree().getSelectionPath().getLastPathComponent()).getUserObject();
 		if (parent != null) {
@@ -502,8 +503,16 @@ public class CriteriaTreeForm extends JPanel {
 		if (cr instanceof ComplexCriteria) {
 			ComplexCriteria criteria = (ComplexCriteria) cr;
 			getOperatorCombo().setSelectedItem( ComplexFunction.getFunction(criteria.getOperator().getClass()));
-			updateComplexOperator(criteria);
-		} else if (criteria instanceof SingleCriteria) {
+			updateComplexOperator(criteria);			
+
+			operatorLabel.setVisible(true);
+			getOperatorCombo().setVisible(true);
+			getJScrollPane().setVisible(true);
+		} else if (cr instanceof SingleCriteria) {
+			//TODO: still nothing
+			operatorLabel.setVisible(false);
+			getOperatorCombo().setVisible(false);
+			getJScrollPane().setVisible(false);
 		}
 		enablePanelApplyChanges(false);
 	}

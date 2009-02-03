@@ -11,7 +11,7 @@ import org.styskin.ca.model.Slice;
 
 public abstract class ComplexH1Operator extends ComplexOperator {
 
-	double lambda;	
+	double lambda = 0.5;	
 	
 	public ComplexH1Operator() throws Exception {
 		super();

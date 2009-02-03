@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="windows-1251"?>
 
 <criteria name="price" type="complex" class="pow_I" lambda="0.7">
+<!-- 
 	<criteria name="origin" type="complex" class="binary" lambda="0.5" weight="0.2">
 		<criteria name="europe" type="single" weight="0.4"/>
 		<criteria name="usa" type="single" weight="0.25"/>
 		<criteria name="russia" type="single" weight="0"/>
 		<criteria name="korea" type="single" weight="0.1"/>
 		<criteria name="japan" type="single" weight="0.25"/>
-	</criteria>	
+	</criteria>	 -->
 	<criteria name="properties" type="complex" class="pow_I" lambda="0.5" weight="0.5">
 		<criteria name="body_type" type="complex" class="binary" lambda="0.5" weight="0.1">
 			<criteria name="ALLROAD" type="single" weight="0.25"/>

@@ -30,10 +30,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.IntegralCriteria;
+import org.styskin.ca.functions.LinearFunction;
 import org.styskin.ca.functions.SingleCriteria;
 import org.styskin.ca.functions.complex.BinaryOperator;
 import org.styskin.ca.functions.single.SingleOperator;
-import org.styskin.ca.math.Function;
+import org.styskin.ca.math.SaveFunction;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -124,8 +125,16 @@ public class CriteriaXMLParser implements Constants {
 		public static Optimize getInput(String file, Criteria cr) throws Exception {
 			return getInput(file, cr, 1).getFirst();			
 		}
-		
+
+		public static Optimize getInput(File file, Criteria cr) throws Exception {
+			return getInput(file, cr, 1).getFirst();			
+		}
+			
 		public static Pair<Optimize, Optimize> getInput(String file, Criteria cr, double ratio) throws Exception {
+			return getInput(new File(file), cr, ratio);
+		}
+		
+		public static Pair<Optimize, Optimize> getInput(File file, Criteria cr, double ratio) throws Exception {
 			Optimize of = new Optimize();
 			Optimize os = new Optimize();
 			Map<String, Integer> map = getCriteriaMap(cr);
@@ -271,13 +280,14 @@ public class CriteriaXMLParser implements Constants {
 		boolean tag = false;
 	    int level = 0;
 	    
-	    Function function = null;
+	    SaveFunction function = null;
 	    
 	    public CriteriaXMLHandler() {
 	    	super();	    	
 	    }
 
-	    public CriteriaXMLHandler(Function f) {
+	    //XXX: remember about this
+	    public CriteriaXMLHandler(SaveFunction f) {
 	    	super();
 	    	function = f;
 	    }	    
@@ -311,8 +321,8 @@ public class CriteriaXMLParser implements Constants {
 		    				lambda.put(atts.getQName(i), value);	    				
 		    			}
 		    		}
-		    		if(level == 0 && function != null) {
-		    			newCriteria = new IntegralCriteria(ComplexFunction.createOperator(atts.getValue("class")), function);
+		    		if(level == 0) {
+		    			newCriteria = new IntegralCriteria(ComplexFunction.createOperator(atts.getValue("class")), function != null? function : new LinearFunction());
 		    		} else {
 		    			newCriteria = new ComplexCriteria(ComplexFunction.createOperator(atts.getValue("class")));
 		    		}
@@ -360,13 +370,7 @@ public class CriteriaXMLParser implements Constants {
 	public static Criteria loadXML(File file) throws Exception {
         XMLReader xmlReader = XMLReaderFactory.createXMLReader();
         // TODO: Function in XML embeded         
-        CriteriaXMLHandler handler = new CriteriaXMLHandler(new Function() {
-			public double getValue(double x) {
-				return 5000000*x; // AUTO
-//				return Math.exp(x/0.062);  //0.062*Math.log(x);
-//					return x;				
-			}
-        });
+        CriteriaXMLHandler handler = new CriteriaXMLHandler();
         xmlReader.setContentHandler(handler);
         xmlReader.setErrorHandler(handler);
 

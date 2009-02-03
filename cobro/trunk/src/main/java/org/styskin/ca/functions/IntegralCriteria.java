@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.styskin.ca.functions.complex.ComplexOperator;
-import org.styskin.ca.math.Function;
+import org.styskin.ca.math.SaveFunction;
 import org.styskin.ca.model.Slice;
 
 public class IntegralCriteria extends ComplexCriteria {
 	
-	private Function function;
+	private SaveFunction function;
 	
 	private ComplexOperator operator;
 	
@@ -38,12 +38,15 @@ public class IntegralCriteria extends ComplexCriteria {
 
 		@Override
 		public void load(Map<String, Double> parameters) {
-			op.load(parameters);			
+			op.load(parameters);
+			function.loadParameters(parameters);
 		}
 
 		@Override
 		public Map<String, Double> save() {
-			return op.save();
+			Map<String, Double> map = op.save();
+			function.saveParameters(map);
+			return map;
 		}
 
 		@Override
@@ -96,11 +99,14 @@ public class IntegralCriteria extends ComplexCriteria {
 		return operator;
 	}
 	
+	public IntegralCriteria(ComplexOperator operator) throws Exception {
+		this(operator, new LinearFunction());		
+	}
 
-	public IntegralCriteria(ComplexOperator operator, Function function) throws Exception {
+	public IntegralCriteria(ComplexOperator operator, SaveFunction function) throws Exception {
 		super(operator);
-		this.function = function;
 		this.operator = new IntegralOperator(operator);
+		this.function = function;
 	}
 
 }
