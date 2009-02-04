@@ -3,7 +3,7 @@
 <beans default-autowire="byName">
 
 	<bean name="cars" class="org.styskin.ca.utils.CriteriaFactory">
-		<property name="path" value="bin/cars/auto.xml" />
+		<property name="path" value="cfg/cars/auto.xml" />
 	</bean>
 	
 </beans>

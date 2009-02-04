@@ -9,7 +9,6 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
-import org.styskin.ca.functions.MultiOptimizer;
 import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.functions.SingleOptimizer;
 import org.styskin.ca.model.CriteriaXMLParser;

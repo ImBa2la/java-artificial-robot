@@ -1,0 +1,1 @@
+java -jar criteria-analysis.jar >> criteria-analysis.log 

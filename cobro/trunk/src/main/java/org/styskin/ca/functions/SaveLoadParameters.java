@@ -1,8 +1,8 @@
-package org.styskin.ca.math;
+package org.styskin.ca.functions;
 
 import java.util.Map;
 
-public interface SaveFunction extends Function {
+public interface SaveLoadParameters {
 
 	void loadParameters(Map<String, Double> lambda);
 

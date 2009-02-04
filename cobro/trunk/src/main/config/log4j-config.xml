@@ -27,6 +27,9 @@
     <logger name="ru.yandex">
         <level value="DEBUG"/>
     </logger>
+    <logger name="org.styskin">
+        <level value="DEBUG"/>
+    </logger>
     
     <logger name="com.mchange">
         <level value="WARN"/>

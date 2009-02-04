@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.styskin.ca.functions.Operator;
+import org.styskin.ca.functions.SaveLoadParameters;
 import org.styskin.ca.model.Slice;
 
-public abstract class ComplexOperator extends Operator implements Cloneable {
+public abstract class ComplexOperator extends Operator implements SaveLoadParameters, Cloneable {
 
 	public static List<Class<? extends ComplexOperator>> complexOperators = new ArrayList<Class<? extends ComplexOperator>>();
 
@@ -76,7 +77,7 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 	
 	public ComplexOperator cloneEquals() throws CloneNotSupportedException {
 		ComplexOperator op = (ComplexOperator) super.clone();
-		op.load(equalParameters);		
+		op.loadParameters(equalParameters);		
 		op.weights = new ArrayList<Double>(weights.size());
 		for(int i=0; i < weights.size(); i++) {
 			op.weights.add(1d);
@@ -106,10 +107,6 @@ public abstract class ComplexOperator extends Operator implements Cloneable {
 	public String toString() {
 		return operatorType();				
 	}
-	
-	public abstract void load(Map<String, Double> parameters);
-
-	public abstract Map<String, Double> save();
 	
 	public abstract Slice getParameters();
 }

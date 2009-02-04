@@ -9,6 +9,8 @@ import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -314,7 +316,9 @@ public class CriteriaTreeForm extends JPanel {
 							ComplexOperator op = criteria.getOperator();
 							if (ComplexFunction.getFunction(op.getClass()) != function) {
 								ComplexOperator newOperator = function.createOperator();
-								newOperator.load(op.save());
+								Map<String, Double> lambda = new HashMap<String, Double>();
+								op.saveParameters(lambda);								
+								newOperator.loadParameters(lambda);
 								newOperator.setWeights(op.getWeights());
 								newOperator.refresh();
 								criteria.setOperator(newOperator);

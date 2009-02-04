@@ -31,10 +31,10 @@ import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.IntegralCriteria;
 import org.styskin.ca.functions.LinearFunction;
+import org.styskin.ca.functions.SaveLoadFunction;
 import org.styskin.ca.functions.SingleCriteria;
 import org.styskin.ca.functions.complex.BinaryOperator;
 import org.styskin.ca.functions.single.SingleOperator;
-import org.styskin.ca.math.SaveFunction;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -138,12 +138,15 @@ public class CriteriaXMLParser implements Constants {
 			Optimize of = new Optimize();
 			Optimize os = new Optimize();
 			Map<String, Integer> map = getCriteriaMap(cr);
-			final List<String> binaryCriteria = getBinaryMap(cr);
-			
+			//XXX: be accurate with duplicate names
+			@SuppressWarnings("unused")
+			final List<String> binaryCriteria = getBinaryMap(cr);			
 			map.put("price", -1);
 			List<Integer> in_map = new ArrayList<Integer>();
 			
+			@SuppressWarnings("unchecked")
 			List<Double>[] inputP = new List[2];				
+			@SuppressWarnings("unchecked")
 			List<double[]>[] input = new List[2];
 			input[0] = new ArrayList<double[]>();
 			input[1] = new ArrayList<double[]>();
@@ -280,14 +283,14 @@ public class CriteriaXMLParser implements Constants {
 		boolean tag = false;
 	    int level = 0;
 	    
-	    SaveFunction function = null;
+	    SaveLoadFunction function = null;
 	    
 	    public CriteriaXMLHandler() {
 	    	super();	    	
 	    }
 
 	    //XXX: remember about this
-	    public CriteriaXMLHandler(SaveFunction f) {
+	    public CriteriaXMLHandler(SaveLoadFunction f) {
 	    	super();
 	    	function = f;
 	    }	    
@@ -326,7 +329,7 @@ public class CriteriaXMLParser implements Constants {
 		    		} else {
 		    			newCriteria = new ComplexCriteria(ComplexFunction.createOperator(atts.getValue("class")));
 		    		}
-					((ComplexCriteria) newCriteria).getOperator().load(lambda);
+					((ComplexCriteria) newCriteria).getOperator().loadParameters(lambda);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -388,7 +391,8 @@ public class CriteriaXMLParser implements Constants {
 	private static void saveNode(Criteria criteria, double weight, StringBuffer sb, PrintWriter out) throws Exception {
 		if (criteria instanceof ComplexCriteria) {
 			ComplexCriteria node = (ComplexCriteria) criteria;
-			Map<String, Double> lambda = node.getOperator().save();
+			Map<String, Double> lambda = new HashMap<String, Double>(); 
+			node.getOperator().saveParameters(lambda);
 			StringBuffer lambdaSB = new StringBuffer();
 			for(String name : lambda.keySet()) {
 				lambdaSB.append(name).append("=\"").append(FORMAT.format(lambda.get(name))).append("\" ");

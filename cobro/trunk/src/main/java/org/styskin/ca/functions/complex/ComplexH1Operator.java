@@ -3,7 +3,6 @@
  */
 package org.styskin.ca.functions.complex;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,17 +32,13 @@ public abstract class ComplexH1Operator extends ComplexOperator {
 		initialize();
 	}
 	
-	@Override
-	public void load(Map<String, Double> parameters) {
+	public void loadParameters(Map<String, Double> parameters) {
 		lambda = parameters.containsKey("lambda") ? parameters.get("lambda") : 0.5 ;
 		initialize();
 	}
 
-	@Override
-	public Map<String, Double> save() {
-		Map<String, Double> parameters = new HashMap<String, Double>();
+	public void saveParameters(Map<String, Double> parameters) {
 		parameters.put("lambda", lambda);
-		return parameters;
 	}
 
 	class OneParametersSlice implements Slice {

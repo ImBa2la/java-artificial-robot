@@ -3,7 +3,7 @@
 <beans default-autowire="byName">
 
 	<bean name="bank" class="org.styskin.ca.utils.CriteriaFactory">
-		<property name="path" value="bin/bank/bank.xml" />
+		<property name="path" value="cfg/bank/bank.xml" />
 	</bean>
 
 </beans>

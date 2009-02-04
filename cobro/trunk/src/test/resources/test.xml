@@ -3,11 +3,11 @@
 <beans default-autowire="byName">
 
 	<bean name="test" class="org.styskin.ca.utils.CriteriaFactory">
-		<property name="path" value="bin/test/test.xml" />
+		<property name="path" value="cfg/test/test.xml" />
 	</bean>
 	
 	<bean name="testBase" class="org.styskin.ca.utils.CriteriaFactory">
-		<property name="path" value="bin/test/test.base.xml" />
+		<property name="path" value="cfg/test/test.base.xml" />
 	</bean>	
 	
 </beans>

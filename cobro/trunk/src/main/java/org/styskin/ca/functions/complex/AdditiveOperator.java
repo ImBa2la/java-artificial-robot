@@ -3,7 +3,6 @@
  */
 package org.styskin.ca.functions.complex;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,13 +46,9 @@ public class AdditiveOperator extends ComplexOperator {
 		return x;
 	}
 
-	@Override
-	public void load(Map<String, Double> parameters) {}
+	public void loadParameters(Map<String, Double> parameters) {}
 
-	@Override
-	public Map<String, Double> save() {
-		return new HashMap<String, Double>();
-	}
+	public void saveParameters(Map<String, Double> parameters) {}
 	
 	class EmptySlice implements Slice {
 

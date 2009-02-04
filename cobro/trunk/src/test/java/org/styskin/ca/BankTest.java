@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 
-import javax.sql.DataSource;
-
 import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;

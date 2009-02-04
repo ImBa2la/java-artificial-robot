@@ -2,9 +2,8 @@ package org.styskin.ca.functions;
 
 import java.util.Map;
 
-import org.styskin.ca.math.SaveFunction;
 
-public class LinearFunction implements SaveFunction {
+public class LinearFunction implements SaveLoadFunction {
 	
 	private double a;
 	private double b;

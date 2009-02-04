@@ -3,7 +3,7 @@
 <beans default-autowire="byName">
 
 	<bean name="auto" class="org.styskin.ca.utils.CriteriaFactory">
-		<property name="path" value="bin/auto/auto.xml" />
+		<property name="path" value="cfg/auto/auto.xml" />
 	</bean>
 	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

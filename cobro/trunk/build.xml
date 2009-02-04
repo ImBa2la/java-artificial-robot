@@ -1,48 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="CriteriaAnalysis" default="dist" basedir=".">
+<project name="CriteriaAnalysis" default="make-single-jar" basedir=".">
+    <property file="build.properties" />    
+    
+	<target name="init" depends="clean">
+		<mkdir dir="target"/>
+		<mkdir dir="target/classes"/>
+		<mkdir dir="target/extern-classes"/>
+		<mkdir dir="target/test-classes"/>
+		<mkdir dir="target/test-report"/>
+		<mkdir dir="target/dist"/>
+		<mkdir dir="target/dist/lib"/>
+		<mkdir dir="target/release"/>
+	</target>	
 
-	<property name="src" value="src" />
-	<property name="cfg" value="cfg" />
-	<property name="lib" value="lib" />
-	<property name="bin" value="bin" />
-	<property name="test" value="test" />
-	<property name="img" value="img" />
-	<property name="dist" value="dist" />
+    <target name="clean">
+        <delete dir="target"/>
+    </target>
+	
+    <path id="compile.classpath">
+	    <fileset dir="${ir-utils.path}/lib">
+	        <include name="**/*.jar"/>
+	    </fileset>
+	    <fileset dir="lib">
+	        <include name="**/*.jar"/>
+	    </fileset>
+	</path>
+	
+    <target name="make-ir-utils-jar">
+        <ant dir="${ir-utils.path}" target="make-jar" />
+    </target>	
 
-	<target name="compile">
-		<javac srcdir="${src}" classpath="${lib}/junit.jar;${lib}/log4j-1.2.12.jar" destdir="${bin}" encoding="UTF-8"/>
-	</target>
+    <target name="compile" depends="init, make-ir-utils-jar">
+        <javac srcdir="${src.path}" destdir="target/classes"
+               source="1.5" encoding="${encoding}" debug="true"
+               target="1.5">
+			<classpath refid="compile.classpath"/>
+			<classpath>
+				<fileset dir="${ir-utils.path}/target/dist">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+        </javac>
+        <javac srcdir="${test.path}" destdir="target/classes"
+               source="1.5" encoding="${encoding}" debug="true"
+               target="1.5">
+            <classpath refid="compile.classpath"/>
+			<classpath>
+				<fileset dir="${ir-utils.path}/target/dist">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>        
+    </target>	
+	
+    <target name="make-jar" depends="init, compile">
 
+        <jar destfile="target/dist/lib/${program.name}.jar">
+            <fileset dir="target/classes"/>
+            <fileset dir="src/main/img"/>
+            <fileset dir="src/test/resources"/>
+        </jar>
+        <copy todir="target/dist/lib">
+            <fileset dir="lib">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${ir-utils.path}/lib">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${ir-utils.path}/target/dist">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+
+        <copy todir="target/dist">
+            <fileset dir="src/main/config">
+<!--                <include name="*.xml"/> -->
+                <include name="*.properties"/>
+            </fileset>
+            <fileset dir="src/test/config">
+                <include name="*.xml"/>
+                <include name="*.properties"/>
+            </fileset>          
+            <fileset dir="src/main/scripts">
+                <include name="**/*.sh"/>
+                <include name="**/*.logrotate"/>
+                <include name="**/*.pl"/>
+                <include name="**/*.conf"/>             
+            </fileset>
+            <fileset dir="src/main/sql">
+                <include name="**/*.sql"/>
+            </fileset>
+            <fileset dir="src/test/scripts">
+                <include name="**/*.conf"/>             
+                <include name="**/*.sh"/>
+                <include name="**/*.bat"/>
+            </fileset>
+        </copy>
+        
+        <fixcrlf srcdir="target/dist" eol="lf" eof="remove" includes="**/*.sh, **/*.conf, **/*.xml, **/*.properties, **/*.pl, **/*.logrotate, **/*.sql"/>
+        
+        <chmod perm="755">
+	        <fileset dir="target/dist">
+                <include name="**/*.sh"/>
+	        </fileset>
+        </chmod>        
+    </target>
+	
 	<target name="dist.prepare">
-		<copy todir="${test}">
-			<fileset dir="${bin}"/>
-		</copy>
-		<copy todir="${test}">
-			<fileset dir=".">
-				<include name="${img}/**"/>
-			</fileset>
-		</copy>
-		<unjar dest="${test}">
-			<fileset dir="${lib}">
+		<unjar dest="target/extern-classes">
+			<fileset dir="lib">
 				<include name="*.jar"/>
 			</fileset>
+			<fileset dir="lib">
+				<include name="*.jar"/>
+			</fileset>
+            <fileset dir="${ir-utils.path}/lib">
+                <include name="spring.jar"/>
+                <include name="ojdbc*.jar"/>
+                <include name="log4j*.jar"/>
+                <include name="test/*.jar"/>
+            </fileset>			
+            <fileset dir="${ir-utils.path}/target/dist">
+                <include name="*.jar"/>
+            </fileset>			
 		</unjar>
-	</target>
-
-	<target name="dist.release">
-		<jar basedir="${test}" jarfile="${dist}/${ant.project.name}.jar">
+	</target>	
+	
+    <target name="make-single-jar" depends="init, compile, dist.prepare">
+        <jar destfile="target/release/${program.name}.jar">
+            <fileset dir="src/main/config">
+				<include name="*.xml"/>
+            </fileset>        	
+            <fileset dir="target/classes"/>
+            <fileset dir="target/extern-classes"/>        	
+            <fileset dir="src/main/img"/>
+            <fileset dir="src/test/resources"/>
 			<manifest>
 				<attribute name="Main-Class" value="org.styskin.ca.CriteriaAnalysis"/>
 			</manifest>
-		</jar>
+        </jar>
+        <copy todir="target/release">
+		    <fileset dir="src/main/scripts">
+		        <include name="**/*.conf"/>             
+		        <include name="**/*.sh"/>
+		        <include name="**/*.bat"/>
+		    </fileset>
+		</copy>
+    	
 	</target>
-
-	<target name="clear.after" depends="dist.release">
-		<delete dir="${test}"/>
-	</target>
-
-	<target name="dist" depends="dist.prepare,dist.release,clear.after">
-	</target>
+	
 </project>
 

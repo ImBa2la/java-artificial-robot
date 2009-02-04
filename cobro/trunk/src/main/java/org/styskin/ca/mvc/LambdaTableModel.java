@@ -4,6 +4,7 @@
 package org.styskin.ca.mvc;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,8 @@ public class LambdaTableModel extends AbstractTableModel {
 	
 	public void setComplexOperator(ComplexOperator operator) {
 		this.operator = operator; 
-		lambda = operator.save();
+		lambda = new HashMap<String, Double>();
+		operator.saveParameters(lambda);
 		keys = new ArrayList<String>(lambda.keySet());		
 	}
 	
@@ -58,7 +60,7 @@ public class LambdaTableModel extends AbstractTableModel {
     }
 
     public void save() {
-    	operator.load(lambda);
+    	operator.loadParameters(lambda);
     }
     
     

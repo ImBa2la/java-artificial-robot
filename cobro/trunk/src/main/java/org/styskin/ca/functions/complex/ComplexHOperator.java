@@ -3,7 +3,6 @@
  */
 package org.styskin.ca.functions.complex;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,17 +48,15 @@ public abstract class ComplexHOperator extends ComplexOperator {
 				+ ", lKsi = " + FORMAT.format(lKsi);
 	}
 
-	public void load(Map<String, Double> parameters) {
+	public void loadParameters(Map<String, Double> parameters) {
 		lPhi = parameters.containsKey("lPhi") ? parameters.get("lPhi") : 0.5 ;
 		lKsi = parameters.containsKey("lKsi") ? parameters.get("lKsi") : 0.5;
 		initialize();
 	}
 
-	public Map<String, Double> save() {
-		Map<String, Double> parameters = new HashMap<String, Double>();
+	public void saveParameters(Map<String, Double> parameters) {
 		parameters.put("lPhi", lPhi);
 		parameters.put("lKsi", lKsi);
-		return parameters;
 	}
 
 	class TwoParametersSlice implements Slice {

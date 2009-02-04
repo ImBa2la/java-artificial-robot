@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,6 +34,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.MultiOptimizer;
@@ -47,10 +49,6 @@ public class CriteriaAnalysis extends JFrame {
 	private static final long serialVersionUID = -785301931655824129L;
 	
 	private static final Logger logger = Logger.getLogger(CriteriaAnalysis.class);
-
-	static {
-		BasicConfigurator.configure();
-	}
 
 	private JPanel jContentPane = null;
 
@@ -495,6 +493,12 @@ public class CriteriaAnalysis extends JFrame {
 	 * Launches this application
 	 */
 	public static void main(String[] args) {
+		URL logPath = CriteriaAnalysis.class.getResource("/log4j-config.xml");
+		System.err.println(logPath);
+		if(logPath != null)
+			DOMConfigurator.configure(logPath);
+		else
+			BasicConfigurator.configure();
 		CriteriaAnalysis application = new CriteriaAnalysis();
 		application.setVisible(true);
 	}
