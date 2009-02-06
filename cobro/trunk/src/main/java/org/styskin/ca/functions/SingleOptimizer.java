@@ -16,12 +16,12 @@ import org.styskin.ca.model.ValueLogger;
 
 public class SingleOptimizer implements Constants, Optimizer {
 
-	private static final int MAX_ITERATIONS = 1000;
+	private static final int MAX_ITERATIONS = 99;
 
 	private static final Logger logger = Logger
 			.getLogger(SingleOptimizer.class);
 
-	private ValueLogger log = ValueLogger.getValueLogger();
+	private ValueLogger valueLogger = ValueLogger.getValueLogger();
 
 	private CacheCriteria cache;
 
@@ -239,20 +239,18 @@ public class SingleOptimizer implements Constants, Optimizer {
 		}
 		// XXX criteria of finish optimization
 		double dt = 1E10, t = 0, tt = 0;
-		double PRECISION = Math.min(cache.check() / 20000, 0.1);
+		double PRECISION = Math.min(cache.check() / 20000, 0.01);
 		t = cache.check();
 		trace.add(t);
-
-		log.log(t);
+		valueLogger.log(t);
 		for (int i = 0; !stopFlag && dt > PRECISION && i < MAX_ITERATIONS; i++) {
 			iteration();
 			tt = t;
 			t = cache.check();
 			dt = Math.abs(t - tt);
 			trace.add(t);
-
-			log.log(t);
-			//			logger.info("Step = " + i + ", value = " + t);
+			valueLogger.log(t);
+			logger.debug("Step = " + i + ", value = " + t);
 			Thread.yield();
 		}
 	}

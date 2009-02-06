@@ -12,8 +12,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,6 +45,7 @@ import org.styskin.ca.functions.MultiOptimizer;
 import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
 import org.styskin.ca.model.Pair;
+import org.styskin.ca.model.ValueLogger;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 import org.styskin.ca.mvc.CriteriaTreeForm;
 
@@ -475,9 +480,10 @@ public class CriteriaAnalysis extends JFrame {
 						Optimizer optimizer = new MultiOptimizer(criteria);
 						criteria = optimizer.optimize(op.getBase(), op.getF());
 						CacheCriteria cross = new CacheCriteria(criteria, opm.getSecond().getBase(), opm.getSecond().getF());
-						logger.info(cross.check());											
+						logger.info("Cross validation: " + cross.check());
+						ValueLogger.output(new BufferedWriter(new FileWriter(criteria.getName() + (new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()) + ".out")));						
 					} catch (Exception ex) {
-						logger.error("Cannot optimize selected criteria", ex);						
+						logger.error("Cannot optimize selected criteria", ex);
 					}
 					JComponent treePanel = null;
 					treePanel = new CriteriaTreeForm(criteria);

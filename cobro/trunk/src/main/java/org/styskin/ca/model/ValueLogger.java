@@ -26,7 +26,7 @@ public abstract class ValueLogger {
 		}		
 	}
 	
-	private static final Map<Integer, List<Entry>> log = new TreeMap<Integer, List<Entry>>(); 
+	private static Map<Integer, List<Entry>> log = new TreeMap<Integer, List<Entry>>(); 
 	
 	private ValueLogger() {}
 	
@@ -47,6 +47,10 @@ public abstract class ValueLogger {
 	public abstract void log(double value);
 	
 	private static Integer index = 0;
+	
+	public static synchronized void start() {
+		log = new TreeMap<Integer, List<Entry>>(); 
+	}
 	
 	public static synchronized ValueLogger getValueLogger() {
 		return new ValueLoggerInner(index ++);
