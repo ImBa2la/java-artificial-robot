@@ -35,7 +35,6 @@ public class PowerIOperator extends ComplexH1Operator {
 		return x;
 	}	
 	
-	@Override
 	public double getValue(double[] X) throws Exception {
 		double y = 0;
 		for(int i=0; i < weights.size(); i++) {

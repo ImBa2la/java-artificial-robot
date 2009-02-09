@@ -14,73 +14,74 @@ public class BetaDistribution extends SingleOperator {
 	private double D;
 	private double Km;
 
-	public double getLSatiation() {
+	public double getLLSatiation() {
 		return lSatiation;
 	}
-	public double getRSatiation() {
+	public double getLRSatiation() {
 		return rSatiation;
 	}
-	public void setLSatiation(double satiation) {
+	public void setLLSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			lSatiation = satiation;
 		}
 	}
-	public void setRSatiation(double satiation) {
+	public void setLRSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			rSatiation = satiation;
 		}
 	}
-	public double getP() {
+	public double getLP() {
 		return P;
 	}
-	public double getQ() {
+	public double getLQ() {
 		return Q;
 	}
+	
 	public void calculateD() {
 		Km = 0;
-		if (abs(getFMin() - getFMax()) < EPS) {
+		if (abs(getLFMin() - getLFMax()) < EPS) {
 			D = 0;
-			Km = getFMin();
+			Km = getLFMin();
 		} else if ( abs(P) < EPS &&  abs(Q) < EPS) {
 			D = 1;
 		} else {
-			Km = (getFMax() * P + getFMin() * Q) / (P + Q);
-			D = 1/(pow(Km-getFMin(),P)*pow(getFMax()-Km,Q));
+			Km = (getLFMax() * P + getLFMin() * Q) / (P + Q);
+			D = 1/(pow(Km-getLFMin(),P)*pow(getLFMax()-Km,Q));
 		}
 	}
-	public void setP(double p) {
+	public void setLP(double p) {
 		if(p > -EPS && p < 100 + EPS) {
 			P = p;
 			calculateD();
 		}
 	}
-	public void setQ(double q) {
+	public void setLQ(double q) {
 		if(q > -EPS && q < 100 + EPS) {
 			Q = q;
 			calculateD();
 		}
 	}
 	@Override
-	public void setFMax(double max) {
-		super.setFMax(max);
+	public void setLFMax(double max) {
+		super.setLFMax(max);
 		calculateD();
 	}
 	@Override
-	public void setFMin(double min) {
-		super.setFMin(min);
+	public void setLFMin(double min) {
+		super.setLFMin(min);
 		calculateD();
 	}
 
 	@Override
 	public double getValue(double[] X) throws Exception {
 		double x = X[0];
-		if (getFMin() <= x && x <= getFMax()) {
+		if (getLFMin() <= x && x <= getLFMax()) {
 			if (x < Km) {
-				return lSatiation + (1-rSatiation)*D*pow(x - getFMin(), P) * pow(getFMax() - x, Q);
+				return lSatiation + (1-rSatiation)*D*pow(x - getLFMin(), P) * pow(getLFMax() - x, Q);
 			} else {
-				return rSatiation + (1-rSatiation)*D*pow(x - getFMin(), P) * pow(getFMax() - x, Q);
+				return rSatiation + (1-rSatiation)*D*pow(x - getLFMin(), P) * pow(getLFMax() - x, Q);
 			}
-		} else if (x > getFMax()) {
+		} else if (x > getLFMax()) {
 			return rSatiation;
 		} else {
 			return lSatiation;

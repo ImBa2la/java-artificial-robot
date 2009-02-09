@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.styskin.ca.functions.complex.ComplexOperator;
+import org.styskin.ca.functions.SaveLoadParameters;
 
 public class LambdaTableModel extends AbstractTableModel {
 	
@@ -24,12 +24,12 @@ public class LambdaTableModel extends AbstractTableModel {
 		this.callback = callback;
 	}
 	
-	private ComplexOperator operator;
+	private SaveLoadParameters operator;
 	
-	public void setComplexOperator(ComplexOperator operator) {
+	public void setSaveLoadParameters(SaveLoadParameters operator) {
 		this.operator = operator; 
 		lambda = new HashMap<String, Double>();
-		operator.saveParameters(lambda);
+		this.operator.saveParameters(lambda);
 		keys = new ArrayList<String>(lambda.keySet());		
 	}
 	

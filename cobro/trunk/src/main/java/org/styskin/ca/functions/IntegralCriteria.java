@@ -45,7 +45,6 @@ public class IntegralCriteria extends ComplexCriteria {
 			function.saveParameters(map);
 		}
 
-		@Override
 		public double getValue(double[] X) throws Exception {
 			return function.getValue(op.getValue(X));
 		}

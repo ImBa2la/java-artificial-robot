@@ -40,7 +40,7 @@ public class FlatTest extends TestCase {
 		CriteriaXMLParser.saveXML(flat, "flat.xml");
 		
 		c = new CacheCriteria(flat, op.getBase(), op.getF());
-		c.checkOut2("out2.xml");		
+		c.checkOut2("out2.xml");
 		
 		Writer out = new FileWriter("out.txt");
 		ValueLogger.output(out);

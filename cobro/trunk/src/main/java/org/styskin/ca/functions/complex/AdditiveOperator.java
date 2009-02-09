@@ -25,7 +25,6 @@ public class AdditiveOperator extends ComplexOperator {
 		return "add";
 	}
 
-	@Override
 	public double getValue(double[] X) throws Exception {
 		assert(X.length != weights.size());
 

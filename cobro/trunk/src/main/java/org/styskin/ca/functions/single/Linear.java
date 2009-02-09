@@ -7,18 +7,18 @@ public class Linear extends SingleOperator {
 
 	private double lSatiation = 0, rSatiation = 1;
 
-	public double getLSatiation() {
+	public double getLLSatiation() {
 		return lSatiation;
 	}
-	public double getRSatiation() {
+	public double getLRSatiation() {
 		return rSatiation;
 	}
-	public void setLSatiation(double satiation) {
+	public void setLLSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			lSatiation = satiation;
 		}
 	}
-	public void setRSatiation(double satiation) {
+	public void setLRSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			rSatiation = satiation;
 		}
@@ -27,9 +27,9 @@ public class Linear extends SingleOperator {
 	@Override
 	public double getValue(double[] X) throws Exception {
 		double x = X[0];
-		if (getFMin() <= x && x <= getFMax()) {
-			return lSatiation + (rSatiation-lSatiation)*(x-getFMin())/(getFMax() - getFMin());
-		} else if (x > getFMax()) {
+		if (getLFMin() <= x && x <= getLFMax()) {
+			return lSatiation + (rSatiation-lSatiation)*(x-getLFMin())/(getLFMax() - getLFMin());
+		} else if (x > getLFMax()) {
 			return rSatiation;
 		} else {
 			return lSatiation;

@@ -47,7 +47,7 @@ public class SingleCriteria extends Criteria {
 		return operator;
 	}
 
-	private void setOperator(SingleOperator operator) {
+	public void setOperator(SingleOperator operator) {
 		this.operator = operator;
 	}
 

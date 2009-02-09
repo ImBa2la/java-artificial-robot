@@ -16,42 +16,43 @@ public class Beta extends SingleOperator {
 	private double D;
 //	private double Km;
 
-	public double getLSatiation() {
+	public double getLLSatiation() {
 		return lSatiation;
 	}
-	public double getRSatiation() {
+	public double getLRSatiation() {
 		return rSatiation;
 	}
-	public void setLSatiation(double satiation) {
+	public void setLLSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			lSatiation = satiation;
 		}
 	}
-	public void setRSatiation(double satiation) {
+	public void setLRSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			rSatiation = satiation;
 		}
 	}
-	public double getP() {
+	public double getLP() {
 		return P;
 	}
-	public double getQ() {
+	public double getLQ() {
 		return Q;
 	}
+	
 	public void calculateD() {
 //		Km = 0;
-		if (abs(getFMin() - getFMax()) < EPS) {
+		if (abs(getLFMin() - getLFMax()) < EPS) {
 			D = 0;
 //			Km = getFMin();
 		} else if ( abs(P) < EPS &&  abs(Q) < EPS) {
-			D = 1/(getFMax() - getFMin());
+			D = 1/(getLFMax() - getLFMin());
 		} else {
 //			Km = (getFMax() * P + getFMin() * Q) / (P + Q);
 			D = 0;
-			double step = (getFMax() - getFMin())/C;
-			double hX = getFMin() + step, hF, lF = 0;
-			while (hX < getFMax()) {
-				hF = pow(hX-getFMin(), P) * pow(getFMax()-hX, Q);
+			double step = (getLFMax() - getLFMin())/C;
+			double hX = getLFMin() + step, hF, lF = 0;
+			while (hX < getLFMax()) {
+				hF = pow(hX-getLFMin(), P) * pow(getLFMax()-hX, Q);
 				D += (lF + hF)/2 * step;
 				lF = hF;
 				hX += step;
@@ -59,26 +60,26 @@ public class Beta extends SingleOperator {
 			D = 1/D;
 		}
 	}
-	public void setP(double p) {
+	public void setLP(double p) {
 		if(p > -EPS && p < 100 + EPS) {
 			P = p;
 			calculateD();
 		}
 	}
-	public void setQ(double q) {
+	public void setLQ(double q) {
 		if(q > -EPS && q < 100 + EPS) {
 			Q = q;
 			calculateD();
 		}
 	}
 	@Override
-	public void setFMax(double max) {
-		super.setFMax(max);
+	public void setLFMax(double max) {
+		super.setLFMax(max);
 		calculateD();
 	}
 	@Override
-	public void setFMin(double min) {
-		super.setFMin(min);
+	public void setLFMin(double min) {
+		super.setLFMin(min);
 		calculateD();
 	}
 
@@ -87,18 +88,18 @@ public class Beta extends SingleOperator {
 		double x = X[0];
 		double y = 0;
 		int C = 1000;
-		if (getFMin() <= x && x <= getFMax()) {
+		if (getLFMin() <= x && x <= getLFMax()) {
 			double hX, hF, lF = 0;
-			double step = (getFMax() - getFMin())/C;
-			hX = getFMin() + step;
+			double step = (getLFMax() - getLFMin())/C;
+			hX = getLFMin() + step;
 			while (hX <= x) {
-				hF = pow(hX -getFMin(), P) * pow(getFMax()-hX,Q);
+				hF = pow(hX -getLFMin(), P) * pow(getLFMax()-hX,Q);
 				y += (lF + hF)/2*step;
 				lF = hF;
 				hX += step;
 			}
 			return lSatiation + (rSatiation - lSatiation)*y*D;
-		} else if (x > getFMax()) {
+		} else if (x > getLFMax()) {
 			return rSatiation;
 		} else {
 			return lSatiation;

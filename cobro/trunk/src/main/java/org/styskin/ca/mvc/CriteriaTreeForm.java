@@ -36,6 +36,7 @@ import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.functions.complex.PowerIOperator;
 import org.styskin.ca.functions.single.SingleOperator;
 import org.styskin.ca.model.ComplexFunction;
+import org.styskin.ca.model.SingleFunction;
 import org.styskin.ca.mvc.chart.ComplexGraphPanel;
 
 public class CriteriaTreeForm extends JPanel {
@@ -114,6 +115,7 @@ public class CriteriaTreeForm extends JPanel {
 	private JTextField weightEdit = null;
 
 	private JComboBox operatorCombo = null;
+	private JComboBox singleOperatorCombo = null;
 
 	{
 		try {
@@ -263,6 +265,7 @@ public class CriteriaTreeForm extends JPanel {
 			panel.add(getNameEdit(), null);
 			panel.add(getWeightEdit(), null);
 			panel.add(getOperatorCombo(), null);
+			panel.add(getSingleOperatorCombo(), null);
 			panel.add(getJScrollPane(), null);
 		}
 		return panel;
@@ -323,11 +326,20 @@ public class CriteriaTreeForm extends JPanel {
 								newOperator.refresh();
 								criteria.setOperator(newOperator);
 							}
-							getLambdaTableModel().save();
-							updateComplexOperator(criteria);
 						} else if(cr instanceof SingleCriteria) {
-							//XXX: still nothing
+							SingleCriteria criteria = (SingleCriteria) cr;
+							SingleOperator op = criteria.getOperator();
+							SingleFunction func = (SingleFunction) getSingleOperatorCombo().getSelectedItem();
+							if(SingleFunction.getFunction(op.getClass()) != func) {
+								SingleOperator newOp = func.createOperator();							
+								Map<String, Double> lambda = new HashMap<String, Double>();
+								op.saveParameters(lambda);								
+								newOp.loadParameters(lambda);
+								criteria.setOperator(newOp);
+							}
 						}
+						getLambdaTableModel().save();
+						updateOperator(criteria);							
 						enablePanelApplyChanges(false);
 						getCriteriaTree().updateUI();
 					} catch(Exception ex) {
@@ -431,6 +443,22 @@ public class CriteriaTreeForm extends JPanel {
 		return operatorCombo;
 	}
 	
+	private JComboBox getSingleOperatorCombo() {
+		if (singleOperatorCombo == null) {
+			singleOperatorCombo = new JComboBox(SingleFunction.values());
+			singleOperatorCombo.setAutoscrolls(true);
+			singleOperatorCombo.setBounds(new java.awt.Rectangle(182,97,131,25));
+			singleOperatorCombo.addItemListener(new java.awt.event.ItemListener() {
+				public void itemStateChanged(java.awt.event.ItemEvent e) {
+					enablePanelApplyChanges(true);
+//					updateOperator(criteria);
+				}
+			});
+		}
+		return singleOperatorCombo;
+	}
+	
+	
 	public LambdaTableModel getLambdaTableModel() {
 		if(lambdaTableModel == null) {
 			lambdaTableModel = new LambdaTableModel(new Runnable() {
@@ -438,7 +466,8 @@ public class CriteriaTreeForm extends JPanel {
 					enablePanelApplyChanges(true);
 				}
 			});
-			lambdaTableModel.setComplexOperator(((ComplexCriteria)this.getCriteria()).getOperator());			
+			
+			lambdaTableModel.setSaveLoadParameters(getCriteria().getOperator());			
 		}
 		return lambdaTableModel;
 	}
@@ -507,26 +536,30 @@ public class CriteriaTreeForm extends JPanel {
 		if (cr instanceof ComplexCriteria) {
 			ComplexCriteria criteria = (ComplexCriteria) cr;
 			getOperatorCombo().setSelectedItem( ComplexFunction.getFunction(criteria.getOperator().getClass()));
-			updateComplexOperator(criteria);			
+			updateOperator(criteria);			
 
-			operatorLabel.setVisible(true);
 			getOperatorCombo().setVisible(true);
-			getJScrollPane().setVisible(true);
+			getSingleOperatorCombo().setVisible(false);
 		} else if (cr instanceof SingleCriteria) {
-			//TODO: still nothing
-			operatorLabel.setVisible(false);
+			SingleCriteria criteria = (SingleCriteria) cr;
+			getSingleOperatorCombo().setSelectedItem( SingleFunction.getFunction(criteria.getOperator().getClass()));
+			updateOperator(criteria);
+			
 			getOperatorCombo().setVisible(false);
-			getJScrollPane().setVisible(false);
+			getSingleOperatorCombo().setVisible(true);
 		}
 		enablePanelApplyChanges(false);
 	}
 
 
 
-	private void updateComplexOperator(ComplexCriteria criteria) {
-		getLambdaTableModel().setComplexOperator(criteria.getOperator());
+	private void updateOperator(Criteria criteria) {
+		if(criteria == null)
+			return;
+		getLambdaTableModel().setSaveLoadParameters(criteria.getOperator());
 		getLambdaTableModel().fireTableDataChanged();
-		complexGraphPanel.updateChart(criteria.getOperator());
+		if(criteria.getOperator() instanceof ComplexOperator)
+			complexGraphPanel.updateChart((ComplexOperator) criteria.getOperator());
 	}
 
 

@@ -9,26 +9,26 @@ public class Exponential extends SingleOperator {
 
 	private double lSatiation = 0, rSatiation = 1, base = 1;
 
-	public double getLSatiation() {
+	public double getLLSatiation() {
 		return lSatiation;
 	}
-	public double getRSatiation() {
+	public double getLRSatiation() {
 		return rSatiation;
 	}
-	public double getBase() {
+	public double getLBase() {
 		return base;
 	}
-	public void setLSatiation(double satiation) {
+	public void setLLSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			lSatiation = satiation;
 		}
 	}
-	public void setRSatiation(double satiation) {
+	public void setLRSatiation(double satiation) {
 		if(satiation > -EPS && satiation < 1 + EPS) {
 			rSatiation = satiation;
 		}
 	}
-	public void setBase(double base) {
+	public void setLBase(double base) {
 		if(base > -EPS && base < 1 + EPS) {
 			this.base = base;
 		}
@@ -37,9 +37,9 @@ public class Exponential extends SingleOperator {
 	@Override
 	public double getValue(double[] X) throws Exception {
 		double x = X[0];
-		if (getFMin() <= x && x <= getFMax()) {
-			return lSatiation + (rSatiation-lSatiation)*(1-pow(base, (x - getFMin())/(getFMax()-getFMin())))/(1 - base);
-		} else if (x > getFMax()) {
+		if (getLFMin() <= x && x <= getLFMax()) {
+			return lSatiation + (rSatiation-lSatiation)*(1-pow(base, (x - getLFMin())/(getLFMax()-getLFMin())))/(1 - base);
+		} else if (x > getLFMax()) {
 			return rSatiation;
 		} else {
 			return lSatiation;

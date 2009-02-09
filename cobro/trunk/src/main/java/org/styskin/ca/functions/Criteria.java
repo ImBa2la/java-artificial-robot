@@ -19,6 +19,8 @@ public abstract class Criteria implements Cloneable, Constants {
 	abstract public int getTotalSize();
 
 	abstract public List<Criteria> getChildren();
+	
+	abstract public Operator getOperator();
 
 	public String getName() {
 		return name;

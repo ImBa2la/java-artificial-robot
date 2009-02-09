@@ -65,7 +65,6 @@ public class ExponentalHOperator extends ComplexHOperator {
 		return 0;
 	}
 
-	@Override
 	public double getValue(double[] X) throws Exception {
 		assert(X.length != weights.size());			
 		

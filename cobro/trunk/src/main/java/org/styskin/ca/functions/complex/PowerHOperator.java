@@ -34,7 +34,6 @@ public class PowerHOperator extends ComplexHOperator {
 		return "pow_h";
 	}
 
-	@Override
 	public double getValue(double[] X) throws Exception {
 		double y = 0;
 		double t = 1/T;

@@ -10,23 +10,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-import javax.sql.DataSource;
-
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ConnectionCallback;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.apache.log4j.Logger;
 import org.styskin.ca.functions.ComplexCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.IntegralCriteria;
@@ -43,6 +35,17 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 public class CriteriaXMLParser implements Constants {
 	
+	private static final Logger logger = Logger.getLogger(CriteriaXMLParser.class);
+	
+	private static void addToMap(Map<String, List<Integer>> map, String key, int value) {
+		List<Integer> list = map.get(key);
+		if(list == null) {
+			list = new ArrayList<Integer>();
+			map.put(key, list);
+		}
+		list.add(value);
+	}
+	
 	
 	public static class Optimize {
 		double[][] F;
@@ -50,22 +53,22 @@ public class CriteriaXMLParser implements Constants {
 		
 		private static NumberFormat FORMAT = NumberFormat.getNumberInstance();
 		
-		private static int getCriteriaSize(Criteria cr, Map<String, Integer> map, int begin) throws Exception {
+		private static int getCriteriaSize(Criteria cr, Map<String, List<Integer>> map) throws Exception {
+			return getCriteriaSize(cr, map, 0);
+		}
+		
+		private static int getCriteriaSize(Criteria cr, Map<String, List<Integer>> map, int begin) throws Exception {
 			if(cr instanceof ComplexCriteria) {
 				for(Criteria c : cr.getChildren()) {
 					begin = getCriteriaSize(c, map, begin);
 				}								
 			} else {
-				if(!map.containsKey(cr.getName())) {
-					map.put(cr.getName(), begin);
-				} else {
-					throw new Exception("duplicate");
-				}
-				begin++;
+				addToMap(map, cr.getName(), begin);
+				++ begin;
 			}
 			return begin;			
 		}
-		
+
 		private static void getBinaryCriteria(Criteria cr, List<String> list) throws Exception {
 			if(cr instanceof ComplexCriteria) {
 				if(((ComplexCriteria)cr).getOperator() instanceof BinaryOperator) {
@@ -78,26 +81,20 @@ public class CriteriaXMLParser implements Constants {
 			}
 		}
 		
-		
-		private static Map<String, Integer> getCriteriaMap(Criteria cr) throws Exception {
-			Map<String, Integer> map = new HashMap<String, Integer>();
-			getCriteriaSize(cr, map, 0);
-			return map;			
-		}
-		
 		private static List<String> getBinaryMap(Criteria cr) throws Exception {
 			List<String> list = new ArrayList<String>();
 			getBinaryCriteria(cr, list);
 			return list;			
 		}
 		
-		private static void buildName(Criteria cr, StringBuilder sb) {
+		private static void buildName(Criteria cr, StringBuilder sb, List<SingleOperator> ops) {
 			if(cr instanceof ComplexCriteria) {
 				for(Criteria c : cr.getChildren()) {
-					buildName(c, sb);										
+					buildName(c, sb, ops);										
 				}
 			} else {
 				sb.append('\t').append(cr.getName());
+				ops.add((SingleOperator) cr.getOperator());
 			}
 		}
 		
@@ -105,13 +102,14 @@ public class CriteriaXMLParser implements Constants {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			out.print("price");
 			StringBuilder sb = new StringBuilder();
-			buildName(cr, sb);
+			List<SingleOperator> ops = new ArrayList<SingleOperator>();
+			buildName(cr, sb, ops);
 			out.println(sb.toString());
 			for(int i=0; i < F.length; i++) {
 				out.print(FORMAT.format(B[i]));
 				for(int j=0; j < F[i].length; j++) {
 					out.print('\t');
-					out.print(FORMAT.format(F[i][j]));
+					out.print(FORMAT.format( ops.get(j).getValue(F[i][j])));
 				}
 				out.println();
 			}
@@ -137,12 +135,13 @@ public class CriteriaXMLParser implements Constants {
 		public static Pair<Optimize, Optimize> getInput(File file, Criteria cr, double ratio) throws Exception {
 			Optimize of = new Optimize();
 			Optimize os = new Optimize();
-			Map<String, Integer> map = getCriteriaMap(cr);
+			Map<String, List<Integer>> map = new HashMap<String, List<Integer>>();
+			int criteriaSize = getCriteriaSize(cr, map);
 			//XXX: be accurate with duplicate names
 			@SuppressWarnings("unused")
-			final List<String> binaryCriteria = getBinaryMap(cr);			
-			map.put("price", -1);
-			List<Integer> in_map = new ArrayList<Integer>();
+			final List<String> binaryCriteria = getBinaryMap(cr);
+			addToMap(map, cr.getName(), -1);
+			List<List<Integer>> in_map = new ArrayList<List<Integer>>();
 			
 			@SuppressWarnings("unchecked")
 			List<Double>[] inputP = new List[2];				
@@ -166,7 +165,9 @@ public class CriteriaXMLParser implements Constants {
 				if(map.containsKey(key)) {
 					in_map.add(map.get(key));						
 				} else {
-					in_map.add(-2);
+					List<Integer> list = new ArrayList<Integer>();
+					list.add(-2);
+					in_map.add(list);
 				}
 			}				
 			String s = null;
@@ -175,7 +176,7 @@ public class CriteriaXMLParser implements Constants {
 				if(Math.random() > ratio)
 					ind = 1;
 				st = new StringTokenizer(s);
-				double[] d = new double[map.size()-1];
+				double[] d = new double[criteriaSize];
 				input[ind].add(d);
 				int i = 0;
 				while(st.hasMoreTokens()) {
@@ -184,16 +185,22 @@ public class CriteriaXMLParser implements Constants {
 						v = v.substring(1, v.length()-1);
 					}
 					if(map.containsKey(v)) {
-						d[map.get(v)] = 1;
-					} else if(in_map.get(i) == -1) {
-						inputP[ind].add(getDouble(v));
-					} else if(in_map.get(i) >= 0) {
-						d[in_map.get(i)] = getDouble(v);
+						// Binary property
+						for(Integer index : map.get(v))
+							d[index] = 1;
+					} else {
+						for(Integer index : in_map.get(i)) {		
+							if(index == -1) {
+								inputP[ind].add(getDouble(v));
+							} else if(index >= 0) {
+								d[index] = getDouble(v);
+							}
+						}
 					}
 					++ i;
 				}
 			}
-			of.F = new double[input[0].size()][map.size()-1];
+			of.F = new double[input[0].size()][input[0].get(0).length];
 			of.base = new double[input[0].size()];				
 			for(int j=0; j < input[0].size(); j++) {
 				of.F[j] = input[0].get(j);
@@ -208,7 +215,7 @@ public class CriteriaXMLParser implements Constants {
 			return Pair.makePair(of, os);
 		}
 		
-		public static Optimize getInput(DataSource dataSource, final String tableName, Criteria cr) throws Exception {
+/*		public static Optimize getInput(DataSource dataSource, final String tableName, Criteria cr) throws Exception {
 			JdbcTemplate template = new JdbcTemplate(dataSource);			
 			final Optimize o = new Optimize();
 			final Map<String, Integer> map = getCriteriaMap(cr);
@@ -242,7 +249,7 @@ public class CriteriaXMLParser implements Constants {
 				}
 			});	
 			return o;
-		}
+		}*/
 		
 		public static double[][] getMatrix(int size, int length) {
 			double[] CASES = {0.2, 0.6, 0.8};
@@ -304,34 +311,40 @@ public class CriteriaXMLParser implements Constants {
 
 
 	    public void startElement(String uri, String name, String qName, Attributes atts) {
+    		Map<String, Double> lambda = new HashMap<String, Double>();
+    		try {
+	    		for(int i=0; i < atts.getLength(); i++) {
+	    			if (atts.getQName(i).startsWith("l")) {
+	    				
+	    				double value = FORMAT.parse(atts.getValue(i)).doubleValue();	    				
+	    				lambda.put(atts.getQName(i), value);	    				
+	    			}
+	    		}
+    		} catch (Exception e) {
+    			logger.error("Cannot parse lambda", e);
+			}
 	    	Criteria newCriteria = null;
 	    	if("single".equals(atts.getValue("type"))) {
 	    		try {
 	    			if (atts.getValue("class") == null) {
 	    				newCriteria = new SingleCriteria(new SingleOperator());
 	    			} else {
-	    				newCriteria = new SingleCriteria( SingleFunction.getSingleOperator(atts.getValue("class"), atts));
+	    				newCriteria = new SingleCriteria( SingleFunction.getSingleOperator(atts.getValue("class")));
 	    			}
+	    			newCriteria.getOperator().loadParameters(lambda);
 				} catch (Exception e) {
-					e.printStackTrace();
+	    			logger.error("Cannot create SingleOperator", e);
 				}
 	    	} else {
 	    		try {
-		    		Map<String, Double> lambda = new HashMap<String, Double>();
-		    		for(int i=0; i < atts.getLength(); i++) {
-		    			if (atts.getQName(i).startsWith("l")) {
-		    				double value = FORMAT.parse(atts.getValue(i)).doubleValue();	    				
-		    				lambda.put(atts.getQName(i), value);	    				
-		    			}
-		    		}
 		    		if(level == 0) {
 		    			newCriteria = new IntegralCriteria(ComplexFunction.createOperator(atts.getValue("class")), function != null? function : new LinearFunction());
 		    		} else {
 		    			newCriteria = new ComplexCriteria(ComplexFunction.createOperator(atts.getValue("class")));
 		    		}
-					((ComplexCriteria) newCriteria).getOperator().loadParameters(lambda);
+					newCriteria.getOperator().loadParameters(lambda);
 				} catch (Exception e) {
-					e.printStackTrace();
+	    			logger.error("Cannot create ComplexOperator", e);
 				}
 	    	}
 	    	if(level == 0) {
@@ -372,7 +385,6 @@ public class CriteriaXMLParser implements Constants {
 
 	public static Criteria loadXML(File file) throws Exception {
         XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-        // TODO: Function in XML embeded         
         CriteriaXMLHandler handler = new CriteriaXMLHandler();
         xmlReader.setContentHandler(handler);
         xmlReader.setErrorHandler(handler);

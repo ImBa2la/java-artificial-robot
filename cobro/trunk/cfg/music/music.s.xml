@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<criteria name="score" type="complex" class="pow_I" weight="1" lA="3" lambda="0.5" lB="0"  >
+	<criteria name="theme" type="complex" class="pow_I" weight="1" lambda="0.5"  >
+		<criteria name="c1" type="single" class="simple" weight="1" lFMin="0.0" lFMax="1.0" />
+		<criteria name="c2" type="single" class="simple" weight="1" lFMin="0.0" lFMax="1.0" />
+		<criteria name="c3" type="single" class="simple" weight="1" lFMin="0.0" lFMax="1.0" />
+	</criteria>
+	<criteria name="domain_level" type="single" class="inv" weight="1" lLSatiation="0.05" lRSatiation="0.95" lFMin="1" lFMax="5" />
+	<criteria name="own_mp3 " type="single" class="simple" weight="1" lFMin="0.0" lFMax="1.0" />
+	<criteria name="forum" type="single" class="linear" weight="1" lLSatiation="1" lRSatiation="0" lFMin="0.0" lFMax="100" />
+	<criteria name="links" type="complex" class="pow_I" weight="1" lambda="0.5"  >
+		<criteria name="size" type="complex" class="pow_I" weight="1" lambda="0.5"  >
+			<criteria name="page_count" type="single" class="beta_d" weight="1" lFMin="0.0" lFMax="100" lP="1" lQ="-0.09" lLSatiation="0.05" lRSatiation="0.95" />
+			<criteria name="total_mp3" type="single" class="beta_d" weight="1" lFMin="0.0" lFMax="100" lP="1" lQ="-0.29" lLSatiation="0.05" lRSatiation="0.95"/>
+			<criteria name="good_mp3" type="single" class="linear" weight="1" lFMin="0.0" lFMax="100" lLSatiation="0.05" lRSatiation="0.95"/>
+		</criteria>
+		<criteria name="page" type="complex" class="pow_I" weight="1" lambda="0.5"  >
+			<criteria name="av_mp3" type="single" class="beta_d" weight="1" lFMin="0.0" lFMax="100" lP="1" lQ="-0.09" lLSatiation="0.05" lRSatiation="0.95" />
+			<criteria name="av_good" type="single" class="linear" weight="1" lFMin="0.0" lFMax="100" lLSatiation="0.05" lRSatiation="0.95" />
+			<criteria name="av_author" type="single" class="inv" weight="1" lFMin="1" lFMax="5" lLSatiation="0.05" lRSatiation="0.95" />
+			<criteria name="av_album" type="single" class="inv" weight="1" lFMin="1" lFMax="5" lLSatiation="0.05" lRSatiation="0.95" />
+		</criteria>
+	</criteria>
+</criteria>
