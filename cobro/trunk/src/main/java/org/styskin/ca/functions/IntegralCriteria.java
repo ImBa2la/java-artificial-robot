@@ -90,6 +90,10 @@ public class IntegralCriteria extends ComplexCriteria {
 		}
 	}
 	
+	public double getValue(double[] X) throws Exception {		
+		return function.getValue(getValues(X));
+	}
+	
 	public ComplexOperator getOperator() {		
 		return operator;
 	}
