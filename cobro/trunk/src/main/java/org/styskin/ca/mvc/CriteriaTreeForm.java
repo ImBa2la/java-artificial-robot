@@ -117,20 +117,15 @@ public class CriteriaTreeForm extends JPanel {
 	private JComboBox operatorCombo = null;
 	private JComboBox singleOperatorCombo = null;
 
-	{
+
+	public CriteriaTreeForm() {
+		super();
 		try {
 			criteria = new IntegralCriteria(new PowerIOperator());
 			criteria.setName("price");
 		} catch (Exception e) {
-			logger.error(e.toString());
+			logger.error("Cannot create criteria", e);
 		}
-	}
-	/**
-	 * This is the default constructor
-	 */
-
-	public CriteriaTreeForm() {
-		super();
 		initialize();
 	}
 
@@ -339,7 +334,7 @@ public class CriteriaTreeForm extends JPanel {
 							}
 						}
 						getLambdaTableModel().save();
-						updateOperator(criteria);							
+						updateOperator(cr);							
 						enablePanelApplyChanges(false);
 						getCriteriaTree().updateUI();
 					} catch(Exception ex) {
@@ -536,18 +531,15 @@ public class CriteriaTreeForm extends JPanel {
 		if (cr instanceof ComplexCriteria) {
 			ComplexCriteria criteria = (ComplexCriteria) cr;
 			getOperatorCombo().setSelectedItem( ComplexFunction.getFunction(criteria.getOperator().getClass()));
-			updateOperator(criteria);			
-
 			getOperatorCombo().setVisible(true);
 			getSingleOperatorCombo().setVisible(false);
 		} else if (cr instanceof SingleCriteria) {
 			SingleCriteria criteria = (SingleCriteria) cr;
 			getSingleOperatorCombo().setSelectedItem( SingleFunction.getFunction(criteria.getOperator().getClass()));
-			updateOperator(criteria);
-			
 			getOperatorCombo().setVisible(false);
 			getSingleOperatorCombo().setVisible(true);
 		}
+		updateOperator(cr);			
 		enablePanelApplyChanges(false);
 	}
 

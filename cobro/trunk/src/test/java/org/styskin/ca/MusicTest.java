@@ -29,17 +29,16 @@ public class MusicTest extends TestCase {
 	}
 	
 	public void atestMusic() throws Exception {
-		Criteria music = CriteriaXMLParser.loadXML("cfg/music/music.s.xml");
+		Criteria music = CriteriaXMLParser.loadXML("cfg/music/music.xml");
 		logger.info("Optimization started");
 		Optimize control = Optimize.getInput("cfg/music/music.tsv", music);
-		Pair<Optimize, Optimize> ops = Optimize.getInput("cfg/music/music.tsv", music, 0.85);
-//		Optimize.saveInput("input.txt", music, ops.getFirst().getF(), ops.getFirst().getBase());
+		Pair<Optimize, Optimize> ops = Optimize.getInput("cfg/music/music.tsv", music, 0.9);
+		Optimize.saveInput("input.txt", music, ops.getFirst().getF(), ops.getFirst().getBase());
 		
-//		Optimizer optimizer = new MultiOptimizer(music);
-//		Criteria musicRes = optimizer.optimize(ops.getFirst().getBase(), ops.getFirst().getF());
-//		CriteriaXMLParser.saveXML(musicRes, "music.s.res.xml");
+		Optimizer optimizer = new MultiOptimizer(music);
+		Criteria musicRes = optimizer.optimize(ops.getFirst().getBase(), ops.getFirst().getF());
+		CriteriaXMLParser.saveXML(musicRes, "music.res.xml");
 		
-		Criteria musicRes = CriteriaXMLParser.loadXML("cfg/music/music.s.res.xml");
 		CacheCriteria musicControl = new CacheCriteria(musicRes, control.getBase(), control.getF());
 		CacheCriteria musicValidation = new CacheCriteria(musicRes, ops.getFirst().getBase(), ops.getFirst().getF());
 		CacheCriteria musicCrossValidation = new CacheCriteria(musicRes, ops.getSecond().getBase(), ops.getSecond().getF());
@@ -50,7 +49,7 @@ public class MusicTest extends TestCase {
 	
 	public void testRanking() throws Exception {
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("music.out")));		
-		IntegralCriteria music = CriteriaXMLParser.loadXML("cfg/music/music.s.res.xml");
+		IntegralCriteria music = CriteriaXMLParser.loadXML("cfg/music/music.res.xml");
 		OptimizeInputFormat optimizeInputFormat = new OptimizeInputFormat(music);
 		BufferedReader in = new BufferedReader(new FileReader("cfg/music/music.in"));
 		String line = null;

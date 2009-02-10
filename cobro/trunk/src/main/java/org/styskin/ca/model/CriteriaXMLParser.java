@@ -14,6 +14,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -37,11 +38,10 @@ public class CriteriaXMLParser implements Constants {
 	
 	private static final Logger logger = Logger.getLogger(CriteriaXMLParser.class);
 	
-	private static NumberFormat FORMAT = NumberFormat.getNumberInstance();
+	private static NumberFormat FORMAT = NumberFormat.getNumberInstance(Locale.US);
 	
-	public static double getDouble(String s) {
-//		return FORMAT.parse(v).doubleValue();
-		return Double.parseDouble(s);
+	public static double getDouble(String s) throws Exception {
+		return FORMAT.parse(s).doubleValue();
 	}	
 	
 	private static int getCriteriaSize(Criteria cr, Map<String, List<Integer>> map) throws Exception {
@@ -134,7 +134,7 @@ public class CriteriaXMLParser implements Constants {
 			}
 		}
 		
-		public Pair<Double, double[]> parseLine(String line) {
+		public Pair<Double, double[]> parseLine(String line) throws Exception {
 			StringTokenizer st = new StringTokenizer(line);
 			double res = -1;			
 			double[] d = new double[criteriaSize];
@@ -379,7 +379,12 @@ public class CriteriaXMLParser implements Constants {
 		    	stack.push(newCriteria);
 	    	} else {
 	    		ComplexCriteria node = (ComplexCriteria) stack.peek();
-	    		double weight = getDouble(atts.getValue("weight"));
+	    		double weight = 0;
+	    		try {
+	    			weight = getDouble(atts.getValue("weight"));
+	    		} catch (Exception e) {
+	    			logger.error("Cannot parse weight", e);
+				}
 	    		node.addChild(newCriteria, weight);
 		    	stack.push(newCriteria);
 	    	}
