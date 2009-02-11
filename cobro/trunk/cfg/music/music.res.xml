@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="windows-1251"?>
 
-<criteria name="score" type="complex" class="pow_h" weight="1" lA="2.22" lKsi="0.205" lPhi="0.358" lB="0.89"  >
-	<criteria name="theme" type="complex" class="pow_h" weight="0.397" lKsi="0.9" lPhi="0.738"  >
+<criteria name="score" type="complex" class="pow_h" weight="1" lA="2.22" lKsi="0.357" lPhi="0.546" lB="0.89"  >
+	<criteria name="theme" type="complex" class="pow_h" weight="0.441" lKsi="0.9" lPhi="0.721"  >
 		<criteria name="c1" type="single" class="simple" weight="0" lFMin="0.0" lFMax="1.0" />
-		<criteria name="c2" type="single" class="simple" weight="0.338" lFMin="0.0" lFMax="1.0" />
-		<criteria name="c3" type="single" class="simple" weight="0.662" lFMin="0.0" lFMax="1.0" />
+		<criteria name="c2" type="single" class="simple" weight="0.002" lFMin="0.0" lFMax="1.0" />
+		<criteria name="c3" type="single" class="simple" weight="0.998" lFMin="0.0" lFMax="1.0" />
 	</criteria>
-	<criteria name="domain_level" type="single" class="inv" weight="0.219" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
+	<criteria name="domain_level" type="single" class="inv" weight="0.261" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
 	<criteria name="own_mp3 " type="single" class="simple" weight="0" lFMin="0.0" lFMax="1.0" />
-	<criteria name="forum" type="single" class="linear" weight="0.361" lLSatiation="1.0" lRSatiation="0.0" lFMin="0.0" lFMax="100.0" />
-	<criteria name="links" type="complex" class="pow_h" weight="0.023" lKsi="0.713" lPhi="0.429"  >
-		<criteria name="small" type="complex" class="pow_h" weight="0.385" lKsi="0.666" lPhi="0.454"  >
-			<criteria name="size" type="complex" class="pow_h" weight="0.543" lKsi="0.708" lPhi="0.481"  >
-				<criteria name="page_count" type="single" class="beta_d" weight="0.218" lLSatiation="0.05" lRSatiation="0.95" lP="1.0" lQ="0.0" lFMin="0.0" lFMax="100.0" />
-				<criteria name="total_mp3" type="single" class="beta_d" weight="0.301" lLSatiation="0.05" lRSatiation="0.95" lP="1.0" lQ="0.0" lFMin="0.0" lFMax="100.0" />
-				<criteria name="good_mp3" type="single" class="linear" weight="0.482" lLSatiation="0.05" lRSatiation="0.95" lFMin="0.0" lFMax="100.0" />
+	<criteria name="forum" type="single" class="linear" weight="0.235" lLSatiation="1.0" lRSatiation="0.0" lFMin="0.0" lFMax="100.0" />
+	<criteria name="links" type="complex" class="pow_h" weight="0.063" lKsi="0.9" lPhi="0.545"  >
+		<criteria name="small" type="complex" class="pow_h" weight="0.273" lKsi="0.9" lPhi="0.508"  >
+			<criteria name="size" type="complex" class="pow_h" weight="0.818" lKsi="0.9" lPhi="0.504"  >
+				<criteria name="page_count" type="single" class="beta_d" weight="0" lLSatiation="0.05" lRSatiation="0.95" lP="1.0" lQ="0.0" lFMin="0.0" lFMax="100.0" />
+				<criteria name="total_mp3" type="single" class="beta_d" weight="0.165" lLSatiation="0.05" lRSatiation="0.95" lP="1.0" lQ="0.0" lFMin="0.0" lFMax="100.0" />
+				<criteria name="good_mp3" type="single" class="linear" weight="0.835" lLSatiation="0.05" lRSatiation="0.95" lFMin="0.0" lFMax="100.0" />
 			</criteria>
-			<criteria name="page" type="complex" class="pow_I" weight="0.457" lambda="0.706"  >
-				<criteria name="av_mp3" type="single" class="beta_d" weight="0.222" lLSatiation="0.05" lRSatiation="0.95" lP="1.0" lQ="0.0" lFMin="0.0" lFMax="100.0" />
-				<criteria name="av_good" type="single" class="linear" weight="0.159" lLSatiation="0.05" lRSatiation="0.95" lFMin="0.0" lFMax="100.0" />
-				<criteria name="av_author" type="single" class="inv" weight="0.296" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
-				<criteria name="av_album" type="single" class="inv" weight="0.323" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
-			</criteria>
-		</criteria>
-		<criteria name="big_page" type="complex" class="pow_h" weight="0.301" lKsi="0.711" lPhi="0.448"  >
-			<criteria name="size" type="complex" class="pow_h" weight="0.453" lKsi="0.703" lPhi="0.435"  >
-				<criteria name="page_count" type="single" class="power" weight="0.41" lLSatiation="0.05" lRSatiation="0.95" lBase="0.9" lFMin="0.0" lFMax="1000.0" />
-				<criteria name="total_mp3" type="single" class="power" weight="0.421" lLSatiation="0.05" lRSatiation="0.95" lBase="0.9" lFMin="0.0" lFMax="1000.0" />
-				<criteria name="good_mp3" type="single" class="linear" weight="0.169" lLSatiation="0.0" lRSatiation="0.95" lFMin="0.0" lFMax="1000.0" />
-			</criteria>
-			<criteria name="page" type="complex" class="pow_h" weight="0.547" lKsi="0.704" lPhi="0.462"  >
-				<criteria name="av_mp3" type="single" class="inv" weight="0.072" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="10.0" />
-				<criteria name="av_good" type="single" class="linear" weight="0.139" lLSatiation="0.05" lRSatiation="0.95" lFMin="0.0" lFMax="100.0" />
-				<criteria name="av_author" type="single" class="inv" weight="0.397" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
-				<criteria name="av_album" type="single" class="inv" weight="0.392" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
+			<criteria name="page" type="complex" class="pow_I" weight="0.182" lambda="0.8"  >
+				<criteria name="av_mp3" type="single" class="beta_d" weight="0.037" lLSatiation="0.05" lRSatiation="0.95" lP="1.0" lQ="0.0" lFMin="0.0" lFMax="100.0" />
+				<criteria name="av_good" type="single" class="linear" weight="0.106" lLSatiation="0.05" lRSatiation="0.95" lFMin="0.0" lFMax="100.0" />
+				<criteria name="av_author" type="single" class="inv" weight="0.402" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
+				<criteria name="av_album" type="single" class="inv" weight="0.455" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
 			</criteria>
 		</criteria>
-		<criteria name="big_album" type="complex" class="pow_h" weight="0.314" lKsi="0.696" lPhi="0.454"  >
-			<criteria name="size" type="complex" class="pow_h" weight="0.397" lKsi="0.685" lPhi="0.421"  >
-				<criteria name="page_count" type="single" class="power" weight="0.404" lLSatiation="0.05" lRSatiation="0.95" lBase="0.9" lFMin="0.0" lFMax="1000.0" />
-				<criteria name="total_mp3" type="single" class="power" weight="0.397" lLSatiation="0.05" lRSatiation="0.95" lBase="0.9" lFMin="0.0" lFMax="1000.0" />
-				<criteria name="good_mp3" type="single" class="linear" weight="0.2" lLSatiation="0.0" lRSatiation="0.95" lFMin="0.0" lFMax="1000.0" />
+		<criteria name="big_page" type="complex" class="pow_h" weight="0.49" lKsi="0.9" lPhi="0.494"  >
+			<criteria name="size" type="complex" class="pow_h" weight="0.206" lKsi="0.9" lPhi="0.295"  >
+				<criteria name="page_count" type="single" class="power" weight="0.579" lLSatiation="0.05" lRSatiation="0.95" lBase="0.9" lFMin="0.0" lFMax="1000.0" />
+				<criteria name="total_mp3" type="single" class="power" weight="0.418" lLSatiation="0.05" lRSatiation="0.95" lBase="0.9" lFMin="0.0" lFMax="1000.0" />
+				<criteria name="good_mp3" type="single" class="linear" weight="0.003" lLSatiation="0.0" lRSatiation="0.95" lFMin="0.0" lFMax="1000.0" />
 			</criteria>
-			<criteria name="page" type="complex" class="pow_h" weight="0.603" lKsi="0.697" lPhi="0.464"  >
-				<criteria name="av_mp3" type="single" class="beta_d" weight="0.221" lLSatiation="0.05" lRSatiation="0.95" lP="1.0" lQ="0.0" lFMin="0.0" lFMax="100.0" />
-				<criteria name="av_good" type="single" class="linear" weight="0.123" lLSatiation="0.05" lRSatiation="0.95" lFMin="0.0" lFMax="100.0" />
-				<criteria name="av_author" type="single" class="inv" weight="0.338" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
-				<criteria name="av_album" type="single" class="inv" weight="0.318" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
+			<criteria name="page" type="complex" class="pow_h" weight="0.794" lKsi="0.9" lPhi="0.194"  >
+				<criteria name="av_mp3" type="single" class="inv" weight="0" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="10.0" />
+				<criteria name="av_good" type="single" class="linear" weight="0" lLSatiation="0.05" lRSatiation="0.95" lFMin="0.0" lFMax="100.0" />
+				<criteria name="av_author" type="single" class="inv" weight="0.648" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
+				<criteria name="av_album" type="single" class="inv" weight="0.352" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
+			</criteria>
+		</criteria>
+		<criteria name="big_album" type="complex" class="pow_h" weight="0.237" lKsi="0.9" lPhi="0.5"  >
+			<criteria name="size" type="complex" class="pow_h" weight="0.137" lKsi="0.9" lPhi="0.322"  >
+				<criteria name="page_count" type="single" class="power" weight="0.632" lLSatiation="0.05" lRSatiation="0.95" lBase="0.9" lFMin="0.0" lFMax="1000.0" />
+				<criteria name="total_mp3" type="single" class="power" weight="0.368" lLSatiation="0.05" lRSatiation="0.95" lBase="0.9" lFMin="0.0" lFMax="1000.0" />
+				<criteria name="good_mp3" type="single" class="linear" weight="0" lLSatiation="0.0" lRSatiation="0.95" lFMin="0.0" lFMax="1000.0" />
+			</criteria>
+			<criteria name="page" type="complex" class="pow_h" weight="0.863" lKsi="0.9" lPhi="0.302"  >
+				<criteria name="av_mp3" type="single" class="beta_d" weight="0" lLSatiation="0.05" lRSatiation="0.95" lP="1.0" lQ="0.0" lFMin="0.0" lFMax="100.0" />
+				<criteria name="av_good" type="single" class="linear" weight="0" lLSatiation="0.05" lRSatiation="0.95" lFMin="0.0" lFMax="100.0" />
+				<criteria name="av_author" type="single" class="inv" weight="0.57" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
+				<criteria name="av_album" type="single" class="inv" weight="0.43" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
 			</criteria>
 		</criteria>
 	</criteria>

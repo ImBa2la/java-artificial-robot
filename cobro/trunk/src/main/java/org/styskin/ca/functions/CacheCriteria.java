@@ -201,6 +201,17 @@ public class CacheCriteria {
 		}
 		return Math.sqrt(d/Y.length);
 	}
+	
+	public double checkAbs() {
+		double d = 0;
+		double[] Y = getValue();
+		for(int i=0; i< base.length; i++) {
+			double t = Math.abs(Y[i] - base[i]);
+			d += t;
+		}
+		return d/Y.length;
+	}
+	
 /*	public double check() {
 		double d = 0;
 		double[] Y = getValue();

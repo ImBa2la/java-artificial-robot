@@ -38,7 +38,7 @@ public class CriteriaXMLParser implements Constants {
 	
 	private static final Logger logger = Logger.getLogger(CriteriaXMLParser.class);
 	
-	private static NumberFormat FORMAT = NumberFormat.getNumberInstance(Locale.US);
+	public static NumberFormat FORMAT = NumberFormat.getNumberInstance(Locale.US);
 	
 	public static double getDouble(String s) throws Exception {
 		return FORMAT.parse(s).doubleValue();
@@ -442,7 +442,6 @@ public class CriteriaXMLParser implements Constants {
 				lambdaSB.append(name).append("=\"").append(FORMAT.format(lambda.get(name))).append("\" ");
 			}
 			out.printf("%s<criteria name=\"%s\" type=\"complex\" class=\"%s\" weight=\"%s\" %s >\n",
-//					sb, criteria.getName(), ComplexFunction.getOperatorName(node.getOperator().getClass()) , FORMAT.format(weight), lambdaSB.toString());
 					sb, criteria.getName(), node.getOperator().operatorType(), FORMAT.format(weight), lambdaSB.toString());
 			int i = 0;
 			sb.append('\t');
