@@ -3,26 +3,7 @@
  */
 package org.styskin.ca.functions.single;
 
-public class Gaussian extends SingleOperator {
-
-	private double lSatiation = 0, rSatiation = 1;
-
-	public double getLLSatiation() {
-		return lSatiation;
-	}
-	public double getLRSatiation() {
-		return rSatiation;
-	}
-	public void setLLSatiation(double satiation) {
-		if(satiation > -EPS && satiation < 1 + EPS) {
-			lSatiation = satiation;
-		}
-	}
-	public void setLRSatiation(double satiation) {
-		if(satiation > -EPS && satiation < 1 + EPS) {
-			rSatiation = satiation;
-		}
-	}
+public class Gaussian extends SingleOperatorSatiation {
 
 	public double gaussian(double x, double e) {
 		double t = x;
@@ -39,14 +20,11 @@ public class Gaussian extends SingleOperator {
 	}
 
 	@Override
-	public double getValue(double[] X) {
-		double x = X[0];
-		if (getLFMin() <= x && x <= getLFMax()) {
+	public double getValue(double x) {
+		if (fMin <= x && x <= fMax) {
 			return lSatiation + (rSatiation-lSatiation)*(gaussian((x-getLFMin())/(getLFMax() - getLFMin())*3.92 - 1.96, 1E-3) - 0.025)/0.95;
-		} else if (x > getLFMax()) {
-			return rSatiation;
 		} else {
-			return lSatiation;
+			return super.getValue(x);
 		}
 	}
 

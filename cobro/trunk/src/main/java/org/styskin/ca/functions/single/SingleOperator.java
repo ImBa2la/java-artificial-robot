@@ -16,7 +16,7 @@ public class SingleOperator implements Operator, Function, Cloneable {
 	
 	private static final Logger logger = Logger.getLogger(SingleOperator.class);
 	
-	private double fMax = 1, fMin = 0;
+	protected double fMax = 1, fMin = 0;
 	
 	public double getLFMax() {
 		return fMax;
@@ -32,19 +32,11 @@ public class SingleOperator implements Operator, Function, Cloneable {
 	}	
 
 	public double getValue(double[] X) throws Exception {
-		return X[0];
+		return getValue(X[0]);
 	}
 	
 	public double getValue(double x) {
-		double[] X = new double[1];
-		X[0] = x;
-		double res = 0;
-		try {
-			res = getValue(X);
-		} catch (Exception e) {
-			logger.error("Cannot calc value", e);
-		}
-		return res;
+		return x;
 	}
 
 	public Operator clone() throws CloneNotSupportedException {

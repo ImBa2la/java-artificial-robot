@@ -6,32 +6,14 @@ package org.styskin.ca.functions.single;
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
 
-public class Beta extends SingleOperator {
+public class Beta extends SingleOperatorSatiation {
 	private static final int C = 1000;
-
-	private double lSatiation = 0, rSatiation = 1;
 
 	private double P = 1;
 	private double Q = 0;
 	private double D;
 //	private double Km;
 
-	public double getLLSatiation() {
-		return lSatiation;
-	}
-	public double getLRSatiation() {
-		return rSatiation;
-	}
-	public void setLLSatiation(double satiation) {
-		if(satiation > -EPS && satiation < 1 + EPS) {
-			lSatiation = satiation;
-		}
-	}
-	public void setLRSatiation(double satiation) {
-		if(satiation > -EPS && satiation < 1 + EPS) {
-			rSatiation = satiation;
-		}
-	}
 	public double getLP() {
 		return P;
 	}
@@ -84,11 +66,9 @@ public class Beta extends SingleOperator {
 	}
 
 	@Override
-	public double getValue(double[] X) throws Exception {
-		double x = X[0];
-		double y = 0;
-		int C = 1000;
-		if (getLFMin() <= x && x <= getLFMax()) {
+	public double getValue(double x) {
+		if (fMin <= x && x <= fMax) {
+			double y = 0;
 			double hX, hF, lF = 0;
 			double step = (getLFMax() - getLFMin())/C;
 			hX = getLFMin() + step;
@@ -99,10 +79,8 @@ public class Beta extends SingleOperator {
 				hX += step;
 			}
 			return lSatiation + (rSatiation - lSatiation)*y*D;
-		} else if (x > getLFMax()) {
-			return rSatiation;
 		} else {
-			return lSatiation;
+			return super.getValue(x);
 		}
 	}
 
