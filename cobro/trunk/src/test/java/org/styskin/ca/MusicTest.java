@@ -5,9 +5,9 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.SortedMap;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 import junit.framework.TestCase;
 
@@ -32,10 +32,10 @@ public class MusicTest extends TestCase {
 	}
 	
 	public void testMusic() throws Exception {
-		Criteria music = CriteriaXMLParser.loadXML("cfg/music/music.res.xml");
+		Criteria music = CriteriaXMLParser.loadXML("cfg/music/music.xml");
 		logger.info("Optimization started");
 //		Optimize control = Optimize.getInput("cfg/music/music.tsv", music);
-		Pair<Optimize, Optimize> ops = Optimize.getInput("cfg/music/music.tsv", music, 0.9);
+		Pair<Optimize, Optimize> ops = Optimize.getInput("cfg/music/music.tsv", music, 0.8);
 		Optimize.saveInput("input.txt", music, ops.getFirst().getF(), ops.getFirst().getBase());
 		
 		Optimizer optimizer = new MultiOptimizer(music);
@@ -51,7 +51,7 @@ public class MusicTest extends TestCase {
 	}
 	
 	public void testRanking() throws Exception {
-		Map<String, Double> fixed = new HashMap<String, Double>();
+		SortedMap<String, Double> fixed = new TreeMap<String, Double>();
 		{
 			BufferedReader in = new BufferedReader(new FileReader("cfg/music/fixed.r.out"));
 			String line;
@@ -71,8 +71,11 @@ public class MusicTest extends TestCase {
 		while( (line = in.readLine()) != null) {
 			Pair<Double, double[]> pair = optimizeInputFormat.parseLine(line);
 			String url = line.substring(0, line.indexOf('\t'));
-			out.printf("%s\t%s\n", url, CriteriaXMLParser.FORMAT.format( fixed.containsKey(url) ? fixed.get(url) : music.getValue(pair.getSecond())));
-//			out.printf("%4.4f\t%4.4f\n", pair.getFirst(), music.getValue(pair.getSecond()));
+			while(fixed.size() > 0 && fixed.firstKey().compareTo(url) <= 0) {
+				out.printf("%s\t%s\n", fixed.firstKey(), CriteriaXMLParser.FORMAT.format(fixed.get(fixed.firstKey())));
+				fixed.remove(fixed.firstKey());
+			}
+			out.printf("%s\t%s\n", url, CriteriaXMLParser.FORMAT.format(music.getValue(pair.getSecond())));
 		}
 		in.close();
 		out.close();

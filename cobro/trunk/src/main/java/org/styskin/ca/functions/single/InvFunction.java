@@ -3,8 +3,8 @@ package org.styskin.ca.functions.single;
 public class InvFunction extends SingleOperatorSatiation {
 	
 	{
-		setLLSatiation(0.05);
-		setLRSatiation(0.95);
+		setLLSatiation(0.95);
+		setLRSatiation(0.05);
 	}
 
 	@Override
