@@ -550,8 +550,16 @@ public class CriteriaTreeForm extends JPanel {
 			return;
 		getLambdaTableModel().setSaveLoadParameters(criteria.getOperator());
 		getLambdaTableModel().fireTableDataChanged();
-		if(criteria.getOperator() instanceof ComplexOperator)
-			complexGraphPanel.updateChart((ComplexOperator) criteria.getOperator());
+		
+		complexGraphPanel.removeAllSeries();
+		if(criteria.getOperator() instanceof ComplexOperator) {
+			ComplexOperator op = (ComplexOperator) criteria.getOperator();
+			complexGraphPanel.updateChart("phi", op.getPhiFunction());
+			complexGraphPanel.updateChart("ksi", op.getKsiFunction());
+		} else {
+			SingleOperator op = (SingleOperator) criteria.getOperator();
+			complexGraphPanel.updateChart("tr", op, op.getLFMin(), op.getLFMax());
+		}
 	}
 
 

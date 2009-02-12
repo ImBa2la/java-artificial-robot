@@ -10,8 +10,9 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.styskin.ca.functions.Operator;
+import org.styskin.ca.math.Function;
 
-public class SingleOperator implements Operator, Cloneable {
+public class SingleOperator implements Operator, Function, Cloneable {
 	
 	private static final Logger logger = Logger.getLogger(SingleOperator.class);
 	
@@ -34,10 +35,16 @@ public class SingleOperator implements Operator, Cloneable {
 		return X[0];
 	}
 	
-	public double getValue(double x) throws Exception {
+	public double getValue(double x) {
 		double[] X = new double[1];
 		X[0] = x;
-		return getValue(X);
+		double res = 0;
+		try {
+			res = getValue(X);
+		} catch (Exception e) {
+			logger.error("Cannot calc value", e);
+		}
+		return res;
 	}
 
 	public Operator clone() throws CloneNotSupportedException {

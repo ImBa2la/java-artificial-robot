@@ -90,7 +90,7 @@ public class ComplexCriteria extends Criteria {
 	}
 	
 	@Override
-	public Criteria cloneEquals() throws InstantiationException, IllegalAccessException, CloneNotSupportedException {
+	public Criteria cloneEquals() throws Exception {
 		ComplexCriteria criteria = (ComplexCriteria) super.cloneEquals();
 		List<Criteria> childrenClone = new ArrayList<Criteria>();
 		for(Criteria child : children) {

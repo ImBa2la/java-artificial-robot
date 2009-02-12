@@ -4,11 +4,10 @@
 package org.styskin.ca.functions.complex;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.styskin.ca.functions.Operator;
+import org.styskin.ca.math.Function;
 import org.styskin.ca.model.Slice;
 
 public abstract class ComplexOperator implements Operator, Cloneable {
@@ -64,19 +63,9 @@ public abstract class ComplexOperator implements Operator, Cloneable {
 		op.weights = new ArrayList<Double>(weights);
 		return op;
 	}
-	
-	
-	private static final Map<String, Double> equalParameters = new HashMap<String, Double>();
-	
-	static {
-		equalParameters.put("lambda", 0.5d);		
-		equalParameters.put("lKsi", 0.5d);		
-		equalParameters.put("lPhi", 0.5d);		
-	}
-	
-	public ComplexOperator cloneEquals() throws CloneNotSupportedException {
-		ComplexOperator op = (ComplexOperator) super.clone();
-		op.loadParameters(equalParameters);		
+		
+	public ComplexOperator cloneEquals() throws Exception {
+		ComplexOperator op = getClass().newInstance();
 		op.weights = new ArrayList<Double>(weights.size());
 		for(int i=0; i < weights.size(); i++) {
 			op.weights.add(1d);
@@ -100,8 +89,32 @@ public abstract class ComplexOperator implements Operator, Cloneable {
 	
 	public abstract double getPhi(double x);
 
-	public abstract double getKsi(double x);	
-		
+	public abstract double getKsi(double x);
+	
+	private class PhiFunction implements Function {
+		public double getValue(double x) {
+			return getPhi(x);
+		}
+	}
+	
+	private PhiFunction phiFunction = new PhiFunction();
+	
+	private class KsiFunction implements Function {
+		public double getValue(double x) {
+			return getKsi(x);
+		}
+	}
+	
+	private KsiFunction ksiFunction =  new KsiFunction();
+	
+	public PhiFunction getPhiFunction() {
+		return phiFunction;
+	}
+
+	public KsiFunction getKsiFunction() {
+		return ksiFunction;
+	}
+
 	@Override
 	public String toString() {
 		return operatorType();				

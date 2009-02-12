@@ -154,14 +154,8 @@ public class MultiOptimizer implements Optimizer {
 				}
 				Thread.sleep(SLEEP_TIMEOUT);
 			}
-		} catch (InstantiationException ex) {
-			logger.error(ex);
-		} catch (IllegalAccessException ex) {
-			logger.error(ex);
-		} catch (CloneNotSupportedException ex) {
-			logger.error(ex);
-		} catch (InterruptedException ex) {
-			logger.error(ex);
+		} catch (Exception ex) {
+			logger.error("What the fuck?", ex);
 		}		
 		logger.info(best.strongValue());
 		logger.info(best.getTrace());

@@ -2,6 +2,8 @@ package org.styskin.ca.mvc.chart;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -13,7 +15,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
-import org.styskin.ca.functions.complex.ComplexOperator;
+import org.styskin.ca.math.Function;
 
 public class ComplexGraphPanel {
 	
@@ -33,19 +35,32 @@ public class ComplexGraphPanel {
 		return panel;
 	}
 	
-	public void updateChart(ComplexOperator op) {
-		dataset.removeSeries("phi");		
-		dataset.removeSeries("ksi");
-		double[] x = new double[100];
-		double[] p = new double[100];
-		double[] k = new double[100];
-		for(int i=1; i < x.length; i ++) {
-			x[i] = x[i-1] + 1d/x.length;
-			p[i] = op.getPhi(x[i]);
-			k[i] = op.getKsi(x[i]);
+	@SuppressWarnings("unchecked")
+	public void removeAllSeries() {
+		List<Comparable> names = new ArrayList<Comparable>();
+		for(int i=0; i < dataset.getSeriesCount(); ++i) {
+			names.add(dataset.getSeriesKey(i));
 		}
-		dataset.addSeries("phi", new double[][] {x, p});
-		dataset.addSeries("ksi", new double[][] {x, k});
+		for(int i=0; i < names.size(); ++i) {
+			dataset.removeSeries(names.get(i));
+		}
+	}
+
+	public void updateChart(String name, Function func) {
+		updateChart(name, func, 0, 1);
+	}
+	
+	public void updateChart(String name, Function func, double xMin, double xMax) {
+		int n = 100;
+		double[] x = new double[n];
+		double[] f = new double[n];
+		double step = (xMax - xMin) / n; 
+		x[0] = xMin;
+		for(int i=1; i < x.length; i ++) {
+			x[i] = x[i-1] + step;
+			f[i] = func.getValue(x[i]);
+		}
+		dataset.addSeries(name, new double[][] {x, f});
 	}
 		
 
