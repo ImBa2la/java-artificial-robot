@@ -16,10 +16,9 @@ import org.styskin.ca.model.ValueLogger;
 
 public class SingleOptimizer implements Constants, Optimizer {
 
-	private static final int MAX_ITERATIONS = 99;
+	private static final int MAX_ITERATIONS = 30;
 
-	private static final Logger logger = Logger
-			.getLogger(SingleOptimizer.class);
+	private static final Logger logger = Logger.getLogger(SingleOptimizer.class);
 
 	private ValueLogger valueLogger = ValueLogger.getValueLogger();
 

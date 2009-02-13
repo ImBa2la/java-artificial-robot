@@ -107,8 +107,8 @@ public class MultiOptimizer implements Optimizer {
 		root = criteria;		
 	}
 	
-	private static final int THREAD_COUNT = 10;
-	private static final long SLEEP_TIMEOUT = 5000l;
+	private static final int THREAD_COUNT = 15;
+	private static final long SLEEP_TIMEOUT = 7000l; // 10 sec
 	
 	public Criteria optimize(double[] base, double[][] F) {
 		LinkedList<Checker> pool = new LinkedList<Checker>();
@@ -121,7 +121,7 @@ public class MultiOptimizer implements Optimizer {
 
 			Map<Integer, Checker> q = new TreeMap<Integer, Checker>();
 			int Q = 0;			
-			Thread.sleep(5000);
+			Thread.sleep(SLEEP_TIMEOUT);
 			while(pool.size() > 0) {
 				Iterator<Checker> it = pool.iterator();
 				q.clear();
@@ -147,10 +147,16 @@ public class MultiOptimizer implements Optimizer {
 				if(Q ++ < THREAD_COUNT) {
 					Iterator<Map.Entry<Integer, Checker>> ite = q.entrySet().iterator();
 					Criteria c1 = ite.next().getValue().getCriteria();
-					Criteria c2 = best.getCriteria();//ite.next().getValue().getCriteria();
+					if(!ite.hasNext()) {
+						logger.warn("Strange, very strange");
+						continue;
+					}
+//					Criteria c2 = best.getCriteria();
+					Criteria c2 = ite.next().getValue().getCriteria();
 					Pair<Criteria, Criteria> pair = merger.merge(c1, c2);					
 					pool.add(new Checker(pair.getFirst(), base, F));
 					pool.add(new Checker(pair.getSecond(), base, F));
+					logger.info("Two criterias were added");
 				}
 				Thread.sleep(SLEEP_TIMEOUT);
 			}

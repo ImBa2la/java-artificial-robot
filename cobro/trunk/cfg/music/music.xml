@@ -6,7 +6,7 @@
 		<criteria name="c2" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 		<criteria name="c3" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	</criteria>
-	<criteria name="domain_level" type="single" class="inv" weight="0.2" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />
+	<criteria name="domain_level" type="single" class="inv" weight="0.2" lLSatiation="0.95" lRSatiation="0.05" lFMin="1.0" lFMax="5.0" />
 	<criteria name="own_mp3 " type="single" class="simple" weight="0.2" lFMin="0.0" lFMax="1.0" />
 	<criteria name="forum" type="single" class="linear" weight="0.2" lLSatiation="1.0" lRSatiation="0.0" lFMin="0.0" lFMax="1.0" />
 	<criteria name="links" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
