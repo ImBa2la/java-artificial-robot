@@ -79,28 +79,21 @@ public class MultiOptimizer implements Optimizer {
 	
 	public static class Merger {
 		
-		// TODO: hack with merging
-		public Pair<Criteria,Criteria> merge(Criteria c1, Criteria c2) {
+		// FIXME: Only first level?
+		public Pair<Criteria,Criteria> merge(Criteria c1, Criteria c2) throws CloneNotSupportedException {
 			int size = c1.getChildren().size();
-			int index = (int)Math.random()*size;
-			Criteria new1;
-			Criteria new2;				
-			try {
-				new1 = c1.clone();
-				new2 = c2.clone();				
-				Criteria child1 = new1.getChildren().get(index);
-				Criteria child2 = new2.getChildren().get(index);				
-				new1.getChildren().set(index, child2);
-				new2.getChildren().set(index, child1);				
-				return Pair.makePair(new1, new2);
-			} catch (CloneNotSupportedException e) {
-				logger.error(e);
-			}
-			return null;
+			int index = (int) Math.random()*size;
+			Criteria new1 = c1.clone();
+			Criteria new2 = c2.clone();				
+			Criteria child1 = new1.getChildren().get(index);
+			Criteria child2 = new2.getChildren().get(index);				
+			new1.getChildren().set(index, child2);
+			new2.getChildren().set(index, child1);				
+			return Pair.makePair(new1, new2);
 		}
 	}
 	
-	private static final Merger merger = new Merger(); 		
+	private final Merger merger = new Merger(); 		
 
 
 	public MultiOptimizer(Criteria criteria) {
@@ -127,7 +120,7 @@ public class MultiOptimizer implements Optimizer {
 				q.clear();
 				while(it.hasNext()) {
 					Checker c = it.next();
-					q.put((int)Math.random()*100000, c);				
+					q.put((int)(Math.random()*100000), c);				
 					
 					if(!c.isAlive()) {
 						if(c.strongValue() < value) {

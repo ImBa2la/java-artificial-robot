@@ -31,7 +31,7 @@ public class MusicTest extends TestCase {
 		BasicConfigurator.configure();
 	}
 	
-	public void testMusic() throws Exception {
+	public void atestMusic() throws Exception {
 		Criteria music = CriteriaXMLParser.loadXML("cfg/music/music.res.xml");
 		logger.info("Optimization started");
 //		Optimize control = Optimize.getInput("cfg/music/music.tsv", music);
@@ -50,7 +50,7 @@ public class MusicTest extends TestCase {
 		logger.info("CrossValidation: " + musicCrossValidation.check() + ", " + musicCrossValidation.checkAbs());
 	}
 	
-	public void atestRanking() throws Exception {
+	public void testRanking() throws Exception {
 		SortedMap<String, Double> fixed = new TreeMap<String, Double>();
 		{
 			BufferedReader in = new BufferedReader(new FileReader("cfg/music/fixed.r.out"));
@@ -64,6 +64,7 @@ public class MusicTest extends TestCase {
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("r.out")));		
 		IntegralCriteria music = CriteriaXMLParser.loadXML("music.res.xml");
 		OptimizeInputFormat optimizeInputFormat = new OptimizeInputFormat(music);
+//		BufferedReader in = new BufferedReader(new FileReader("cfg/music/html.base"));
 		BufferedReader in = new BufferedReader(new FileReader("cfg/music/music.in"));
 		String line = null;
 		optimizeInputFormat.init(in.readLine());
