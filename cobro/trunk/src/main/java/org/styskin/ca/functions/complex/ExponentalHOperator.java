@@ -6,10 +6,10 @@ package org.styskin.ca.functions.complex;
 import static java.lang.Math.exp;
 import static java.lang.Math.log;
 import static java.lang.Math.pow;
-import static org.styskin.ca.math.Math.doubleEquals;
-import static org.styskin.ca.math.Math.doubleLess;
-import static org.styskin.ca.math.Math.doubleMore;
-import static org.styskin.ca.math.Math.findMinimum;
+import static org.styskin.ca.math.SimpleMathUtils.doubleEquals;
+import static org.styskin.ca.math.SimpleMathUtils.doubleLess;
+import static org.styskin.ca.math.SimpleMathUtils.doubleMore;
+import static org.styskin.ca.math.SimpleMathUtils.findMinimum;
 
 import java.util.List;
 

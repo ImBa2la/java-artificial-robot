@@ -1,8 +1,6 @@
 package org.styskin.ca;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
 
 import javax.sql.DataSource;
 
@@ -13,7 +11,6 @@ import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.functions.SingleOptimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
 import org.styskin.ca.model.Pair;
-import org.styskin.ca.model.ValueLogger;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
 import ru.yandex.utils.spring.SpringContextTestCase;
@@ -45,9 +42,6 @@ public class AutoTest extends SpringContextTestCase {
 		logger.info(c.check());
 		logger.info(cross.check());
 		logger.info(op.getF().length);
-		Writer out = new FileWriter(namespace + "auto.out.txt");
-		ValueLogger.output(out);
-		out.close();
 		logger.info("Optimization finished");
 	}
 

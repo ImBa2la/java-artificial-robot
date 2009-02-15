@@ -12,15 +12,12 @@ import org.apache.log4j.Logger;
 import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.model.Constants;
 import org.styskin.ca.model.Pair;
-import org.styskin.ca.model.ValueLogger;
 
 public class SingleOptimizer implements Constants, Optimizer {
 
 	private static final int MAX_ITERATIONS = 30;
 
 	private static final Logger logger = Logger.getLogger(SingleOptimizer.class);
-
-	private ValueLogger valueLogger = ValueLogger.getValueLogger();
 
 	private CacheCriteria cache;
 
@@ -81,7 +78,8 @@ public class SingleOptimizer implements Constants, Optimizer {
 	}
 
 	// TODO: define constant
-	private final static double VEPS = 1E-1;
+	private static final double VEPS = 1E-1;
+	private static final double EDGE = 1E6;
 
 	private double getValue(double[] V, ComplexCriteria c, Criteria root) {
 		ComplexOperator op = c.getOperator();
@@ -90,7 +88,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 
 		for (int i = 0; i < SW; i++) {
 			if (V[i] < VEPS || V[i] > 1 - VEPS) {
-				return 1E6;
+				return EDGE;
 			}
 		}
 		for (int i = SW; i < S; i++) {
@@ -110,8 +108,9 @@ public class SingleOptimizer implements Constants, Optimizer {
 	}
 
 	// TODO : Modify algorithm
-	private final static int STEP = 3;
-	private final int LEVEL = 100;
+	private final static int STEP_COUNT = 3;
+	private final static double START_STEP = 1E-3;
+	private final static int LEVEL = 100;
 
 	public void criteria(ComplexCriteria c) {
 		ComplexOperator op = c.getOperator();
@@ -130,9 +129,9 @@ public class SingleOptimizer implements Constants, Optimizer {
 		for (int i = SW; i < S; i++) {
 			V[1][i] = V[0][i] = op.getParameters().get(i - SW);
 		}
-		// XXX: modify STEP
 		for (int i = 0; i < h.length; i++) {
-			h[i] = 1E-3;
+			// TODO: modify START_STEP(level)			
+			h[i] = START_STEP;
 		}
 		k = 0;
 		step = 1;
@@ -142,20 +141,19 @@ public class SingleOptimizer implements Constants, Optimizer {
 				for (int j = 0; j < h.length; j++) {
 					h[j] /= 2;
 				}
-				if (++k > STEP) {
+				if (++k > STEP_COUNT) {
 					return;
 				}
 			}
 
 			f = getValue(V[step], c, root);
 			do {
-				if (++k > STEP) {
+				if (++k > STEP_COUNT) {
 					return;
 				}
 				step = (step + 1) % 2;
 				for (int j = 0; j < V.length; j++) {
-					V[step][j] = V[step][j] + 2
-							* (V[(step + 1) % 2][j] - V[step][j]);
+					V[step][j] = V[step][j] + 2 * (V[(step + 1) % 2][j] - V[step][j]);
 				}
 				fn = getValue(V[step], c, root);
 			} while (fn < f);
@@ -219,8 +217,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 					 cache.refreshCache();
 				 }*/
 				for (Criteria child : cc.getChildren()) {
-					queue.offer(new Pair<Criteria, Integer>(child, c
-							.getSecond() + 1));
+					queue.offer(new Pair<Criteria, Integer>(child, c.getSecond() + 1));
 				}
 			}
 			Thread.yield();
@@ -238,17 +235,15 @@ public class SingleOptimizer implements Constants, Optimizer {
 		}
 		// XXX criteria of finish optimization
 		double dt = 1E10, t = 0, tt = 0;
-		double PRECISION = Math.min(cache.check() / 20000, 0.01);
+		double presision = Math.min(cache.check() / 20000, 0.01);
 		t = cache.check();
 		trace.add(t);
-		valueLogger.log(t);
-		for (int i = 0; !stopFlag && dt > PRECISION && i < MAX_ITERATIONS; i++) {
+		for (int i = 0; !stopFlag && dt > presision && i < MAX_ITERATIONS; i++) {
 			iteration();
 			tt = t;
 			t = cache.check();
 			dt = Math.abs(t - tt);
 			trace.add(t);
-			valueLogger.log(t);
 			logger.debug("Step = " + i + ", value = " + t);
 			Thread.yield();
 		}

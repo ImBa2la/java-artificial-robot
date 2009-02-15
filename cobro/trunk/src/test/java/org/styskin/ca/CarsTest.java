@@ -9,7 +9,6 @@ import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.MultiOptimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
-import org.styskin.ca.model.ValueLogger;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
 import ru.yandex.utils.spring.SpringContextTestCase;
@@ -35,7 +34,6 @@ public class CarsTest extends SpringContextTestCase {
 		c = new CacheCriteria(cars, op.getBase(), op.getF());
 		c.checkOut2(namespace + "out1.txt");		
 		Writer out = new FileWriter(namespace + "auto.out.txt");
-		ValueLogger.output(out);
 		out.close();
 		logger.info("Optimization finished");
 	}

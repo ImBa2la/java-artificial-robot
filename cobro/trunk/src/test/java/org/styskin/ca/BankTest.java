@@ -1,8 +1,6 @@
 package org.styskin.ca;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
 
 import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
@@ -10,7 +8,6 @@ import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.MultiOptimizer;
 import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
-import org.styskin.ca.model.ValueLogger;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
 import ru.yandex.utils.spring.SpringContextTestCase;
@@ -35,9 +32,6 @@ public class BankTest extends SpringContextTestCase {
 		CriteriaXMLParser.saveXML(bank, namespace + "bank.out.xml");
 		c = new CacheCriteria(bank, op.getBase(), op.getF());
 		c.checkOut2(namespace + "out2.txt");		
-		Writer out = new FileWriter(namespace + "bank.out.txt");
-		ValueLogger.output(out);
-		out.close();
 		logger.info("Optimization finished");
 	}
 

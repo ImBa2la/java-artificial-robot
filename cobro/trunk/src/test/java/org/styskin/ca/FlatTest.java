@@ -12,7 +12,6 @@ import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.MultiOptimizer;
 import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
-import org.styskin.ca.model.ValueLogger;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
 public class FlatTest extends TestCase {
@@ -41,10 +40,6 @@ public class FlatTest extends TestCase {
 		
 		c = new CacheCriteria(flat, op.getBase(), op.getF());
 		c.checkOut2("out2.xml");
-		
-		Writer out = new FileWriter("out.txt");
-		ValueLogger.output(out);
-		out.close();
 		logger.info("Optimization finished");
 	}
 

@@ -6,7 +6,7 @@ package org.styskin.ca.math;
 import org.styskin.ca.model.Constants;
 import static java.lang.Math.abs;
 
-public class Math implements Constants {
+public class SimpleMathUtils implements Constants {
 	
 	public static boolean doubleEquals(double a, double b) {
 		return abs(a - b) < EPS; 		
@@ -29,6 +29,20 @@ public class Math implements Constants {
 			} else {
 				b = c;				
 			}			
+		}
+		return a;
+	}
+	
+	public static int findIndex(double[] f, double v) {
+		int a = 0, b = f.length-1, c;
+		if(v < f[a] || v > f[b]) 
+			return -1;
+		while(b-a > 1) {
+			c = (a+b)/2;
+			if(f[c] > v)
+				b = c;
+			if(f[c] <= v)
+				a = c;
 		}
 		return a;
 	}

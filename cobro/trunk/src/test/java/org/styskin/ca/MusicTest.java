@@ -31,7 +31,7 @@ public class MusicTest extends TestCase {
 		BasicConfigurator.configure();
 	}
 	
-	public void atestMusic() throws Exception {
+	public void testMusic() throws Exception {
 		Criteria music = CriteriaXMLParser.loadXML("cfg/music/music.res.xml");
 		logger.info("Optimization started");
 //		Optimize control = Optimize.getInput("cfg/music/music.tsv", music);
@@ -50,7 +50,7 @@ public class MusicTest extends TestCase {
 		logger.info("CrossValidation: " + musicCrossValidation.check() + ", " + musicCrossValidation.checkAbs());
 	}
 	
-	public void testRanking() throws Exception {
+	public void atestRanking() throws Exception {
 		SortedMap<String, Double> fixed = new TreeMap<String, Double>();
 		{
 			BufferedReader in = new BufferedReader(new FileReader("cfg/music/fixed.r.out"));
