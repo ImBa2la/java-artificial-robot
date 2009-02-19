@@ -170,7 +170,7 @@ public class CriteriaXMLParser implements Constants {
 		
 		public static void saveInput(String file, Criteria cr, double[][] F, double[] B) throws Exception {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-			out.print("price");
+			out.print(cr.getName());
 			StringBuilder sb = new StringBuilder();
 			List<SingleOperator> ops = new ArrayList<SingleOperator>();
 			buildName(cr, sb, ops);
