@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<criteria name="score" type="complex" class="pow_h" weight="1" >
+	<criteria name="TR" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+	<criteria name="c1" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
+		<criteria name="TRp1" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+		<criteria name="TRp2" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+		<criteria name="TRtitle" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+		<criteria name="TRhr" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+	</criteria>
+	<criteria name="c2" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
+		<criteria name="LongQuery" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+		<criteria name="TxtPair" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+	</criteria>
+	<criteria name="c3" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
+		<criteria name="LongQuery" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+		<criteria name="TxtInvPair" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+	</criteria>
+	<criteria name="c4" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
+		<criteria name="WordCount" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+		<criteria name="TxtBM25AttenSyn" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+	</criteria>
+	<criteria name="UrlBM25" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+		
+<!--
+TR      1
+TRp1    4
+TRp2    5
+TRtitle 6
+TRhr    7
+LongQuery       17
+TextBM25        46
+TxtPair 53
+WordCount       59
+TxtInvPair      144
+TLen    164
+TxtBM25AttenSyn 191
+UrlBM25 213
+ -->	
+</criteria>
