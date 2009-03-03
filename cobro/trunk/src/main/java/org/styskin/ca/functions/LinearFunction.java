@@ -18,8 +18,10 @@ public class LinearFunction implements SaveLoadFunction {
 	}
 	
 	public void loadParameters(Map<String, Double> lambda) {
-		a = lambda.containsKey("lA") ? lambda.get("lA") : 0;
-		b = lambda.containsKey("lB") ? lambda.get("lB") : 0;
+		if(lambda.containsKey("lA"))
+			a = lambda.get("lA");
+		if(lambda.containsKey("lB"))
+			b = lambda.get("lB");
 	}
 	
 	public void saveParameters(Map<String, Double> lambda) {

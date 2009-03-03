@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="windows-1251"?>
 
 <criteria name="score" type="complex" class="pow_h" weight="1" >
-	<criteria name="TR" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="c1" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
 		<criteria name="TRp1" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 		<criteria name="TRp2" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
@@ -20,7 +19,15 @@
 		<criteria name="WordCount" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 		<criteria name="TxtBM25AttenSyn" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	</criteria>
-	<criteria name="UrlBM25" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+	<criteria name="c5" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
+		<criteria name="TR" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+	</criteria>
+	<criteria name="c6" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
+		<criteria name="TextBM25" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+	</criteria>
+	<criteria name="c7" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
+		<criteria name="UrlBM25" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
+	</criteria>
 		
 <!--
 TR      1

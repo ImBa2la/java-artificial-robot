@@ -46,15 +46,19 @@ public class MultiOptimizer implements Optimizer {
 		}
 
 		public void run() {
-			optimizer = new SingleOptimizer(root);			
-			optimizer.optimize(base, F);
+			optimizer = new SingleOptimizer(root);
+			try {
+				optimizer.optimize(base, F);
+			} catch(Exception ex) {
+				logger.error("Cannot optimize", ex);
+			}
 		}
 
 		public void stop() {
 			optimizer.stop();			
 		}
 
-		public double strongValue() {
+		public double strongValue() throws Exception {
 			return optimizer.getValue();
 		}
 
@@ -158,7 +162,7 @@ public class MultiOptimizer implements Optimizer {
 	private static final int THREAD_COUNT = 15;
 	private static final long SLEEP_TIMEOUT = 7000l; // 10 sec
 	
-	public Criteria optimize(double[] base, double[][] F) {
+	public Criteria optimize(double[] base, double[][] F) throws Exception {
 		LinkedList<Checker> pool = new LinkedList<Checker>();
 		Checker best = null;
 		double value = 1E10;
@@ -216,14 +220,10 @@ public class MultiOptimizer implements Optimizer {
 		return best.getCriteria();
 	}
 
-	public Criteria optimize(Criteria base, double[][] F) {
+	public Criteria optimize(Criteria base, double[][] F) throws Exception {
 		double[] b = new double[F.length];
-		try {
-			for(int i=0; i< F.length; i++) {
-				b[i] = root.getValues(F[i]);
-			}
-		} catch(Exception e) {
-			logger.error(e);			
+		for(int i=0; i< F.length; i++) {
+			b[i] = root.getValues(F[i]);
 		}
 		return optimize(b, F);
 	}

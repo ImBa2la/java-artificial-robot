@@ -12,10 +12,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-/**
- * @author astyskin
- *
- */
 public class CacheCriteria {
 	
 	private static final Logger logger = Logger.getLogger(CacheCriteria.class); 
@@ -25,15 +21,18 @@ public class CacheCriteria {
 	private double[][] R;
 	private Map<Criteria, Boolean> cached;
 	private Map<Criteria, Integer> index;
-
+	
+	private Checker checker = new CheckSampleCorrelation();
+	private Checker absChecker = new CheckAbs();
+	private Checker correlationChecker = new CheckCorrelation();
 
 	private double[] base;
 	protected double[][] F;
 
-	private CacheCriteria(Criteria criteria, double[][] F) {
+	private CacheCriteria(Criteria criteria, double[][] F) throws Exception {
 		this.F = F;
 		root = criteria;
-		// XXX
+		// XXX: use IdentityHashMap for storing intermidiate results
 		cached = new IdentityHashMap<Criteria, Boolean>();
 		index = new IdentityHashMap<Criteria, Integer>();
 		int size = buildIndex(root, 0);
@@ -44,13 +43,13 @@ public class CacheCriteria {
 	}
 
 	// TODO throws Exception base.length != F.length
-	public CacheCriteria(Criteria criteria, double[] base, double[][] F) {
+	public CacheCriteria(Criteria criteria, double[] base, double[][] F) throws Exception {
 		this(criteria, F);
 		this.base = base;
 	}
 
 
-	public CacheCriteria(Criteria criteria, Criteria criteriaBase, double[][] F) {
+	public CacheCriteria(Criteria criteria, Criteria criteriaBase, double[][] F) throws Exception {
 		this(criteria, F);
 		setBase(criteriaBase);
 	}
@@ -75,13 +74,13 @@ public class CacheCriteria {
 		} else {
 			int me = index.get(c);
 			try {
-				for(int i = 0; i < F.length; i++) {
+				for(int i = 0; i < F.length; ++i) {
 					R[me][i] = c.getValue(F[i], p, p);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			p++;
+			++ p;
 		}
 		return p;
 	}
@@ -107,10 +106,10 @@ public class CacheCriteria {
 		return on;
 	}
 
-	public void refreshCache() {
+	public void refreshCache() throws Exception {
 		calcValue(root);
-		for(Criteria c : cached.keySet()) {
-			cached.put(c, Boolean.TRUE);
+		for(Map.Entry<Criteria, Boolean> en : cached.entrySet()) {
+			en.setValue(Boolean.TRUE);
 		}
 	}
 
@@ -125,12 +124,12 @@ public class CacheCriteria {
 		}
 	}
 
-	public double[] getValue() {
+	public double[] getValue() throws Exception {
 		calcValue(root);
 		return R[0];
 	}
 
-	private void calcValue(Criteria c) {
+	private void calcValue(Criteria c) throws Exception {
 		if(!cached.get(c)) {
 			if (c instanceof ComplexCriteria) {
 				ComplexCriteria cc = (ComplexCriteria) c;
@@ -147,11 +146,7 @@ public class CacheCriteria {
 					for(int l = 0; l < P.length; l++) {
 						P[l] = R[ind[l]][i];
 					}
-					try {
-						R[me][i] = cc.getOperator().getValue(P);
-					} catch (Exception ex) {
-						logger.error(ex);
-					}
+					R[me][i] = cc.getOperator().getValue(P);
 				}
 			} else {
 				cached.put(c, Boolean.TRUE);
@@ -169,7 +164,7 @@ public class CacheCriteria {
 		return sb.toString();
 	}
 
-	public void checkOut() {
+	public void checkOut() throws Exception {
 		double[] Y = getValue();
 		double d = 0;
 		for(int i=0; i< base.length; i++) {
@@ -179,7 +174,7 @@ public class CacheCriteria {
 		logger.info("Sum = " + d);
 	}
 	
-	public void checkOut2(String path) throws IOException {
+	public void checkOut2(String path) throws Exception {
 		double[] Y = getValue();
 		outputValues(path, Y);
 	}
@@ -191,45 +186,31 @@ public class CacheCriteria {
 		}
 		out.close();
 	}
+	
+	
+	public double check() throws Exception {
+		double[] x = getValue();
+		return checker.check(x, base);
+	}
 
-	public double check() {
-		double d = 0;
-		double[] Y = getValue();
-		for(int i=0; i< base.length; i++) {
-			double t = Y[i] - base[i];
-			d += t*t;
-		}
-		return Math.sqrt(d/Y.length);
+	//XXX: hack
+	public double checkAbs() throws Exception {
+		double[] x = getValue();
+		return absChecker.check(x, base);
 	}
 	
-	public double checkAbs() {
-		double d = 0;
-		double[] Y = getValue();
-		for(int i=0; i< base.length; i++) {
-			double t = Math.abs(Y[i] - base[i]);
-			d += t;
-		}
-		return d/Y.length;
+	public double checkCorrelation() throws Exception {
+		double[] x = getValue();
+		return correlationChecker.check(x, base);
 	}
-	
-/*	public double check() {
-		double d = 0;
-		double[] Y = getValue();
-		for(int i=0; i< base.length; i++) {
-			double t = Y[i] - base[i];
-			if (Math.abs(t) > d) {
-				d = Math.abs(t);
-			}
-		}
-		return Math.sqrt(d);
-	}*/
 
-	public double[] getValue(Criteria criteria) {
+
+	public double[] getValue(Criteria criteria) throws Exception {
 		calcValue(criteria);
 		return R[index.get(criteria)];
 	}
 
-	public double[][] getInput(ComplexCriteria cr) {
+	public double[][] getInput(ComplexCriteria cr) throws Exception {
 		int size = cr.getSize();
 		int[] ind = new int[size];
 		double[][] values = new double[F.length][size];

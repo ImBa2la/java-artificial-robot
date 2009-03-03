@@ -135,7 +135,8 @@ public class CriteriaXMLParser implements Constants {
 		}
 		
 		public Pair<Double, double[]> parseLine(String line) throws Exception {
-			StringTokenizer st = new StringTokenizer(line);
+			//XXX: be accurate with \t
+			StringTokenizer st = new StringTokenizer(line, "\t");
 			double res = -1;			
 			double[] d = new double[criteriaSize];
 			int i = 0;

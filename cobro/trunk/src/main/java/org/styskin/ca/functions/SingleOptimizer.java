@@ -28,7 +28,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 	private boolean stopFlag = false;
 	private List<Double> trace;
 
-	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c) {
+	private boolean searchPoint(double[] V, double[] h, ComplexCriteria c) throws Exception {
 		boolean moved = false;
 		int SW = c.getSize();
 		int S = c.getSize() + c.getOperator().getParameters().size();
@@ -81,7 +81,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 	private static final double VEPS = 1E-1;
 	private static final double EDGE = 1E6;
 
-	private double getValue(double[] V, ComplexCriteria c, Criteria root) {
+	private double getValue(double[] V, ComplexCriteria c, Criteria root) throws Exception {
 		ComplexOperator op = c.getOperator();
 		int SW = c.getSize();
 		int S = SW + c.getOperator().getParameters().size();
@@ -112,7 +112,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 	private final static double START_STEP = 1E-3;
 	private final static int LEVEL = 100;
 
-	public void criteria(ComplexCriteria c) {
+	public void criteria(ComplexCriteria c) throws Exception {
 		ComplexOperator op = c.getOperator();
 
 		int SW = c.getSize();
@@ -165,7 +165,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 	}
 
 	// Deep Optimization
-	public void rec(Criteria c) {
+	public void rec(Criteria c) throws Exception {
 		if (c instanceof ComplexCriteria) {
 			criteria((ComplexCriteria) c);
 			for (Criteria child : c.getChildren()) {
@@ -175,7 +175,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 	}
 
 	// Long optimization
-	public void iteration() {
+	public void iteration() throws Exception {
 		Queue<Pair<Criteria, Integer>> queue = new LinkedList<Pair<Criteria, Integer>>();
 		queue.offer(new Pair<Criteria, Integer>(root, 1));
 		Pair<Criteria, Integer> c;
@@ -224,7 +224,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 		}
 	}
 
-	private void optimize(Criteria root) {
+	private void optimize(Criteria root) throws Exception {
 		operators = new ArrayList<ComplexOperator>();
 		try {
 			for (Class<? extends ComplexOperator> clazz : ComplexOperator.complexOperators) {
@@ -256,20 +256,20 @@ public class SingleOptimizer implements Constants, Optimizer {
 	/* (non-Javadoc)
 	 * @see org.styskin.ca.functions.Optimizer#optimize(double[], double[][])
 	 */
-	public Criteria optimize(double[] base, double[][] F) {
+	public Criteria optimize(double[] base, double[][] F) throws Exception {
 		cache = new CacheCriteria(root, base, F);
 		trace = new ArrayList<Double>();
 		optimize(root);
 		return root;
 	}
 
-	public Criteria optimize(Criteria base, double[][] F) {
+	public Criteria optimize(Criteria base, double[][] F) throws Exception {
 		cache = new CacheCriteria(root, base, F);
 		optimize(root);
 		return root;
 	}
 
-	public double getValue() {
+	public double getValue() throws Exception {
 		return cache.check();
 	}
 
