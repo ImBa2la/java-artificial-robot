@@ -29,10 +29,8 @@
 	<criteria name="TxtBm25Sy" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="BFexact" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="BFlemma" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
-	<criteria name="SoftAndOk" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="HasNoAllWordsTRSy" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="NumWordsTRSy" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
-	<criteria name="HasAllWordsTRSy" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="TxtInvPair" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="TxtSkipPair" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="NumWordsTRSy" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
@@ -50,9 +48,6 @@
 	<criteria name="PassageLegacyTR" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="TxtBM25AttenSyn" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="TRWithStops" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
-	<criteria name="QueryIsRemix" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
-	<criteria name="QueryNotRemix" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="UrlBM25" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
-	<criteria name="OnlyUrl" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	<criteria name="AuxTextBM25" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 </criteria>

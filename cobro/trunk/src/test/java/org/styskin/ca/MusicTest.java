@@ -5,9 +5,6 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.SortedMap;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
 
 import junit.framework.TestCase;
 
@@ -31,7 +28,7 @@ public class MusicTest extends TestCase {
 		BasicConfigurator.configure();
 	}
 	
-	public void atestMusic() throws Exception {
+	public void testMusic() throws Exception {
 		Criteria music = CriteriaXMLParser.loadXML("cfg/music/music.res.xml");
 		logger.info("Optimization started");
 //		Optimize control = Optimize.getInput("cfg/music/music.tsv", music);
@@ -39,18 +36,18 @@ public class MusicTest extends TestCase {
 		Optimize.saveInput("input.txt", music, ops.getFirst().getF(), ops.getFirst().getBase());
 		
 		Optimizer optimizer = new MultiOptimizer(music);
-		Criteria musicRes = optimizer.optimize(ops.getFirst().getBase(), ops.getFirst().getF());
+		Criteria musicRes = optimizer.optimize(ops.getFirst());
 		CriteriaXMLParser.saveXML(musicRes, "music.res.xml");
 		
 //		CacheCriteria musicControl = new CacheCriteria(musicRes, control.getBase(), control.getF());
-		CacheCriteria musicValidation = new CacheCriteria(musicRes, ops.getFirst().getBase(), ops.getFirst().getF());
-		CacheCriteria musicCrossValidation = new CacheCriteria(musicRes, ops.getSecond().getBase(), ops.getSecond().getF());
+		CacheCriteria musicValidation = new CacheCriteria(musicRes, ops.getFirst());
+		CacheCriteria musicCrossValidation = new CacheCriteria(musicRes, ops.getSecond());
 		logger.info("Validation: " + musicValidation.check() + ", " + musicValidation.checkAbs());
 //		musicControl.checkOut2("music.check");
 		logger.info("CrossValidation: " + musicCrossValidation.check() + ", " + musicCrossValidation.checkAbs());
 	}
 	
-	public void testRanking() throws Exception {
+	public void atestRanking() throws Exception {
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("r.tmp")));		
 		IntegralCriteria music = CriteriaXMLParser.loadXML("cfg/music/music.res.xml");
 		OptimizeInputFormat optimizeInputFormat = new OptimizeInputFormat(music);

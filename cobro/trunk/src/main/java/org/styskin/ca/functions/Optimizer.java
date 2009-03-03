@@ -1,9 +1,9 @@
 package org.styskin.ca.functions;
 
+import org.styskin.ca.model.CriteriaXMLParser.Optimize;
+
 public interface Optimizer {
 
-	Criteria optimize(double[] base, double[][] F) throws Exception;
-	
-	Criteria optimize(Criteria base, double[][] F) throws Exception;	
+	Criteria optimize(Optimize op) throws Exception;
 
 }

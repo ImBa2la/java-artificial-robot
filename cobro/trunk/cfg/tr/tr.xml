@@ -14,21 +14,21 @@
 	<criteria name="c3" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
 		<criteria name="LongQuery" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 		<criteria name="TxtInvPair" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
-	</criteria>
+	</criteria> 
 	<criteria name="c4" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
 		<criteria name="WordCount" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 		<criteria name="TxtBM25AttenSyn" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	</criteria>
-	<criteria name="c5" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
+	<criteria name="c5" type="complex" class="pow_h" weight="0.8" lKsi="0.5" lPhi="0.5"  >
 		<criteria name="TR" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	</criteria>
 	<criteria name="c6" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
 		<criteria name="TextBM25" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	</criteria>
-	<criteria name="c7" type="complex" class="pow_h" weight="0.2" lKsi="0.5" lPhi="0.5"  >
+	<criteria name="c7" type="complex" class="pow_h" weight="0.6" lKsi="0.5" lPhi="0.5"  >
 		<criteria name="UrlBM25" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 	</criteria>
-		
+
 <!--
 TR      1
 TRp1    4

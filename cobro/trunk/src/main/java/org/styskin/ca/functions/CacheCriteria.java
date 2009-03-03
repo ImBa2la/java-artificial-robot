@@ -11,6 +11,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
 public class CacheCriteria {
 	
@@ -22,13 +23,13 @@ public class CacheCriteria {
 	private Map<Criteria, Boolean> cached;
 	private Map<Criteria, Integer> index;
 	
-	private Checker checker = new CheckSampleCorrelation();
-	private Checker absChecker = new CheckAbs();
-	private Checker correlationChecker = new CheckCorrelation();
-
 	private double[] base;
 	protected double[][] F;
 
+	private Checker checker;
+	private Checker absChecker;
+	private Checker correlationChecker;
+	
 	private CacheCriteria(Criteria criteria, double[][] F) throws Exception {
 		this.F = F;
 		root = criteria;
@@ -43,17 +44,32 @@ public class CacheCriteria {
 	}
 
 	// TODO throws Exception base.length != F.length
-	public CacheCriteria(Criteria criteria, double[] base, double[][] F) throws Exception {
-		this(criteria, F);
-		this.base = base;
+	public CacheCriteria(Criteria criteria, Optimize op) throws Exception {
+		this(criteria, op.getF());
+		this.base = op.getBase();
+		initChecker(op);
 	}
 
-
-	public CacheCriteria(Criteria criteria, Criteria criteriaBase, double[][] F) throws Exception {
-		this(criteria, F);
-		setBase(criteriaBase);
+	private void initChecker(Optimize op) {
+/*		int[] req = new int[base.length];
+		String cq = null;
+		int qi = -1;
+		for(int i=0; i < req.length; i++) {
+			String l = op.getLines()[i];
+			l = l.substring(0, l.indexOf('\t'));
+			l = l.substring(0, l.lastIndexOf(' '));
+			if(!l.equals(cq)) {
+				++ qi;
+				cq = l;
+			}
+			req[i] = qi;
+		}*/		
+		checker = new CheckLeastSquare(base);
+		absChecker = new CheckAbs(base);
+		correlationChecker = new CheckSampleCorrelation(base);
+//		correlationChecker = new CheckPfound(base, req);
 	}
-
+	
 	private int buildIndex(Criteria c, int p) {
 		int size = p;
 		index.put(c, size);
@@ -113,16 +129,12 @@ public class CacheCriteria {
 		}
 	}
 
-	private void setBase(Criteria c) {
-		base = new double[F.length];
-		try {
-			for(int i=0; i< F.length; i++) {
-				base[i] = c.getValues(F[i]);
-			}
-		} catch(Exception e) {
-			logger.error(e);			
-		}
-	}
+//	private void setBase(Criteria c) throws Exception {
+//		base = new double[F.length];
+//		for(int i=0; i< F.length; i++) {
+//			base[i] = c.getValues(F[i]);
+//		}
+//	}
 
 	public double[] getValue() throws Exception {
 		calcValue(root);
@@ -190,18 +202,18 @@ public class CacheCriteria {
 	
 	public double check() throws Exception {
 		double[] x = getValue();
-		return checker.check(x, base);
+		return checker.check(x);
 	}
 
 	//XXX: hack
 	public double checkAbs() throws Exception {
 		double[] x = getValue();
-		return absChecker.check(x, base);
+		return absChecker.check(x);
 	}
 	
 	public double checkCorrelation() throws Exception {
 		double[] x = getValue();
-		return correlationChecker.check(x, base);
+		return correlationChecker.check(x);
 	}
 
 

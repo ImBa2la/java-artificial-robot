@@ -168,7 +168,15 @@ public class CriteriaXMLParser implements Constants {
 	public static class Optimize {
 		double[][] F;
 		double[] base;
+		String[] lines;
 		
+		private Optimize() {}
+
+		public Optimize(double[][] f, double[] base) {
+			F = f;
+			this.base = base;
+		}
+
 		public static void saveInput(String file, Criteria cr, double[][] F, double[] B) throws Exception {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			out.print(cr.getName());
@@ -199,22 +207,22 @@ public class CriteriaXMLParser implements Constants {
 			return getInput(new File(file), cr, ratio);
 		}
 		
+		@SuppressWarnings("unchecked")
 		public static Pair<Optimize, Optimize> getInput(File file, Criteria cr, double ratio) throws Exception {
-			Optimize of = new Optimize();
-			Optimize os = new Optimize();
+			int TWO = 2;			
+			Optimize[] o = new Optimize[TWO];
 			
 			OptimizeInputFormat optimizeInputFormat = new OptimizeInputFormat(cr);
 			
-			@SuppressWarnings("unchecked")
 			List<Double>[] inputP = new List[2];				
-			@SuppressWarnings("unchecked")
+			List<String>[] inputS = new List[2];				
 			List<double[]>[] input = new List[2];
-			input[0] = new ArrayList<double[]>();
-			input[1] = new ArrayList<double[]>();
-			inputP[0] = new ArrayList<Double>();
-			inputP[1] = new ArrayList<Double>();
-			
-
+			for(int i=0; i < TWO; i++) {
+				o[i] = new Optimize();
+				input[i] = new ArrayList<double[]>();
+				inputP[i] = new ArrayList<Double>();
+				inputS[i] = new ArrayList<String>();
+			}
 			BufferedReader in = new BufferedReader(new FileReader(file));
 			
 			optimizeInputFormat.init(in.readLine());
@@ -228,20 +236,22 @@ public class CriteriaXMLParser implements Constants {
 				
 				input[ind].add(pair.getSecond());
 				inputP[ind].add(pair.getFirst());
+				inputS[ind].add(s);
 			}
-			of.F = new double[input[0].size()][input[0].get(0).length];
-			of.base = new double[input[0].size()];				
-			for(int j=0; j < input[0].size(); j++) {
-				of.F[j] = input[0].get(j);
-				of.base[j] = inputP[0].get(j);
+			for(int i=0; i < TWO; i++) {
+				int size = input[i].size();
+				if(size > 0) {
+					o[i].F = new double[size][input[i].get(0).length];
+					o[i].base = new double[size];
+					o[i].lines = new String[size];
+					for(int j=0; j < input[i].size(); j++) {
+						o[i].F[j] = input[i].get(j);
+						o[i].base[j] = inputP[i].get(j);
+						o[i].lines[j] = inputS[i].get(j);
+					}
+				}
 			}
-			os.F = new double[input[1].size()][input[0].get(0).length];
-			os.base = new double[input[1].size()];				
-			for(int j=0; j < input[1].size(); j++) {
-				os.F[j] = input[1].get(j);
-				os.base[j] = inputP[1].get(j);
-			}
-			return Pair.makePair(of, os);
+			return Pair.makePair(o[0], o[1]);
 		}
 		
 /*		public static Optimize getInput(DataSource dataSource, final String tableName, Criteria cr) throws Exception {
@@ -308,6 +318,11 @@ public class CriteriaXMLParser implements Constants {
 		public double[][] getF() {
 			return F;
 		}
+
+		public String[] getLines() {
+			return lines;
+		}
+		
 	}
 
 	static class CriteriaXMLHandler extends DefaultHandler {

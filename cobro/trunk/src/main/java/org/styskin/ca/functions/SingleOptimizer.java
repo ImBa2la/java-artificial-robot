@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Queue;
 
 import org.apache.log4j.Logger;
+import org.styskin.ca.functions.complex.ComplexHOperator;
 import org.styskin.ca.functions.complex.ComplexOperator;
 import org.styskin.ca.model.Constants;
 import org.styskin.ca.model.Pair;
+import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
 public class SingleOptimizer implements Constants, Optimizer {
 
@@ -109,7 +111,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 
 	// TODO : Modify algorithm
 	private final static int STEP_COUNT = 3;
-	private final static double START_STEP = 1E-3;
+	private final static double START_STEP = 1E-2;
 	private final static int LEVEL = 100;
 
 	public void criteria(ComplexCriteria c) throws Exception {
@@ -173,6 +175,38 @@ public class SingleOptimizer implements Constants, Optimizer {
 			}
 		}
 	}
+	
+	private void operatorSelection(ComplexCriteria cc) throws Exception {
+		 ComplexOperator src = cc.getOperator();
+		 ComplexOperator minOperator = src, op = null;
+		 double min = cache.check(), tempCheck;
+		 for(ComplexOperator operator : operators) {
+		 	if(operator instanceof ComplexHOperator) {
+		 		try {
+		 			op = operator.clone();
+		 			List<Double> w = new ArrayList<Double>();
+		 			w.addAll(src.getWeights());
+		 			op.setWeights(w);
+		 			for(int i=0; i < src.getParameters().size(); i++) {
+		 				op.getParameters().set(i, src.getParameters().get(i));
+		 			}
+		 			op.refresh();
+		 		} catch(CloneNotSupportedException ex) {
+		 			logger.error("Operator clone exception");
+		 		}
+		 	}
+			 cc.setOperator(op);
+			 criteria(cc);
+			 tempCheck = cache.check();
+			 if (tempCheck < min) {
+				 min = tempCheck;
+				 minOperator = op;
+			 }
+	 	}
+		 cc.setOperator(minOperator);
+		 cache.turnOffCache(cc);
+		 cache.refreshCache();
+	}
 
 	// Long optimization
 	public void iteration() throws Exception {
@@ -183,39 +217,10 @@ public class SingleOptimizer implements Constants, Optimizer {
 		while ((c = queue.poll()) != null && !stopFlag) {
 			if (c.getFirst() instanceof ComplexCriteria) {
 				cc = (ComplexCriteria) c.getFirst();
-				//if (c.getSecond() < LEVEL) {
-				criteria(cc);
-				/*} else {
-					 ComplexOperator src = cc.getOperator();
-					 ComplexOperator minOperator = src, op = null;
-					 double min = cache.check(), tempCheck;
-					 for(ComplexOperator operator : operators) {
-					 	if(operator instanceof ComplexHOperator) {
-					 		try {
-					 			op = operator.clone();
-					 			List<Double> w = new ArrayList<Double>();
-					 			w.addAll(src.getWeights());
-					 			op.setWeights(w);
-					 			for(int i=0; i < src.getParameters().size(); i++) {
-					 				op.getParameters().set(i, src.getParameters().get(i));
-					 			}
-					 			op.refresh();
-					 		} catch(CloneNotSupportedException ex) {
-					 			logger.error("Operator clone exception");
-					 		}
-					 	}
-						 cc.setOperator(op);
-						 criteria(cc);
-						 tempCheck = cache.check();
-						 if (tempCheck < min) {
-							 min = tempCheck;
-							 minOperator = op;
-						 }
-				 	}
-					 cc.setOperator(minOperator);
-					 cache.turnOffCache(cc);
-					 cache.refreshCache();
-				 }*/
+				if (c.getSecond() < LEVEL)
+					criteria(cc);
+				else
+					operatorSelection(cc);
 				for (Criteria child : cc.getChildren()) {
 					queue.offer(new Pair<Criteria, Integer>(child, c.getSecond() + 1));
 				}
@@ -244,7 +249,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 			t = cache.check();
 			dt = Math.abs(t - tt);
 			trace.add(t);
-			logger.debug("Step = " + i + ", value = " + t);
+			logger.debug("Step = " + i + ", value = " + t + ", pfound = " + cache.checkCorrelation());
 			Thread.yield();
 		}
 	}
@@ -256,15 +261,9 @@ public class SingleOptimizer implements Constants, Optimizer {
 	/* (non-Javadoc)
 	 * @see org.styskin.ca.functions.Optimizer#optimize(double[], double[][])
 	 */
-	public Criteria optimize(double[] base, double[][] F) throws Exception {
-		cache = new CacheCriteria(root, base, F);
+	public Criteria optimize(Optimize op) throws Exception {
+		cache = new CacheCriteria(root, op);
 		trace = new ArrayList<Double>();
-		optimize(root);
-		return root;
-	}
-
-	public Criteria optimize(Criteria base, double[][] F) throws Exception {
-		cache = new CacheCriteria(root, base, F);
 		optimize(root);
 		return root;
 	}

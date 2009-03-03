@@ -23,14 +23,14 @@ public class BankTest extends SpringContextTestCase {
 		prepareDirs();		
 		logger.info("Optimization started");		
 		Optimize op = Optimize.getInput("src/main/cfg/bank/industrials.in", bank);
-		CacheCriteria c = new CacheCriteria(bank, op.getBase(), op.getF());
+		CacheCriteria c = new CacheCriteria(bank, op);
 		CacheCriteria.outputValues(namespace + "out0.txt", op.getBase());		
 		c.checkOut2(namespace + "out1.txt");
 		Optimizer optimizer = new MultiOptimizer(bank);
 //		Optimizer optimizer = new SingleOptimizer(auto);
-		bank = optimizer.optimize(op.getBase(), op.getF());
+		bank = optimizer.optimize(op);
 		CriteriaXMLParser.saveXML(bank, namespace + "bank.out.xml");
-		c = new CacheCriteria(bank, op.getBase(), op.getF());
+		c = new CacheCriteria(bank, op);
 		c.checkOut2(namespace + "out2.txt");		
 		logger.info("Optimization finished");
 	}

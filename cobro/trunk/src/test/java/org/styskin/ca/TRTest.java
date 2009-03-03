@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.styskin.ca.functions.CacheCriteria;
 import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.IntegralCriteria;
+import org.styskin.ca.functions.MultiOptimizer;
 import org.styskin.ca.functions.Optimizer;
 import org.styskin.ca.functions.SingleOptimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
@@ -35,22 +36,24 @@ public class TRTest extends TestCase {
 	}
 	
 	public void testTextRelevance() throws Exception {
-		Criteria tr = CriteriaXMLParser.loadXML("cfg/tr/tr.xml");
+		Criteria tr = CriteriaXMLParser.loadXML("cfg/tr/tr2.xml");
 		logger.info("Optimization started");
-		Pair<Optimize, Optimize> ops = Optimize.getInput("cfg/tr/train.in", tr, 0.2);
+		Pair<Optimize, Optimize> ops = Optimize.getInput("cfg/tr/train.in", tr, 1);
 		Optimize.saveInput("input.txt", tr, ops.getFirst().getF(), ops.getFirst().getBase());
 		
 //		Optimizer optimizer = new MultiOptimizer(tr);
 		Optimizer optimizer = new SingleOptimizer(tr);
-		Criteria trRes = optimizer.optimize(ops.getFirst().getBase(), ops.getFirst().getF());
+		Criteria trRes = optimizer.optimize(ops.getFirst());
 		CriteriaXMLParser.saveXML(trRes, "tr.res.xml");
 		
 //		CacheCriteria trControl = new CacheCriteria(trRes, control.getBase(), control.getF());
-		CacheCriteria trValidation = new CacheCriteria(trRes, ops.getFirst().getBase(), ops.getFirst().getF());
-		CacheCriteria trCrossValidation = new CacheCriteria(trRes, ops.getSecond().getBase(), ops.getSecond().getF());
+		CacheCriteria trValidation = new CacheCriteria(trRes, ops.getFirst());
 		logger.info("Validation: " + trValidation.check() + ", " + trValidation.checkAbs() + ", " + trValidation.checkCorrelation());
 //		trControl.checkOut2("tr.check");
-		logger.info("CrossValidation: " + trCrossValidation.check() + ", " + trCrossValidation.checkAbs() + ", " + trCrossValidation.checkCorrelation());
+		if(ops.getSecond().getF() != null) {
+			CacheCriteria trCrossValidation = new CacheCriteria(trRes, ops.getSecond());
+			logger.info("CrossValidation: " + trCrossValidation.check() + ", " + trCrossValidation.checkAbs() + ", " + trCrossValidation.checkCorrelation());
+		}
 	}
 	
 	public void testRanking() throws Exception {
@@ -67,7 +70,7 @@ public class TRTest extends TestCase {
 		}
 		
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("ranking_cor2.txt")));		
-		IntegralCriteria music = CriteriaXMLParser.loadXML("cfg/tr/tr.xml");
+		IntegralCriteria music = CriteriaXMLParser.loadXML("tr.res.xml");
 		OptimizeInputFormat optimizeInputFormat = new OptimizeInputFormat(music);
 		BufferedReader in = new BufferedReader(new FileReader("cfg/tr/train.in"));
 		String line = null;
@@ -87,7 +90,7 @@ public class TRTest extends TestCase {
 					}
 				});
 				for(int i=0; i < Math.min(10, list.size()); ++i)
-					out.printf("%s\t%d\t%s\t%f\n", pq, i, list.get(i).getFirst(), list.get(i).getSecond());
+					out.printf("%s\t%d\t%s\n", req.get(pq), i, list.get(i).getFirst(), list.get(i).getSecond());
 				list = new ArrayList<Pair<String,Double>>();
 				pq = q;
 			}
@@ -99,8 +102,8 @@ public class TRTest extends TestCase {
 				return -o1.getSecond().compareTo(o2.getSecond());
 			}
 		});
-		for(int i=0; i < list.size(); ++i)
-			out.printf("%s\t%d\t%s\t%f\n", pq, i, list.get(i).getFirst(), list.get(i).getSecond());
+		for(int i=0; i < Math.min(10, list.size()); ++i)
+			out.printf("%s\t%d\t%s\n", req.get(pq), i, list.get(i).getFirst(), list.get(i).getSecond());
 
 		in.close();
 		out.close();

@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import org.styskin.ca.math.SimpleMathUtils;
 import org.styskin.ca.model.Pair;
+import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
 import ru.yandex.utils.Triple;
 
@@ -26,18 +27,16 @@ public class MultiOptimizer implements Optimizer {
 		
 		private Criteria root;
 		private Thread thread;
-		private double[] base;
-		private double[][] F;
+		private Optimize op;
 		
 		private int index;
 		
 		private SingleOptimizer optimizer;
 		
-		public Checker(Criteria root, double[] base, double[][] F) {
+		public Checker(Criteria root, Optimize op) {
 //				this.root = root.clone();
 			this.root = root;
-			this.base = base;
-			this.F = F;
+			this.op = op;
 			
 			index = CHECKER ++;
 			
@@ -48,7 +47,7 @@ public class MultiOptimizer implements Optimizer {
 		public void run() {
 			optimizer = new SingleOptimizer(root);
 			try {
-				optimizer.optimize(base, F);
+				optimizer.optimize(op);
 			} catch(Exception ex) {
 				logger.error("Cannot optimize", ex);
 			}
@@ -162,14 +161,14 @@ public class MultiOptimizer implements Optimizer {
 	private static final int THREAD_COUNT = 15;
 	private static final long SLEEP_TIMEOUT = 7000l; // 10 sec
 	
-	public Criteria optimize(double[] base, double[][] F) throws Exception {
+	public Criteria optimize(Optimize op) throws Exception {
 		LinkedList<Checker> pool = new LinkedList<Checker>();
 		Checker best = null;
 		double value = 1E10;
 		try {
 			Criteria rootEq = root.cloneEquals();
-			pool.add(new Checker(root, base, F));
-			pool.add(new Checker(rootEq, base, F));
+			pool.add(new Checker(root, op));
+			pool.add(new Checker(rootEq, op));
 
 			Map<Integer, Checker> q = new TreeMap<Integer, Checker>();
 			int Q = 0;			
@@ -206,8 +205,8 @@ public class MultiOptimizer implements Optimizer {
 //					Criteria c2 = best.getCriteria();
 					Criteria c2 = ite.next().getValue().getCriteria();
 					Pair<Criteria, Criteria> pair = merger.merge(c1, c2);					
-					pool.add(new Checker(pair.getFirst(), base, F));
-					pool.add(new Checker(pair.getSecond(), base, F));
+					pool.add(new Checker(pair.getFirst(), op));
+					pool.add(new Checker(pair.getSecond(), op));
 					logger.info("Two criterias were added");
 				}
 				Thread.sleep(SLEEP_TIMEOUT);
@@ -225,7 +224,8 @@ public class MultiOptimizer implements Optimizer {
 		for(int i=0; i< F.length; i++) {
 			b[i] = root.getValues(F[i]);
 		}
-		return optimize(b, F);
+		Optimize op = new Optimize(F, b);
+		return optimize(op);
 	}
 	
 }

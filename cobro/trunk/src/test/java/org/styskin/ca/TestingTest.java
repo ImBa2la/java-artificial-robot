@@ -36,13 +36,13 @@ public class TestingTest extends SpringContextTestCase {
 		
 		Optimize op = Optimize.getInput(namespace + "test.in", test);
 	
-		CacheCriteria c = new CacheCriteria(test, op.getBase(), op.getF());
+		CacheCriteria c = new CacheCriteria(test, op);
 		CacheCriteria.outputValues(namespace + "out0.txt", BB);		
 		c.checkOut2(namespace + "out1.txt");		
 		Optimizer optimizer = new MultiOptimizer(test);
-		test = optimizer.optimize(op.getBase(), op.getF());
+		test = optimizer.optimize(op);
 		CriteriaXMLParser.saveXML(test, namespace + "test.out.xml");
-		c = new CacheCriteria(test, op.getBase(), op.getF());
+		c = new CacheCriteria(test, op);
 		c.checkOut2(namespace + "out2.txt");		
 		logger.info("Optimization finished");
 	}

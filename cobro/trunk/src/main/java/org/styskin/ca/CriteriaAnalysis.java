@@ -473,8 +473,8 @@ public class CriteriaAnalysis extends JFrame {
 						Pair<Optimize, Optimize> opm = Optimize.getInput(file, criteria, 0.9);
 						Optimize op = opm.getFirst();
 						Optimizer optimizer = new MultiOptimizer(criteria);
-						criteria = optimizer.optimize(op.getBase(), op.getF());
-						CacheCriteria cross = new CacheCriteria(criteria, opm.getSecond().getBase(), opm.getSecond().getF());
+						criteria = optimizer.optimize(op);
+						CacheCriteria cross = new CacheCriteria(criteria, opm.getSecond());
 						logger.info("Cross validation: " + cross.check());
 					} catch (Exception ex) {
 						logger.error("Cannot optimize selected criteria", ex);

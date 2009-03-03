@@ -25,13 +25,13 @@ public class CarsTest extends SpringContextTestCase {
 		logger.info("Optimization started");		
 		Optimize op = Optimize.getInput("bin/cars/input.txt", cars);
 		
-		CacheCriteria c = new CacheCriteria(cars, op.getBase(), op.getF());
+		CacheCriteria c = new CacheCriteria(cars, op);
 		c.checkOut2(namespace + "out1.txt");		
 		MultiOptimizer optimizer = new MultiOptimizer(cars);
 //		Optimizer optimizer = new SingleOptimizer(cars);
-		cars = optimizer.optimize(op.getBase(), op.getF());
+		cars = optimizer.optimize(op);
 		CriteriaXMLParser.saveXML(cars, namespace + "auto.out.xml");
-		c = new CacheCriteria(cars, op.getBase(), op.getF());
+		c = new CacheCriteria(cars, op);
 		c.checkOut2(namespace + "out1.txt");		
 		Writer out = new FileWriter(namespace + "auto.out.txt");
 		out.close();

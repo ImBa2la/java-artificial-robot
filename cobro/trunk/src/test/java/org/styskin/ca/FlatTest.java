@@ -31,14 +31,14 @@ public class FlatTest extends TestCase {
 //		Optimizer optimizer = new Optimizer(flat);
 //		optimizer.optimize(op.getBase(), op.getF());
 		
-		CacheCriteria c = new CacheCriteria(flat, op.getBase(), op.getF());
+		CacheCriteria c = new CacheCriteria(flat, op);
 		c.checkOut2("out1.xml");	
 		
 		Optimizer optimizer = new MultiOptimizer(flat);
-		flat = optimizer.optimize(op.getBase(), op.getF());
+		flat = optimizer.optimize(op);
 		CriteriaXMLParser.saveXML(flat, "flat.xml");
 		
-		c = new CacheCriteria(flat, op.getBase(), op.getF());
+		c = new CacheCriteria(flat, op);
 		c.checkOut2("out2.xml");
 		logger.info("Optimization finished");
 	}

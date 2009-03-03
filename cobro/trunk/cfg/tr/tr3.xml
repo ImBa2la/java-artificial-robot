@@ -82,6 +82,6 @@
 			<criteria name="QueryNotRemix" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 			<criteria name="AuxTextBM25" type="single" class="simple" weight="0.333" lFMin="0.0" lFMax="1.0" />
 		</criteria>
-	</criteria>
+	</criteria> 
  -->
 </criteria>
