@@ -2,19 +2,27 @@ package org.styskin.greed;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import Jama.Matrix;
 import static org.styskin.greed.MatrixUtils.*;
 
 
 public class Formula {
 	
 	List<Monom> monoms = new ArrayList<Monom>();
-	List<Float> weight = new ArrayList<Float>();
+	List<Double> weight = new ArrayList<Double>();
 	
 	static class Monom {
 		List<Integer> list = new ArrayList<Integer>();
+
+		Monom() {}
 		
-		public float result(float[] row) {
-			float r = 1;
+		public Monom(int ind) {
+			this.list.add(ind);
+		}
+
+		public double result(double[] row) {
+			double r = 1;
 			for(int i=0; i < list.size(); i++)
 				r *= row[list.get(i)];
 			return r;
@@ -42,8 +50,8 @@ public class Formula {
 		}
 	}
 	
-	public float[] result(float[][] M) {
-		float[] res = new float[M.length];
+	public double[] result(double[][] M) {
+		double[] res = new double[M.length];
 		for(int i=0; i < M.length; i++) {
 			for(int j=0; j < monoms.size(); j++)
 				res[i] += weight.get(j) * monoms.get(j).result(M[i]);
@@ -51,19 +59,23 @@ public class Formula {
 		return res;
 	}
 	
-	public boolean addMonoms(List<Monom> list, float[] B, float[][] A) {
-		float[] Y = result(A);
+	public boolean addMonoms(List<Monom> list, double[] B, double[][] A) {
+		double[] Y = result(A);
 		mult(Y, -1);
 		add(Y, B);
 		int N = B.length;
-		float[][] X = new float[list.size()][N];
+		double[][] X = new double[list.size()][N];
 		for(int i=0; i < list.size(); i++)
 			for(int j=0; j < N; j++)
 				X[i][j] = list.get(i).result(A[j]);
 		// Regression for X -> Y
-		
-		
-		
+		Matrix a = new Matrix(X); 
+		Matrix b = new Matrix(new double[][] {Y});
+		Matrix x = a.transpose().solve(b.transpose());
+		for(int i=0; i < list.size(); i++) {
+			this.monoms.add(list.get(i));
+			this.weight.add(x.get(i, 0));
+		}
 		return true; // true - if added
 	}
 

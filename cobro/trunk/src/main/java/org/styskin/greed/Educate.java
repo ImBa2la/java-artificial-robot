@@ -3,6 +3,10 @@ package org.styskin.greed;
 import static org.styskin.greed.MatrixUtils.correlation;
 import static org.styskin.greed.MatrixUtils.tr;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.styskin.greed.Formula.Monom;
 import org.styskin.util.LoadInput;
 
 public class Educate {
@@ -10,12 +14,17 @@ public class Educate {
 	
 	public static void main(String[] args) throws Exception {
 		LoadInput input = LoadInput.loadInput("cfg/auto/cars.txt");
-		float[][] t = tr(input.M);
+		double[][] t = tr(input.M);
 		Formula fml = new Formula();		
-		for(int i=0; i < input.size; i++) {
-			
+		for(int i=0; i < input.size; i++) {			
 			System.out.printf("%s:\t%f\n", input.getName(i), correlation(t[i], input.B));
 		}
+		List<Monom> monoms = new ArrayList<Monom>();
+		monoms.add(new Monom(2));
+		monoms.add(new Monom(1));
+		fml.addMonoms(monoms, input.B, input.M);
+		System.out.printf("Optimisation:\t%f\n", correlation(fml.result(input.M), input.B));
+		
 	}
 
 }
