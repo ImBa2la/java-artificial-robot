@@ -33,26 +33,37 @@ public class LoadInput {
 		size = names.size();
 	}
 	
-	public static LoadInput loadInput(String file) throws Exception {
+	@SuppressWarnings("unchecked")
+	public static Pair<LoadInput, LoadInput> loadInput(String file, double ratio) throws Exception {
 		BufferedReader in = new BufferedReader(new FileReader(file));
 		String line = in.readLine();
-		LoadInput input = new LoadInput();
-		input.init(line);
-		List<Double> B = new ArrayList<Double>();
-		List<double[]> M = new ArrayList<double[]>();
+		int TWO = 2;
+		
+		LoadInput[] input = new LoadInput[TWO];
+		List<Double>[] B = new List[TWO];
+		List<double[]>[] M = new List[TWO];
+		for(int i=0; i < TWO; i++) {
+			input[i] = new LoadInput();			
+			input[i].init(line);
+			B[i] = new ArrayList<Double>();
+			M[i] = new ArrayList<double[]>();
+		}
 		
 		while((line = in.readLine()) != null) {
-			Pair<Double, double[]> pair = input.parseLine(line);
-			B.add(pair.getFirst());
-			M.add(pair.getSecond());
+			Pair<Double, double[]> pair = input[0].parseLine(line);
+			int ind = Math.random() > ratio ? 1 : 0;			
+			B[ind].add(pair.getFirst());
+			M[ind].add(pair.getSecond());
 		}
-		input.B = new double[B.size()];
-		input.M = new double[B.size()][];
-		for(int i=0; i < B.size(); i++) {
-			input.B[i] = B.get(i);
-			input.M[i] = M.get(i);
+		for(int j=0; j < TWO; j++) {
+			input[j].B = new double[B[j].size()];
+			input[j].M = new double[B[j].size()][];
+			for(int i=0; i < B[j].size(); i++) {
+				input[j].B[i] = B[j].get(i);
+				input[j].M[i] = M[j].get(i);
+			}
 		}
-		return input;
+		return Pair.makePair(input[0], input[1]);
 	}
 	
 	Pair<Double, double[]> parseLine(String line) {

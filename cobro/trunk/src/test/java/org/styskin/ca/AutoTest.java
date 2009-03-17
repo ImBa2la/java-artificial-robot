@@ -28,8 +28,8 @@ public class AutoTest extends SpringContextTestCase {
 		Pair<Optimize, Optimize> opm = Optimize.getInput("cfg/auto/cars.txt", auto, 1);
 		Optimize op = opm.getFirst();
 		CacheCriteria c = new CacheCriteria(auto, op);
-		Optimizer optimizer = new MultiOptimizer(auto);
-//		Optimizer optimizer = new SingleOptimizer(auto);
+//		Optimizer optimizer = new MultiOptimizer(auto);
+		Optimizer optimizer = new SingleOptimizer(auto);
 		auto = optimizer.optimize(op);
 		CriteriaXMLParser.saveXML(auto, namespace + "auto.out.xml");
 		c = new CacheCriteria(auto, op);

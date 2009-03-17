@@ -15,6 +15,7 @@ import org.styskin.ca.functions.Criteria;
 import org.styskin.ca.functions.IntegralCriteria;
 import org.styskin.ca.functions.MultiOptimizer;
 import org.styskin.ca.functions.Optimizer;
+import org.styskin.ca.functions.SingleOptimizer;
 import org.styskin.ca.model.CriteriaXMLParser;
 import org.styskin.ca.model.Pair;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
@@ -36,6 +37,7 @@ public class MusicTest extends TestCase {
 		Optimize.saveInput("input.txt", music, ops.getFirst().getF(), ops.getFirst().getBase());
 		
 		Optimizer optimizer = new MultiOptimizer(music);
+//		Optimizer optimizer = new SingleOptimizer(music);
 		Criteria musicRes = optimizer.optimize(ops.getFirst());
 		CriteriaXMLParser.saveXML(musicRes, "music.res.xml");
 		

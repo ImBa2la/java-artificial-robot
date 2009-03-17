@@ -1,5 +1,6 @@
 package org.styskin.greed;
 
+import static java.lang.Math.*;
 
 public class MatrixUtils {
 	
@@ -27,10 +28,19 @@ public class MatrixUtils {
 		return r;
 	}
 	
+	public static double leastSqares(double[] x, double[] y) {
+		int N = x.length;
+		double s = 0;
+		for(int i=0; i < N; i++)
+			s += (x[i]-y[i])*(x[i]-y[i]);
+		s /= N;
+		return sqrt(s);
+	}
+	
 	public static double correlation(double[] x, double[] y) {
 		double d = 0;
-		double a = 0, a1 = 0;
-		double b = 0, b1 = 0;
+		double a = 1e-10, a1 = 0;
+		double b = 1e-10, b1 = 0;
 		for(int i=0; i< y.length; i++) {
 			a += x[i]*x[i];
 			a1 += x[i];

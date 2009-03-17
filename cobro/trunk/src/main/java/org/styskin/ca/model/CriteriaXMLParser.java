@@ -10,11 +10,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -37,8 +35,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 public class CriteriaXMLParser implements Constants {
 	
 	private static final Logger logger = Logger.getLogger(CriteriaXMLParser.class);
-	
-	public static NumberFormat FORMAT = NumberFormat.getNumberInstance(Locale.US);
 	
 	public static double getDouble(String s) throws Exception {
 		return FORMAT.parse(s).doubleValue();
@@ -117,13 +113,12 @@ public class CriteriaXMLParser implements Constants {
 			addToMap(positionMap, criteria.getName(), -1);
 		}
 		
+		
 		public void init(String head) {
 			StringTokenizer st = new StringTokenizer(head);
 			while(st.hasMoreTokens()) {
 				String key = st.nextToken(); 
-				if(key.startsWith("\"")) {
-					key = key.substring(1, key.length()-1);
-				}
+				key = prepareToken(key);
 				if(positionMap.containsKey(key)) {
 					invMap.add(positionMap.get(key));						
 				} else {
@@ -132,6 +127,13 @@ public class CriteriaXMLParser implements Constants {
 					invMap.add(list);
 				}
 			}
+		}
+
+		private static String prepareToken(String key) {
+			if(key.startsWith("\"")) {
+				key = key.substring(1, key.length()-1);
+			}
+			return key;
 		}
 		
 		public Pair<Double, double[]> parseLine(String line) throws Exception {
@@ -142,9 +144,7 @@ public class CriteriaXMLParser implements Constants {
 			int i = 0;
 			while(st.hasMoreTokens()) {
 				String v = st.nextToken();
-				if(v.startsWith("\"")) {
-					v = v.substring(1, v.length()-1);
-				}
+				v = prepareToken(v);
 				if(positionMap.containsKey(v)) {
 					// Binary property
 					for(Integer index : positionMap.get(v))
@@ -214,9 +214,9 @@ public class CriteriaXMLParser implements Constants {
 			
 			OptimizeInputFormat optimizeInputFormat = new OptimizeInputFormat(cr);
 			
-			List<Double>[] inputP = new List[2];				
-			List<String>[] inputS = new List[2];				
-			List<double[]>[] input = new List[2];
+			List<Double>[] inputP = new List[TWO];				
+			List<String>[] inputS = new List[TWO];				
+			List<double[]>[] input = new List[TWO];
 			for(int i=0; i < TWO; i++) {
 				o[i] = new Optimize();
 				input[i] = new ArrayList<double[]>();

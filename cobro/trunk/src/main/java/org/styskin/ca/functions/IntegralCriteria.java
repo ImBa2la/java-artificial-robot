@@ -67,10 +67,22 @@ public class IntegralCriteria extends ComplexCriteria {
 		
 		@Override
 		public ComplexOperator clone() throws CloneNotSupportedException {
-			IntegralOperator n = (IntegralOperator) super.clone();
-			n.op = op;
-			return n;
+			try {
+				return new IntegralOperator(op.clone());
+			} catch (Exception e) {
+				throw new CloneNotSupportedException();
+			}
 		}
+
+		@Override
+		public ComplexOperator cloneEquals() throws Exception {
+			try {
+				return new IntegralOperator(op.cloneEquals());
+			} catch (Exception e) {
+				throw new CloneNotSupportedException();
+			}
+		}	
+		
 		
 		public List<Double> getWeights() {
 			return op.getWeights();

@@ -10,6 +10,7 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.styskin.ca.math.SimpleMathUtils;
+import org.styskin.ca.model.CriteriaXMLParser;
 import org.styskin.ca.model.Pair;
 import org.styskin.ca.model.CriteriaXMLParser.Optimize;
 
@@ -216,6 +217,7 @@ public class MultiOptimizer implements Optimizer {
 		}		
 		logger.info("Strong value: " + best.strongValue());
 		logger.info("Strong trace: " + best.getTrace());
+		logger.info("Strong trace: " + best.getIndex());
 		CacheCriteria cc = new CacheCriteria(best.getCriteria(), op);
 		logger.debug(cc.check());
 		

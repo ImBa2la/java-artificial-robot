@@ -7,7 +7,7 @@
 			<criteria name="c2" type="single" class="simple" weight="0.3" lFMin="0.0" lFMax="1.0" />
 			<criteria name="c3" type="single" class="simple" weight="1" lFMin="0.0" lFMax="1.0" />
 		</criteria>
-		<criteria name="tc " type="single" class="simple" weight="0.5" lFMin="0.0" lFMax="1.0" />
+		<criteria name="tc" type="single" class="simple" weight="0.5" lFMin="0.0" lFMax="1.0" />
 	</criteria>
 	<criteria name="domain_level" type="single" class="inv" weight="0.2" lLSatiation="0.95" lRSatiation="0.05" lFMin="1.0" lFMax="5.0" />
 	<criteria name="own_mp3 " type="single" class="simple" weight="0.2" lFMin="0.0" lFMax="1.0" />
@@ -19,7 +19,7 @@
 				<criteria name="total_mp3" type="single" class="beta_d" weight="0.53" lP="1.0" lQ="0.0" lLSatiation="0.05" lRSatiation="0.95" lFMin="0.0" lFMax="100.0" />
 				<criteria name="good_mp3" type="single" class="linear" weight="0.47" lLSatiation="0.05" lRSatiation="0.95" lFMin="0.0" lFMax="100.0" />
 			</criteria>
-			<criteria name="page" type="complex" class="pow_I" weight="0.902" lambda="0.8"  >
+			<criteria name="page" type="complex" class="pow_h" weight="0.902" lambda="0.8"  >
 				<criteria name="av_mp3" type="single" class="beta_d" weight="0.346" lP="2.0" lQ="20.0" lLSatiation="0.05" lRSatiation="0.05" lFMin="0.0" lFMax="100.0" />
 				<criteria name="av_good" type="single" class="linear" weight="0.049" lLSatiation="0.05" lRSatiation="0.95" lFMin="0.0" lFMax="100.0" />
 				<criteria name="av_author" type="single" class="inv" weight="0.001" lLSatiation="0.05" lRSatiation="0.95" lFMin="1.0" lFMax="5.0" />

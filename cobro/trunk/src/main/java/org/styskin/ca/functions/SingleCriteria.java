@@ -4,7 +4,7 @@
 
 package org.styskin.ca.functions;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.styskin.ca.functions.single.SingleOperator;
@@ -13,7 +13,7 @@ import org.styskin.ca.functions.single.SingleOperator;
 public class SingleCriteria extends Criteria {
 
 	private SingleOperator operator;
-	private static List<Criteria> emptyList = new ArrayList<Criteria>();
+	private static List<Criteria> emptyList = Collections.emptyList();
 
 	public SingleCriteria(SingleOperator operator) {
 		this.operator = operator;

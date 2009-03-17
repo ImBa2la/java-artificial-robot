@@ -1,35 +1,29 @@
 package org.styskin.greed;
 
-import static org.styskin.greed.MatrixUtils.correlation;
-import static org.styskin.greed.MatrixUtils.tr;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.styskin.greed.Formula.Monom;
+import org.styskin.ca.model.Pair;
 import org.styskin.util.LoadInput;
+import static org.styskin.greed.MatrixUtils.*;
 
 public class Educate {
 	
+	public void optimize(String path) throws Exception {
+		Pair<LoadInput, LoadInput> inputs = LoadInput.loadInput(path, 0.75);
+		LoadInput input = inputs.getFirst();
+		LoadInput check = inputs.getSecond();
+		
+		Formula fml = new Formula();
+//		while(fml.iteration(input.B, input.M));
+		for(int i=0; i < 6; i++) {
+			fml.iteration(input.B, input.M);
+			System.out.printf("LS:\t%f\n", leastSqares(fml.result(input.M), input.B));
+			System.out.printf("Check LS:\t%f\n", leastSqares(fml.result(check.M), check.B));
+			System.out.printf("%s\n", fml);
+		}
+	}
+	
 	
 	public static void main(String[] args) throws Exception {
-		LoadInput input = LoadInput.loadInput("cfg/auto/cars.txt");
-		double[][] t = tr(input.M);
-		Formula fml = new Formula();		
-		for(int i=0; i < input.size; i++) {			
-			System.out.printf("%s:\t%f\n", input.getName(i), correlation(t[i], input.B));
-		}
-		List<Monom> monoms = new ArrayList<Monom>();
-		monoms.add(new Monom(2));
-		monoms.add(new Monom(1));
-		monoms.add(new Monom(0));
-		monoms.add(new Monom(0, 1));
-		monoms.add(new Monom(0, 2));
-		monoms.add(new Monom(1, 2));
-		monoms.add(new Monom(0, 1, 2));
-		fml.addMonoms(monoms, input.B, input.M);
-		System.out.printf("Optimisation: %s\t%f\n", fml, correlation(fml.result(input.M), input.B));
-		
+		(new Educate()).optimize("cfg/music/input.txt");
 	}
 
 }

@@ -85,7 +85,7 @@ public class ComplexCriteria extends Criteria {
 			childrenClone.add(child.clone());
 		}
 		criteria.setChildren(childrenClone);
-		criteria.setOperator(operator.clone());
+		criteria.setOperator(getOperator().clone());
 		return criteria;
 	}
 	
@@ -97,7 +97,7 @@ public class ComplexCriteria extends Criteria {
 			childrenClone.add(child.cloneEquals());
 		}
 		criteria.setChildren(childrenClone);
-		criteria.setOperator(operator.cloneEquals());
+		criteria.setOperator(getOperator().cloneEquals());
 		return criteria;
 	}	
 	

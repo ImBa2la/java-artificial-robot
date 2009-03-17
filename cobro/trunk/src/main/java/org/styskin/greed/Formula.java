@@ -1,10 +1,14 @@
 package org.styskin.greed;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import org.styskin.util.PairDI;
 
 import Jama.Matrix;
 import static org.styskin.greed.MatrixUtils.*;
+import static java.lang.Math.*;
 
 
 public class Formula {
@@ -35,19 +39,19 @@ public class Formula {
 			return m;
 		}
 		
-		List<Monom> addFactor(int index) {
-			List<Monom> list = new ArrayList<Monom>();
+		void addFactor(int index, List<Monom> out) {
 			{
 				Monom m = copy();
 				m.list.add(index);
-				list.add(m);
+				out.add(m);
 			}
-			for(int i=0; i < list.size(); i++) {
-				Monom m = copy();
-				m.list.set(i, index);
-				list.add(m);
+			if(list.size() > 1) {
+				for(int i=0; i < list.size(); i++) {
+					Monom m = copy();
+					m.list.set(i, index);
+					out.add(m);
+				}
 			}		
-			return list;
 		}
 		
 		@Override
@@ -69,11 +73,22 @@ public class Formula {
 		return res;
 	}
 	
-	public boolean addMonoms(List<Monom> list, double[] B, double[][] A) {
-		double[] Y = result(A);
-		mult(Y, -1);
-		add(Y, B);
-		int N = B.length;
+	public boolean addMonoms(List<Monom> newMonoms, double[] Y, double[][] A) {
+		List<PairDI> r = new ArrayList<PairDI>();
+		for(int i=0; i < newMonoms.size(); i++) {
+			Monom m = newMonoms.get(i);
+			double[] t = new double[A.length];
+			for(int j=0; j < A.length; j++)
+				t[j] = m.result(A[j]);
+			r.add(new PairDI(-correlation(t, Y), i));
+		}
+		Collections.sort(r);
+		List<Monom> list = new ArrayList<Monom>();
+		for(int i=0; i < min(4, r.size()); i++) {
+			list.add(newMonoms.get(r.get(i).second));
+		}		
+		//======
+		int N = Y.length;
 		double[][] X = new double[list.size()][N];
 		for(int i=0; i < list.size(); i++)
 			for(int j=0; j < N; j++)
@@ -87,6 +102,29 @@ public class Formula {
 			this.weight.add(x.get(i, 0));
 		}
 		return true; // true - if added
+	}
+	
+	public boolean iteration(double[] B, double[][] A) {
+		double[] Y = result(A);
+		mult(Y, -1);
+		add(Y, B);
+
+		double[][] t = tr(A);
+		List<PairDI> list = new ArrayList<PairDI>();		
+		for(int i=0; i < t.length; i++)
+			list.add(new PairDI(-correlation(t[i], Y), i));
+		Collections.sort(list);
+
+		List<Monom> newMonoms = new ArrayList<Monom>();
+		for(int i=0; i < 4; i++) {
+			newMonoms.add(new Monom(list.get(i).second));
+			for(Monom m : this.monoms) {
+				m.addFactor(list.get(i).second, newMonoms);
+			}
+		}
+		addMonoms(newMonoms, Y, A);
+//		System.out.printf("Optimisation: %s\t%f\n", this, correlation(result(A), B));		
+		return true;
 	}
 	
 	@Override

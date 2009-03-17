@@ -249,7 +249,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 			t = cache.check();
 			dt = Math.abs(t - tt);
 			trace.add(t);
-			logger.debug("Step = " + i + ", value = " + t + ", pfound = " + cache.checkCorrelation());
+			logger.debug("Step = " + i + ", value = " + t + ", correlation = " + cache.checkCorrelation());
 			Thread.yield();
 		}
 	}
