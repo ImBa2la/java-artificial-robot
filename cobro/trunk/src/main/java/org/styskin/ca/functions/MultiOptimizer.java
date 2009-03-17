@@ -47,7 +47,7 @@ public class MultiOptimizer implements Optimizer {
 		public void run() {
 			optimizer = new SingleOptimizer(root);
 			try {
-				optimizer.optimize(op);
+				root = optimizer.optimize(op);
 			} catch(Exception ex) {
 				logger.error("Cannot optimize", ex);
 			}
@@ -158,8 +158,8 @@ public class MultiOptimizer implements Optimizer {
 		root = criteria;		
 	}
 	
-	private static final int THREAD_COUNT = 15;
-	private static final long SLEEP_TIMEOUT = 7000l; // 10 sec
+	private static final int THREAD_COUNT = 3;
+	private static final long SLEEP_TIMEOUT = 3000l; // 10 sec
 	
 	public Criteria optimize(Optimize op) throws Exception {
 		LinkedList<Checker> pool = new LinkedList<Checker>();
@@ -167,11 +167,11 @@ public class MultiOptimizer implements Optimizer {
 		double value = 1E10;
 		try {
 			Criteria rootEq = root.cloneEquals();
-			pool.add(new Checker(root, op));
+			pool.add(new Checker(root.clone(), op));
 			pool.add(new Checker(rootEq, op));
 
 			Map<Integer, Checker> q = new TreeMap<Integer, Checker>();
-			int Q = 0;			
+			int Q = 0;
 			Thread.sleep(SLEEP_TIMEOUT);
 			while(pool.size() > 0) {
 				Iterator<Checker> it = pool.iterator();
@@ -194,7 +194,7 @@ public class MultiOptimizer implements Optimizer {
 						best = c;
 					}
 				}
-				logger.info(value + " n = " + best.getIndex() + " step=" + best.getTrace().size());
+				logger.info(best.strongValue() + " n = " + best.getIndex() + " step=" + best.getTrace().size());
 				if(Q ++ < THREAD_COUNT) {
 					Iterator<Map.Entry<Integer, Checker>> ite = q.entrySet().iterator();
 					Criteria c1 = ite.next().getValue().getCriteria();
@@ -214,8 +214,12 @@ public class MultiOptimizer implements Optimizer {
 		} catch (Exception ex) {
 			logger.error("What the fuck?", ex);
 		}		
-		logger.info(best.strongValue());
-		logger.info(best.getTrace());
+		logger.info("Strong value: " + best.strongValue());
+		logger.info("Strong trace: " + best.getTrace());
+		CacheCriteria cc = new CacheCriteria(best.getCriteria(), op);
+		logger.debug(cc.check());
+		
+		
 		return best.getCriteria();
 	}
 

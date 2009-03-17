@@ -22,8 +22,13 @@ public class Educate {
 		List<Monom> monoms = new ArrayList<Monom>();
 		monoms.add(new Monom(2));
 		monoms.add(new Monom(1));
+		monoms.add(new Monom(0));
+		monoms.add(new Monom(0, 1));
+		monoms.add(new Monom(0, 2));
+		monoms.add(new Monom(1, 2));
+		monoms.add(new Monom(0, 1, 2));
 		fml.addMonoms(monoms, input.B, input.M);
-		System.out.printf("Optimisation:\t%f\n", correlation(fml.result(input.M), input.B));
+		System.out.printf("Optimisation: %s\t%f\n", fml, correlation(fml.result(input.M), input.B));
 		
 	}
 

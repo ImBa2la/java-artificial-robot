@@ -22,6 +22,7 @@ public class CacheCriteria {
 	private double[][] R;
 	private Map<Criteria, Boolean> cached;
 	private Map<Criteria, Integer> index;
+	private Map<Criteria, Criteria> parentRelation;
 	
 	private double[] base;
 	protected double[][] F;
@@ -36,6 +37,7 @@ public class CacheCriteria {
 		// XXX: use IdentityHashMap for storing intermidiate results
 		cached = new IdentityHashMap<Criteria, Boolean>();
 		index = new IdentityHashMap<Criteria, Integer>();
+		parentRelation = new IdentityHashMap<Criteria, Criteria>();
 		int size = buildIndex(root, 0);
 		R = new double[size + 1][F.length];
 		buildSingle(root, 0);
@@ -64,7 +66,8 @@ public class CacheCriteria {
 			}
 			req[i] = qi;
 		}*/		
-		checker = new CheckLeastSquare(base);
+//		checker = new CheckLeastSquare(base);
+		checker = new CheckSampleCorrelation(base);
 		absChecker = new CheckAbs(base);
 		correlationChecker = new CheckSampleCorrelation(base);
 //		correlationChecker = new CheckPfound(base, req);
@@ -73,28 +76,25 @@ public class CacheCriteria {
 	private int buildIndex(Criteria c, int p) {
 		int size = p;
 		index.put(c, size);
-		cached.put(c, false);
+		cached.put(c, Boolean.FALSE);
 		if(c instanceof ComplexCriteria) {
 			for(Criteria child : c.getChildren()) {
 				size = buildIndex(child, size + 1);
+				parentRelation.put(child, c);
 			}
 		}
 		return size;
 	}
 
-	private int buildSingle(Criteria c, int p) {
+	private int buildSingle(Criteria c, int p) throws Exception {
 		if(c instanceof ComplexCriteria) {
 			for(Criteria child : c.getChildren()) {
 				p = buildSingle(child, p);
 			}
 		} else {
 			int me = index.get(c);
-			try {
-				for(int i = 0; i < F.length; ++i) {
-					R[me][i] = c.getValue(F[i], p, p);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			for(int i = 0; i < F.length; ++i) {
+				R[me][i] = c.getValue(F[i], p, p);
 			}
 			++ p;
 		}
@@ -104,29 +104,22 @@ public class CacheCriteria {
 
 	public void clearCache() {
 		for(Criteria c : cached.keySet()) {
-			cached.put(c, false);
+			cached.put(c, Boolean.FALSE);
 		}
 	}
 
 	public void turnOffCache(Criteria criteria) {
-		cached.put(criteria, Boolean.FALSE);
-		renewCache(root);
-	}
-
-	private boolean renewCache(Criteria criteria) {
-		boolean on = cached.get(criteria);
-		for(Criteria child : criteria.getChildren()) {
-			on &= renewCache(child);
+		Criteria parent = criteria;
+		while(parent != null) {
+			cached.put(parent, Boolean.FALSE);
+			parent = parentRelation.get(parent);
 		}
-		cached.put(criteria, on);
-		return on;
 	}
 
 	public void refreshCache() throws Exception {
 		calcValue(root);
-		for(Map.Entry<Criteria, Boolean> en : cached.entrySet()) {
-			en.setValue(Boolean.TRUE);
-		}
+		for(Map.Entry<Criteria, Boolean> en : cached.entrySet())
+			en.setValue(Boolean.TRUE);		
 	}
 
 //	private void setBase(Criteria c) throws Exception {
@@ -160,20 +153,8 @@ public class CacheCriteria {
 					}
 					R[me][i] = cc.getOperator().getValue(P);
 				}
-			} else {
-				cached.put(c, Boolean.TRUE);
 			}
 		}
-	}
-
-	public String arrayOut(double[] m) {
-		StringBuffer sb = new StringBuffer();
-		sb.append("{");
-		for(double x : m) {
-			sb.append(x).append(';');
-		}
-		sb.append('}');
-		return sb.toString();
 	}
 
 	public void checkOut() throws Exception {
@@ -222,26 +203,4 @@ public class CacheCriteria {
 		return R[index.get(criteria)];
 	}
 
-	public double[][] getInput(ComplexCriteria cr) throws Exception {
-		int size = cr.getSize();
-		int[] ind = new int[size];
-		double[][] values = new double[F.length][size];
-		int j = 0;
-		for(Criteria child : cr.getChildren()) {
-			ind[j++] = index.get(child);
-			calcValue(child);
-		}
-		int me = index.get(cr);
-		for(int i = 0; i < F.length; i++) {
-			for(int l = 0; l < values[i].length; l++) {
-				values[i][l] = R[ind[l]][i];
-			}
-			try {
-				R[me][i] = cr.getOperator().getValue(values[i]);
-			} catch (Exception ex) {
-				logger.error(ex);
-			}
-		}
-		return values;
-	}
 }

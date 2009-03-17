@@ -44,26 +44,6 @@ class CheckAbs implements Checker {
 	}
 }
 
-class CheckCorrelation implements Checker {
-	private double[] y;
-	private double b = 0;
-	
-	public CheckCorrelation(double[] y) {
-		this.y = y;
-		for(int i=0; i< y.length; i++)
-			b += y[i]*y[i];
-	}
-
-	public double check(double[] x) {
-		double d = 0, a = 0;
-		for(int i=0; i< y.length; i++) {
-			d += x[i] * y[i];
-			a += x[i]*x[i];
-		}
-		return -Math.abs(d)/Math.sqrt(a*b);
-	}
-}
-
 class CheckSampleCorrelation implements Checker {
 	private double[] y;
 	private double b = 0, b1 = 0;

@@ -66,7 +66,7 @@ public abstract class ComplexOperator implements Operator, Cloneable {
 		
 	public ComplexOperator cloneEquals() throws Exception {
 		ComplexOperator op = getClass().newInstance();
-		op.weights = new ArrayList<Double>(weights.size());
+		op.weights = new ArrayList<Double>();
 		for(int i=0; i < weights.size(); i++) {
 			op.weights.add(1d);
 		}

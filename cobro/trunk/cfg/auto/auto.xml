@@ -1,72 +1,33 @@
 <?xml version="1.0" encoding="windows-1251"?>
 
-<criteria name="price" type="complex" class="pow_I" lambda="0.5" lA="5000000" lB="0">
-<!--  	<criteria name="mark" type="complex" class="binary" lambda="0.5" weight="0.5">
-		<criteria name="AUDI" type="single" weight="0.1"/>
-		<criteria name="BMW" type="single" weight="0.1"/>
-		<criteria name="CHEVROLET" type="single" weight="0.1"/>
-		<criteria name="CHRYSLER" type="single" weight="0.1"/>
-		<criteria name="DAEWOO" type="single" weight="0.1"/>
-		<criteria name="DODGE" type="single" weight="0.1"/>
-		<criteria name="FORD" type="single" weight="0.1"/>
-		<criteria name="GAZ" type="single" weight="0.1"/>
-		<criteria name="HONDA" type="single" weight="0.1"/>
-		<criteria name="HYUNDAI" type="single" weight="0.1"/>
-		<criteria name="KIA" type="single" weight="0.1"/>
-		<criteria name="LEXUS" type="single" weight="0.1"/>
-		<criteria name="MAZDA" type="single" weight="0.1"/>
-		<criteria name="MERCEDES" type="single" weight="0.1"/>
-		<criteria name="MITSUBISHI" type="single" weight="0.1"/>
-		<criteria name="NISSAN" type="single" weight="0.1"/>
-		<criteria name="OPEL" type="single" weight="0.1"/>
-		<criteria name="PEUGEOT" type="single" weight="0.1"/>
-		<criteria name="PORSCHE" type="single" weight="0.1"/>
-		<criteria name="RENAULT" type="single" weight="0.1"/>
-		<criteria name="SUBARU" type="single" weight="0.1"/>
-		<criteria name="TOYOTA" type="single" weight="0.1"/>
-		<criteria name="VAZ" type="single" weight="0.1"/>
-		<criteria name="VOLKSWAGEN" type="single" weight="0.1"/>
-		<criteria name="VOLVO" type="single" weight="0.1"/>
-	</criteria>	 -->
-<!-- 
-	<criteria name="origin" type="complex" class="binary" lambda="0.5" weight="0.5">
-		<criteria name="europe" type="single" weight="0.1"/>
-		<criteria name="usa" type="single" weight="0.1"/>
-		<criteria name="russia" type="single" weight="0.1"/>
-		<criteria name="korea" type="single" weight="0.1"/>
-		<criteria name="japan" type="single" weight="0.1"/>
-	</criteria>	 -->
-	<criteria name="properties" type="complex" class="pow_I" lambda="0.5" weight="0.5">
-		<criteria name="body_type" type="complex" class="binary" lambda="0.5" weight="0.5">
-			<criteria name="ALLROAD" type="single" weight="0.1"/>
-			<criteria name="COUPE" type="single" weight="0.1"/>
-			<criteria name="HATCHBACK" type="single" weight="0.1"/>
-			<criteria name="MINI_WEN" type="single" weight="0.1"/>
-			<criteria name="SEDAN" type="single" weight="0.1"/>
-			<criteria name="UNIVERSAL" type="single" weight="0.1"/>
-		</criteria>
-		<criteria name="engine_type" type="complex" class="binary" lambda="0.5" weight="0.5">
-			<criteria name="CARBURETOR_GASOLINE" type="single" weight="0.1"/>
-			<criteria name="DIESEL_SUPERCHARGING_GASOLINE" type="single" weight="0.1"/>
-			<criteria name="INJECTOR_GASOLINE" type="single" weight="0.1"/>
-			<criteria name="TURBO_SUPERCHARGING_GASOLINE" type="single" weight="0.1"/>
-		</criteria>
-		<criteria name="gear_type" type="complex" class="binary" lambda="0.5" weight="0.5">
-			<criteria name="ALL_WHEEL_DRIVE" type="single" weight="0.1"/>
-			<criteria name="FORWARD_CONTROL" type="single" weight="0.1"/>
-		</criteria>
-		<criteria name="transmission" type="complex" class="binary" lambda="0.5" weight="0.5">
-			<criteria name="AUTOMATIC" type="single" weight="0.1"/>
-			<criteria name="MECHANICAL" type="single" weight="0.1"/>
-		</criteria>
-		<criteria name="steering_wheel" type="complex" class="binary" lambda="0.5" weight="0.5">
-			<criteria name="LEFT" type="single" weight="0.1"/>
-			<criteria name="RIGHT" type="single" weight="0.1"/>
-		</criteria>
+<criteria name="price" type="complex" class="pow_h" lA="5000000" lB="0">
+	<criteria name="properties" type="complex" class="pow_h" weight="0.5">
 		<criteria name="displacement" type="single" weight="0.5"/>
 	</criteria> 
-	<criteria name="use" type="complex" class="pow_I" lambda="0.5" weight="0.5">
+	<criteria name="use" type="complex" class="pow_h" weight="0.5">
+		<criteria name="year" type="single" weight="0.5"/>
+ 	</criteria>				
+	<criteria name="use2" type="complex" class="pow_h" weight="0.5">
+		<criteria name="run" type="single" weight="0.5"/>
+ 	</criteria>
+ 	
+ 	<criteria name="12" type="complex" class="pow_h" weight="0.5">
+		<criteria name="displacement" type="single" weight="0.5"/>
+		<criteria name="year" type="single" weight="0.5"/>
+	</criteria> 
+ 	<criteria name="13" type="complex" class="pow_h" weight="0.5">
+		<criteria name="displacement" type="single" weight="0.5"/>
+		<criteria name="run" type="single" weight="0.5"/>
+	</criteria> 
+ 	<criteria name="23" type="complex" class="pow_h" weight="0.5">
 		<criteria name="year" type="single" weight="0.5"/>
 		<criteria name="run" type="single" weight="0.5"/>
- </criteria>				
+	</criteria> 
+
+ 	<criteria name="123" type="complex" class="pow_h" weight="0.5">
+		<criteria name="displacement" type="single" weight="0.5"/>
+		<criteria name="year" type="single" weight="0.5"/>
+		<criteria name="run" type="single" weight="0.5"/>
+	</criteria> 
+ 					
 </criteria>

@@ -275,7 +275,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 	// FIXME: aproximate with exponent ???
 	public double getApproximateValue() {
 		// trace, 10%		
-		return 0;
+		return Double.NEGATIVE_INFINITY;
 	}
 
 	public List<Double> getTrace() {

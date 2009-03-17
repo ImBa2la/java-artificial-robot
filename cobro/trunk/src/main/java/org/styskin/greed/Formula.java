@@ -17,8 +17,9 @@ public class Formula {
 
 		Monom() {}
 		
-		public Monom(int ind) {
-			this.list.add(ind);
+		public Monom(int... inds) {
+			for(int ind : inds)
+				this.list.add(ind);
 		}
 
 		public double result(double[] row) {
@@ -47,6 +48,15 @@ public class Formula {
 				list.add(m);
 			}		
 			return list;
+		}
+		
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			for(int i=0; i < list.size(); i++) {
+				sb.append("*").append("[").append(list.get(i)).append("]");
+			}
+			return sb.toString();
 		}
 	}
 	
@@ -77,6 +87,15 @@ public class Formula {
 			this.weight.add(x.get(i, 0));
 		}
 		return true; // true - if added
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i < weight.size(); i++) {
+			sb.append(weight.get(i)).append(monoms.get(i)).append("\n");
+		}
+		return sb.toString();
 	}
 
 }
