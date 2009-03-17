@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
@@ -20,9 +21,9 @@ public class CacheCriteria {
 	private Criteria root;
 
 	private double[][] R;
-	private Map<Criteria, Boolean> cached;
 	private Map<Criteria, Integer> index;
-	private Map<Criteria, Criteria> parentRelation;
+	private boolean[] cached;
+	private int[] parentRelation;
 	
 	private double[] base;
 	protected double[][] F;
@@ -35,10 +36,11 @@ public class CacheCriteria {
 		this.F = F;
 		root = criteria;
 		// XXX: use IdentityHashMap for storing intermidiate results
-		cached = new IdentityHashMap<Criteria, Boolean>();
-		index = new IdentityHashMap<Criteria, Integer>();
-		parentRelation = new IdentityHashMap<Criteria, Criteria>();
 		int size = buildIndex(root, 0);
+		index = new IdentityHashMap<Criteria, Integer>();
+		cached = new boolean[size + 1];
+		parentRelation = new int[size + 1];
+		parentRelation[0] = -1;
 		R = new double[size + 1][F.length];
 		buildSingle(root, 0);
 		clearCache();
@@ -76,11 +78,11 @@ public class CacheCriteria {
 	private int buildIndex(Criteria c, int p) {
 		int size = p;
 		index.put(c, size);
-		cached.put(c, Boolean.FALSE);
+		cached[p] = false; 
 		if(c instanceof ComplexCriteria) {
 			for(Criteria child : c.getChildren()) {
+				parentRelation[size + 1] = p;
 				size = buildIndex(child, size + 1);
-				parentRelation.put(child, c);
 			}
 		}
 		return size;
@@ -103,23 +105,20 @@ public class CacheCriteria {
 
 
 	public void clearCache() {
-		for(Criteria c : cached.keySet()) {
-			cached.put(c, Boolean.FALSE);
-		}
+		Arrays.fill(cached, false);
 	}
 
 	public void turnOffCache(Criteria criteria) {
-		Criteria parent = criteria;
-		while(parent != null) {
-			cached.put(parent, Boolean.FALSE);
-			parent = parentRelation.get(parent);
+		int parent = index.get(criteria);
+		while(parent >= 0) {
+			cached[parent] = false;
+			parent = parentRelation[parent];
 		}
 	}
 
 	public void refreshCache() throws Exception {
 		calcValue(root);
-		for(Map.Entry<Criteria, Boolean> en : cached.entrySet())
-			en.setValue(Boolean.TRUE);		
+		Arrays.fill(cached, true);
 	}
 
 //	private void setBase(Criteria c) throws Exception {
