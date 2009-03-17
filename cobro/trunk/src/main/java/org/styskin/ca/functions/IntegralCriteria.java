@@ -1,6 +1,7 @@
 package org.styskin.ca.functions;
 
-import java.util.List;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
+
 import java.util.Map;
 
 import org.styskin.ca.functions.complex.ComplexOperator;
@@ -84,7 +85,7 @@ public class IntegralCriteria extends ComplexCriteria {
 		}	
 		
 		
-		public List<Double> getWeights() {
+		public DoubleList getWeights() {
 			return op.getWeights();
 		}
 		
@@ -92,7 +93,7 @@ public class IntegralCriteria extends ComplexCriteria {
 			op.setWeight(index, w);
 		}
 		
-		public void setWeights(List<Double> weights) {
+		public void setWeights(DoubleList weights) {
 			op.setWeights(weights);
 		}
 		

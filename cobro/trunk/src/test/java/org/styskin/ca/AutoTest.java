@@ -18,25 +18,25 @@ public class AutoTest extends SpringContextTestCase {
 	
 	private static final Logger logger = Logger.getLogger(AutoTest.class);
 	
-	private String namespace = "results/auto2/";	
+	private String namespace = "results/auto3/";	
 	private Criteria auto;
 	
 	public void testAuto() throws Exception {
 		prepareDirs();		
 		logger.info("Optimization started");		
 //		Optimize op = Optimize.getInput(autoDataSource, "car_vc" + " limit 660, 165", auto);
-		Pair<Optimize, Optimize> opm = Optimize.getInput("cfg/auto/cars.txt", auto, 1);
+		Pair<Optimize, Optimize> opm = Optimize.getInput("cfg/auto/cars.txt", auto, 0.75);
 		Optimize op = opm.getFirst();
 		CacheCriteria c = new CacheCriteria(auto, op);
-//		Optimizer optimizer = new MultiOptimizer(auto);
-		Optimizer optimizer = new SingleOptimizer(auto);
+		Optimizer optimizer = new MultiOptimizer(auto);
+//		Optimizer optimizer = new SingleOptimizer(auto);
 		auto = optimizer.optimize(op);
 		CriteriaXMLParser.saveXML(auto, namespace + "auto.out.xml");
 		c = new CacheCriteria(auto, op);
-//		CacheCriteria cross = new CacheCriteria(auto, opm.getSecond());
+		CacheCriteria cross = new CacheCriteria(auto, opm.getSecond());
 		logger.info(c.check());
 		logger.info(c.checkCorrelation());
-//		logger.info(cross.check());
+		logger.info(cross.check());
 		logger.info("Optimization finished");
 	}
 

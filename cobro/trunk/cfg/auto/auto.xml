@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="windows-1251"?>
 
-<criteria name="price" type="complex" class="pow_h" lA="5000000" lB="0">
-	<criteria name="properties" type="complex" class="pow_h" weight="0.5">
+<criteria name="price" type="complex" class="pow_I" lA="5000000" lB="0">
+	<criteria name="properties" type="complex" class="pow_I" weight="0.5">
 		<criteria name="displacement" type="single" weight="0.5"/>
 	</criteria> 
-	<criteria name="use" type="complex" class="pow_h" weight="0.5">
+	<criteria name="use" type="complex" class="pow_I" weight="0.5">
 		<criteria name="year" type="single" weight="0.5"/>
  	</criteria>				
-	<criteria name="use2" type="complex" class="pow_h" weight="0.5">
+	<criteria name="use2" type="complex" class="pow_I" weight="0.5">
 		<criteria name="run" type="single" weight="0.5"/>
  	</criteria>
  	
- 	<criteria name="12" type="complex" class="pow_h" weight="0.5">
+ 	<criteria name="12" type="complex" class="pow_I" weight="0.5">
 		<criteria name="displacement" type="single" weight="0.5"/>
 		<criteria name="year" type="single" weight="0.5"/>
 	</criteria> 
- 	<criteria name="13" type="complex" class="pow_h" weight="0.5">
+ 	<criteria name="13" type="complex" class="pow_I" weight="0.5">
 		<criteria name="displacement" type="single" weight="0.5"/>
 		<criteria name="run" type="single" weight="0.5"/>
 	</criteria> 
- 	<criteria name="23" type="complex" class="pow_h" weight="0.5">
+ 	<criteria name="23" type="complex" class="pow_I" weight="0.5">
 		<criteria name="year" type="single" weight="0.5"/>
 		<criteria name="run" type="single" weight="0.5"/>
 	</criteria> 
 
- 	<criteria name="123" type="complex" class="pow_h" weight="0.5">
+ 	<criteria name="123" type="complex" class="pow_I" weight="0.5">
 		<criteria name="displacement" type="single" weight="0.5"/>
 		<criteria name="year" type="single" weight="0.5"/>
 		<criteria name="run" type="single" weight="0.5"/>

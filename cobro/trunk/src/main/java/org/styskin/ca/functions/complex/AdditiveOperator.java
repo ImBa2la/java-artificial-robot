@@ -3,7 +3,8 @@
  */
 package org.styskin.ca.functions.complex;
 
-import java.util.List;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
+
 import java.util.Map;
 
 import org.styskin.ca.model.Slice;
@@ -15,7 +16,7 @@ public class AdditiveOperator extends ComplexOperator {
 		super();
 	}	
 
-	public AdditiveOperator(List<Double> children) throws Exception {
+	public AdditiveOperator(DoubleList children) throws Exception {
 		super(children);
 	}
 
@@ -30,7 +31,7 @@ public class AdditiveOperator extends ComplexOperator {
 
 		double result = 0;
 		for(int i = 0; i < weights.size(); i++) {
-			result += weights.get(i) * X[i];
+			result += weights.getDouble(i) * X[i];
 		}
 		return result;
 	}

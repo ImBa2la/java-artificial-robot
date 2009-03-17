@@ -3,6 +3,9 @@
  */
 package org.styskin.ca.functions;
 
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -184,7 +187,7 @@ public class SingleOptimizer implements Constants, Optimizer {
 		 	if(operator instanceof ComplexHOperator) {
 		 		try {
 		 			op = operator.clone();
-		 			List<Double> w = new ArrayList<Double>();
+		 			DoubleList w = new DoubleArrayList();
 		 			w.addAll(src.getWeights());
 		 			op.setWeights(w);
 		 			for(int i=0; i < src.getParameters().size(); i++) {

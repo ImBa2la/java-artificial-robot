@@ -3,6 +3,9 @@
  */
 package org.styskin.ca.functions.complex;
 
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +23,14 @@ public abstract class ComplexOperator implements Operator, Cloneable {
 		complexOperators.add(PowerIOperator.class);
 	}
 
-	List<Double> weights;
+	DoubleList weights;
 
 	public void normalize() {
 		double sum = 0;
-		for(double x : weights) {
-			sum += x > 0? x : 0;
-		}
-		for(int i = 0; i < weights.size(); i++) {
-			weights.set(i, weights.get(i) > 0? weights.get(i)/sum: 0);
-		}
+		for(int i=0; i < weights.size(); i++)
+			sum += weights.getDouble(i) > 0? weights.getDouble(i) : 0d;
+		for(int i = 0; i < weights.size(); i++)
+			weights.set(i, weights.getDouble(i) > 0? weights.getDouble(i)/sum: 0d);
 	}
 
 	public void refresh() {
@@ -49,10 +50,10 @@ public abstract class ComplexOperator implements Operator, Cloneable {
 	}
 	
 	public ComplexOperator() throws Exception {
-		weights = new ArrayList<Double>();
+		weights = new DoubleArrayList();
 	}
 	
-	public ComplexOperator(List<Double> weights) throws Exception {
+	public ComplexOperator(DoubleList weights) throws Exception {
 		this.weights = weights;
 		normalize();
 	}
@@ -60,13 +61,13 @@ public abstract class ComplexOperator implements Operator, Cloneable {
 	@Override
 	public ComplexOperator clone() throws CloneNotSupportedException {
 		ComplexOperator op = (ComplexOperator) super.clone();
-		op.weights = new ArrayList<Double>(weights);
+		op.weights = new DoubleArrayList(weights);
 		return op;
 	}
 		
 	public ComplexOperator cloneEquals() throws Exception {
 		ComplexOperator op = getClass().newInstance();
-		op.weights = new ArrayList<Double>();
+		op.weights = new DoubleArrayList();
 		for(int i=0; i < weights.size(); i++) {
 			op.weights.add(1d);
 		}
@@ -74,7 +75,7 @@ public abstract class ComplexOperator implements Operator, Cloneable {
 		return op;
 	}	
 
-	public List<Double> getWeights() {
+	public DoubleList getWeights() {
 		return weights;
 	}
 	
@@ -82,7 +83,7 @@ public abstract class ComplexOperator implements Operator, Cloneable {
 		weights.set(index, w > EPS ? w: EPS);
 	}
 	
-	public void setWeights(List<Double> weights) {
+	public void setWeights(DoubleList weights) {
 		this.weights = weights;
 		normalize();
 	}

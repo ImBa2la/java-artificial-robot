@@ -3,9 +3,9 @@
  */
 package org.styskin.ca.functions.complex;
 
-import java.util.List;
-import static java.lang.Math.pow;
 import static java.lang.Math.log;
+import static java.lang.Math.pow;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 public class PowerHOperator extends ComplexHOperator {	
 	
@@ -15,7 +15,7 @@ public class PowerHOperator extends ComplexHOperator {
 		super();
 	}
 	
-	public PowerHOperator(List<Double> weights) throws Exception{
+	public PowerHOperator(DoubleList weights) throws Exception{
 		super(weights);
 	}	
 	
@@ -38,7 +38,7 @@ public class PowerHOperator extends ComplexHOperator {
 		double y = 0;
 		double t = 1/T;
 		for(int i=0; i < weights.size(); i++) {
-			y += weights.get(i)*pow(X[i], t);
+			y += weights.getDouble(i)*pow(X[i], t);
 		}		
 		return pow(y, P);
 	}

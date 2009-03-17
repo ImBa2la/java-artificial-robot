@@ -5,8 +5,7 @@ package org.styskin.ca.functions.complex;
 
 import static java.lang.Math.log;
 import static java.lang.Math.pow;
-
-import java.util.List;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 public class PowerIOperator extends ComplexH1Operator {
 	
@@ -16,7 +15,7 @@ public class PowerIOperator extends ComplexH1Operator {
 		super();
 	}
 
-	public PowerIOperator(List<Double> weights) throws Exception{
+	public PowerIOperator(DoubleList weights) throws Exception{
 		super(weights);
 	}	
 	
@@ -33,13 +32,14 @@ public class PowerIOperator extends ComplexH1Operator {
 	@Override
 	public double getPhi(double x) {
 		return x;
-	}	
+	}
 	
 	public double getValue(double[] X) throws Exception {
 		double y = 0;
 		for(int i=0; i < weights.size(); i++) {
-			y += weights.get(i)*X[i];
+			y += weights.getDouble(i)*X[i];
 		}
+		// About 50% of time
 		return pow(y, P);
 	}
 

@@ -3,7 +3,8 @@
  */
 package org.styskin.ca.functions.complex;
 
-import java.util.List;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
+
 import java.util.Map;
 
 import org.styskin.ca.model.Slice;
@@ -16,7 +17,7 @@ public abstract class ComplexH1Operator extends ComplexOperator {
 		super();
 	}
 	
-	public ComplexH1Operator(List<Double> weight) throws Exception {
+	public ComplexH1Operator(DoubleList weight) throws Exception {
 		super(weight);
 	}
 	

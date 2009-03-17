@@ -29,8 +29,7 @@ public class SingleCriteria extends Criteria {
 		if (start != end || start >= X.length) {
 			throw new Exception("Incorrect");
 		}
-		double[] Y = {X[start]};
-		return operator.getValue(Y);
+		return operator.getValue(X[start]);
 	}
 
 	@Override

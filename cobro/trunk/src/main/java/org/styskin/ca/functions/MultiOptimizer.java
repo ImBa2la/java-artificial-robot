@@ -49,6 +49,8 @@ public class MultiOptimizer implements Optimizer {
 			optimizer = new SingleOptimizer(root);
 			try {
 				root = optimizer.optimize(op);
+				
+				CriteriaXMLParser.saveXML(root, "auto" + index + ".xml");
 			} catch(Exception ex) {
 				logger.error("Cannot optimize", ex);
 			}
@@ -159,8 +161,8 @@ public class MultiOptimizer implements Optimizer {
 		root = criteria;		
 	}
 	
-	private static final int THREAD_COUNT = 3;
-	private static final long SLEEP_TIMEOUT = 3000l; // 10 sec
+	private static final int THREAD_COUNT = 10;
+	private static final long SLEEP_TIMEOUT = 1000l; // 10 sec
 	
 	public Criteria optimize(Optimize op) throws Exception {
 		LinkedList<Checker> pool = new LinkedList<Checker>();

@@ -73,7 +73,7 @@ public class Formula {
 		return res;
 	}
 	
-	public boolean addMonoms(List<Monom> newMonoms, double[] Y, double[][] A) {
+	public boolean addMonoms(List<Monom> newMonoms, double[] Y, double[] B, double[][] A) {
 		List<PairDI> r = new ArrayList<PairDI>();
 		for(int i=0; i < newMonoms.size(); i++) {
 			Monom m = newMonoms.get(i);
@@ -83,23 +83,43 @@ public class Formula {
 			r.add(new PairDI(-correlation(t, Y), i));
 		}
 		Collections.sort(r);
-		List<Monom> list = new ArrayList<Monom>();
-		for(int i=0; i < min(4, r.size()); i++) {
-			list.add(newMonoms.get(r.get(i).second));
-		}		
 		//======
+		
 		int N = Y.length;
-		double[][] X = new double[list.size()][N];
-		for(int i=0; i < list.size(); i++)
-			for(int j=0; j < N; j++)
-				X[i][j] = list.get(i).result(A[j]);
-		// Regression for X -> Y
-		Matrix a = new Matrix(X); 
-		Matrix b = new Matrix(new double[][] {Y});
-		Matrix x = a.transpose().solve(b.transpose());
-		for(int i=0; i < list.size(); i++) {
-			this.monoms.add(list.get(i));
-			this.weight.add(x.get(i, 0));
+		if(true) {
+			for(int i=0; i < min(3, r.size()); i++) {
+				monoms.add(newMonoms.get(r.get(i).second));
+			}		
+			double[][] X = new double[monoms.size()][N];
+			for(int i=0; i < monoms.size(); i++)
+				for(int j=0; j < N; j++)
+					X[i][j] = monoms.get(i).result(A[j]);
+			// Regression for X -> Y
+			Matrix a = new Matrix(X); 
+			Matrix b = new Matrix(new double[][] {B});
+			Matrix x = a.transpose().solve(b.transpose());
+			weight.clear();
+			for(int i=0; i < monoms.size(); i++) {
+				weight.add(x.get(i, 0));
+			}
+		} else {
+			List<Monom> list = new ArrayList<Monom>();
+			for(int i=0; i < min(3, r.size()); i++) {
+				list.add(newMonoms.get(r.get(i).second));
+			}	
+			
+			double[][] X = new double[list.size()][N];
+			for(int i=0; i < list.size(); i++)
+				for(int j=0; j < N; j++)
+					X[i][j] = list.get(i).result(A[j]);
+			// Regression for X -> Y
+			Matrix a = new Matrix(X); 
+			Matrix b = new Matrix(new double[][] {B});
+			Matrix x = a.transpose().solve(b.transpose());
+			for(int i=0; i < list.size(); i++) {
+				monoms.add(list.get(i));
+				weight.add(x.get(i, 0));
+			}
 		}
 		return true; // true - if added
 	}
@@ -116,13 +136,13 @@ public class Formula {
 		Collections.sort(list);
 
 		List<Monom> newMonoms = new ArrayList<Monom>();
-		for(int i=0; i < 4; i++) {
+		for(int i=0; i < min(4, list.size()); i++) {
 			newMonoms.add(new Monom(list.get(i).second));
 			for(Monom m : this.monoms) {
 				m.addFactor(list.get(i).second, newMonoms);
 			}
 		}
-		addMonoms(newMonoms, Y, A);
+		addMonoms(newMonoms, Y, B, A);
 //		System.out.printf("Optimisation: %s\t%f\n", this, correlation(result(A), B));		
 		return true;
 	}

@@ -23,7 +23,7 @@ public class Educate {
 	
 	
 	public static void main(String[] args) throws Exception {
-		(new Educate()).optimize("cfg/music/input.txt");
+		(new Educate()).optimize("cfg/auto/cars.txt");
 	}
 
 }

@@ -36,11 +36,18 @@ public class MusicTest extends TestCase {
 		Pair<Optimize, Optimize> ops = Optimize.getInput("cfg/music/html.base", music, 0.85);
 		Optimize.saveInput("input.txt", music, ops.getFirst().getF(), ops.getFirst().getBase());
 		
-		Optimizer optimizer = new MultiOptimizer(music);
-//		Optimizer optimizer = new SingleOptimizer(music);
+		for(int i=0; i < 20; i++) {
+			Optimizer o = new SingleOptimizer(music.clone());
+			o.optimize(ops.getFirst());
+			System.out.println();
+		}
+		
+//		Optimizer optimizer = new MultiOptimizer(music);
+		Optimizer optimizer = new SingleOptimizer(music);
 		Criteria musicRes = optimizer.optimize(ops.getFirst());
 		CriteriaXMLParser.saveXML(musicRes, "music.res.xml");
 		
+
 //		CacheCriteria musicControl = new CacheCriteria(musicRes, control.getBase(), control.getF());
 		CacheCriteria musicValidation = new CacheCriteria(musicRes, ops.getFirst());
 		CacheCriteria musicCrossValidation = new CacheCriteria(musicRes, ops.getSecond());

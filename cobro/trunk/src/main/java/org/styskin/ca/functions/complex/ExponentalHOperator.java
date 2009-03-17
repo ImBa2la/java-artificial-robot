@@ -10,8 +10,7 @@ import static org.styskin.ca.math.SimpleMathUtils.doubleEquals;
 import static org.styskin.ca.math.SimpleMathUtils.doubleLess;
 import static org.styskin.ca.math.SimpleMathUtils.doubleMore;
 import static org.styskin.ca.math.SimpleMathUtils.findMinimum;
-
-import java.util.List;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 import org.styskin.ca.math.Function;
 
@@ -23,7 +22,7 @@ public class ExponentalHOperator extends ComplexHOperator {
 		super();
 	}
 	
-	public ExponentalHOperator(List<Double> weights) throws Exception{
+	public ExponentalHOperator(DoubleList weights) throws Exception{
 		super(weights);
 	}
 	
@@ -69,35 +68,38 @@ public class ExponentalHOperator extends ComplexHOperator {
 		assert(X.length != weights.size());			
 		
 		if(doubleEquals(lPhi, 0.5) && doubleEquals(lKsi, 0.5)) {
-			return (new AdditiveOperator(weights)).getValue(X);															
+			double y = 0;		
+			for(int i = 0; i < weights.size(); i++)
+				y += weights.getDouble(i) * X[i];
+			return y;
 		} else if (doubleEquals(lPhi, 0.5) && doubleLess(lKsi, 0.5)) {
 			double y = 0;
 			for(int i=0; i < weights.size(); i++) {
-				y += weights.get(i)*X[i];				
+				y += weights.getDouble(i)*X[i];				
 			}
 			return (exp((xMax*A)*y)-1)/xMax; 
 		} else if (doubleEquals(lPhi, 0.5) && doubleMore(lKsi, 0.5)) {
 			double y = 0;
 			for(int i=0; i < weights.size(); i++) {
-				y += weights.get(i)*X[i];				
+				y += weights.getDouble(i)*X[i];				
 			}
 			return (1-exp((-xMax*A)*y))/xMax;
 		} else if (doubleEquals(lKsi, 0.5) && doubleMore(lPhi, 0.5)) {
             double y = 0;
             for(int i=0; i < weights.size(); i++) {
-            	y += weights.get(i) * log(1 - C*X[i]/B);
+            	y += weights.getDouble(i) * log(1 - C*X[i]/B);
             }
             return -y/C;			
 		} else if (doubleEquals(lKsi, 0.5) && doubleLess(lPhi, 0.5)) {
 			double y = 0;
 			for(int i=0; i < weights.size(); i++) {
-                y += weights.get(i)*log(C*X[i]/B+1);
+                y += weights.getDouble(i)*log(C*X[i]/B+1);
 			}
 			return y/C;
 		} else if (doubleLess(lPhi, 0.5) && doubleLess(lKsi, 0.5)) {			
             double y = 1;
             for(int i=0; i < weights.size(); i++) {
-                y = y * pow(1+C*X[i]/B, A*weights.get(i));         
+                y = y * pow(1+C*X[i]/B, A*weights.getDouble(i));         
             }
             y -= 1;
             y /= C;
@@ -105,7 +107,7 @@ public class ExponentalHOperator extends ComplexHOperator {
 		} else if (doubleMore(lPhi, 0.5) && doubleLess(lKsi, 0.5)) {
             double y = 1;
             for(int i=0; i < weights.size(); i++) {
-                y = y * pow(1-C*X[i]/B, -A*weights.get(i));         
+                y = y * pow(1-C*X[i]/B, -A*weights.getDouble(i));         
             }
             y -= 1;
             y /= C;
@@ -113,7 +115,7 @@ public class ExponentalHOperator extends ComplexHOperator {
 		} else if (doubleMore(lPhi, 0.5) && doubleMore(lKsi, 0.5)) {
             double y = 1;
             for(int i=0; i < weights.size(); i++) {
-                y *= pow(1-C*X[i]/B, A*weights.get(i));         
+                y *= pow(1-C*X[i]/B, A*weights.getDouble(i));         
             }
             y = 1 - y;
             y /= C;
@@ -121,7 +123,7 @@ public class ExponentalHOperator extends ComplexHOperator {
 		} else if (doubleLess(lPhi, 0.5) && doubleMore(lKsi, 0.5)) {
             double y = 1;
             for(int i=0; i < weights.size(); i++) {
-                y *= pow(1+X[i]/B, -A*weights.get(i));         
+                y *= pow(1+X[i]/B, -A*weights.getDouble(i));         
             }
             y = 1 - y;
             y /= C;
