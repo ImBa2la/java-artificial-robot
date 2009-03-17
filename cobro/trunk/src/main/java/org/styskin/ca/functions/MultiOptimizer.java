@@ -160,7 +160,7 @@ public class MultiOptimizer implements Optimizer {
 	}
 	
 	private static final int THREAD_COUNT = 10;
-	private static final long SLEEP_TIMEOUT = 1000l; // 10 sec
+	private static final long SLEEP_TIMEOUT = 3000l; // 10 sec
 	
 	public Criteria optimize(Optimize op) throws Exception {
 		LinkedList<Checker> pool = new LinkedList<Checker>();
