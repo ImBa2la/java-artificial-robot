@@ -49,8 +49,6 @@ public class MultiOptimizer implements Optimizer {
 			optimizer = new SingleOptimizer(root);
 			try {
 				root = optimizer.optimize(op);
-				
-				CriteriaXMLParser.saveXML(root, "auto" + index + ".xml");
 			} catch(Exception ex) {
 				logger.error("Cannot optimize", ex);
 			}
