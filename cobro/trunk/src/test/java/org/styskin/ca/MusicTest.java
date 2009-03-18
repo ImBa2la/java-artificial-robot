@@ -33,10 +33,11 @@ public class MusicTest extends TestCase {
 		Criteria music = CriteriaXMLParser.loadXML("cfg/music/music.res.xml");
 		logger.info("Optimization started");
 //		Optimize control = Optimize.getInput("cfg/music/music.tsv", music);
-		Pair<Optimize, Optimize> ops = Optimize.getInput("cfg/music/html.base", music, 0.75);
-		Optimize.saveInput("input.txt", music, ops.getFirst().getF(), ops.getFirst().getBase());		
-		Optimizer optimizer = new MultiOptimizer(music);
-//		Optimizer optimizer = new SingleOptimizer(music);
+		Pair<Optimize, Optimize> ops = Optimize.getInput("cfg/music/html.base", music, 0.50);
+		Optimize.saveInput("input.in", music, ops.getFirst().getF(), ops.getFirst().getBase());		
+		Optimize.saveInput("input.test", music, ops.getSecond().getF(), ops.getSecond().getBase());		
+//		Optimizer optimizer = new MultiOptimizer(music);
+		Optimizer optimizer = new SingleOptimizer(music);
 		Criteria musicRes = optimizer.optimize(ops.getFirst());
 		CriteriaXMLParser.saveXML(musicRes, "music.res.xml");
 		

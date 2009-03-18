@@ -164,7 +164,7 @@ public class MultiOptimizer implements Optimizer {
 	
 	public Criteria optimize(Optimize op) throws Exception {
 		LinkedList<Checker> pool = new LinkedList<Checker>();
-		Checker best = null;
+		Criteria best = null;
 		double value = 1E10;
 		try {
 			Criteria rootEq = root.cloneEquals();
@@ -174,7 +174,7 @@ public class MultiOptimizer implements Optimizer {
 			Map<Integer, Checker> q = new TreeMap<Integer, Checker>();
 			int Q = 0;
 			Thread.sleep(SLEEP_TIMEOUT);
-			while(pool.size() > 0) {
+			while(!pool.isEmpty()) {
 				Iterator<Checker> it = pool.iterator();
 				q.clear();
 				while(it.hasNext()) {
@@ -184,7 +184,8 @@ public class MultiOptimizer implements Optimizer {
 					if(!c.isAlive()) {
 						if(c.strongValue() < value) {
 							value = c.strongValue();
-							best = c;
+							// FIXME: clone is hack
+							best = c.getCriteria().clone();
 						}
 						it.remove();
 					} else if(c.aproximateValue() > value) {
@@ -192,10 +193,10 @@ public class MultiOptimizer implements Optimizer {
 						it.remove();
 					} else if(c.strongValue() < value) {
 						value = c.strongValue();
-						best = c;
+						best = c.getCriteria().clone();
 					}
 				}
-				logger.info(best.strongValue() + " n = " + best.getIndex() + " step=" + best.getTrace().size());
+				logger.info("Best value: " + value);
 				if(Q ++ < THREAD_COUNT) {
 					Iterator<Map.Entry<Integer, Checker>> ite = q.entrySet().iterator();
 					Criteria c1 = ite.next().getValue().getCriteria();
@@ -215,14 +216,10 @@ public class MultiOptimizer implements Optimizer {
 		} catch (Exception ex) {
 			logger.error("What the fuck?", ex);
 		}		
-		logger.info("Strong value: " + best.strongValue());
-		logger.info("Strong trace: " + best.getTrace());
-		logger.info("Strong trace: " + best.getIndex());
-		CacheCriteria cc = new CacheCriteria(best.getCriteria(), op);
-		logger.debug(cc.check());
-		
-		
-		return best.getCriteria();
+//		logger.info("Strong value: " + best.strongValue());
+//		logger.info("Strong trace: " + best.getTrace());
+//		logger.info("Strong trace: " + best.getIndex());
+		return best;
 	}
 
 	public Criteria optimize(Criteria base, double[][] F) throws Exception {

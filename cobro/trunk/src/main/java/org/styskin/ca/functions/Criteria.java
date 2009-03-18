@@ -36,15 +36,11 @@ public abstract class Criteria implements Cloneable, Constants {
 	}
 
 	public Criteria clone() throws CloneNotSupportedException {
-		Criteria criteria = (Criteria) super.clone();
-		criteria.setName(name);
-		return criteria;
+		return (Criteria) super.clone();
 	}
 	
 	public Criteria cloneEquals() throws Exception {
-		Criteria criteria = (Criteria) super.clone();
-		criteria.setName(name);
-		return criteria;
+		return (Criteria) super.clone();
 	}
 	
 	

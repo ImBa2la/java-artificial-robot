@@ -41,42 +41,24 @@ public class SingleOptimizer implements Constants, Optimizer {
 		ComplexOperator op = c.getOperator();
 		cache.turnOffCache(c);
 		double f = cache.check();
-		for (int i = 0; i < SW; i++) {
-			op.setWeight(i, V[i] + h[i]);
-			op.refresh();
-			if (cache.check() < f) {
-				V[i] += h[i];
-				moved = true;
-			} else {
-				op.setWeight(i, V[i] - h[i]);
+		for (int i = 0; i < S; i++) {
+			for(int mDirection = -1; mDirection <=1; mDirection += 2) {
+				if(i < SW)
+					op.setWeight(i, V[i] + mDirection*h[i]);
+				else
+					op.getParameters().set(i - SW, V[i] + mDirection*h[i]);					
 				op.refresh();
 				if (cache.check() < f) {
-					V[i] -= h[i];
+					V[i] += mDirection*h[i];
 					moved = true;
+					break;
 				}
 			}
 		}
-		for (int i = SW; i < S; i++) {
-			op.getParameters().set(i - SW, V[i] + h[i]);
-			op.refresh();
-			if (cache.check() < f) {
-				V[i] += h[i];
-				moved = true;
-			} else {
-				op.getParameters().set(i - SW, V[i] - h[i]);
-				op.refresh();
-				if (cache.check() < f) {
-					V[i] -= h[i];
-					moved = true;
-				}
-			}
-		}
-		for (int i = 0; i < SW; i++) {
+		for (int i = 0; i < SW; i++)
 			op.getWeights().set(i, V[i]);
-		}
-		for (int i = SW; i < S; i++) {
+		for (int i = SW; i < S; i++)
 			op.getParameters().set(i - SW, V[i]);
-		}
 		op.refresh();
 		cache.refreshCache();
 		return moved;
@@ -91,29 +73,25 @@ public class SingleOptimizer implements Constants, Optimizer {
 		int SW = c.getSize();
 		int S = SW + c.getOperator().getParameters().size();
 
-		for (int i = 0; i < SW; i++) {
-			if (V[i] < VEPS || V[i] > 1 - VEPS) {
+		for (int i = 0; i < SW; i++)
+			if (V[i] < VEPS || V[i] > 1 - VEPS)
 				return EDGE;
-			}
-		}
-		for (int i = SW; i < S; i++) {
+		
+		for (int i = SW; i < S; i++)
 			if (V[i] < op.getParameters().getLowerBound(i - SW)
-					|| V[i] > op.getParameters().getUpperBound(i - SW)) {
-				return 1E6;
-			}
-		}
-		for (int i = 0; i < SW; i++) {
+					|| V[i] > op.getParameters().getUpperBound(i - SW))
+				return EDGE;
+		
+		for (int i = 0; i < SW; i++)
 			op.setWeight(i, V[i]);
-		}
-		for (int i = SW; i < S; i++) {
+		for (int i = SW; i < S; i++)
 			op.getParameters().set(i - SW, V[i]);
-		}
 		op.refresh();
 		return cache.check();
 	}
 
 	// TODO : Modify algorithm
-	private final static int STEP_COUNT = 3;
+	private final static int STEP_COUNT = 5;
 	private final static double START_STEP = 1E-2;
 	private final static int LEVEL = 100;
 
@@ -143,19 +121,16 @@ public class SingleOptimizer implements Constants, Optimizer {
 		double f, fn;
 		while (true) {
 			while (!searchPoint(V[step], h, c)) {
-				for (int j = 0; j < h.length; j++) {
+				for (int j = 0; j < h.length; j++)
 					h[j] /= 2;
-				}
-				if (++k > STEP_COUNT) {
+				if (++k > STEP_COUNT)
 					return;
-				}
 			}
 
 			f = getValue(V[step], c, root);
 			do {
-				if (++k > STEP_COUNT) {
+				if (++k > STEP_COUNT)
 					return;
-				}
 				step = (step + 1) % 2;
 				for (int j = 0; j < V.length; j++) {
 					V[step][j] = V[step][j] + 2 * (V[(step + 1) % 2][j] - V[step][j]);
