@@ -8,19 +8,22 @@ import java.util.StringTokenizer;
 
 import org.styskin.ca.model.Pair;
 
+import ru.yandex.utils.Triple;
+
 public class LoadInputSimple extends LoadInput {
 	
 	public void init(String head) {
-		StringTokenizer st = new StringTokenizer(head, "\t");
-		boolean first = true;
+		StringTokenizer st = new StringTokenizer(head, " ");
+		int i=0;
 		while(st.hasMoreTokens()) {
 			String s = prepareToken(st.nextToken());
-			if(first) {
-				first = false;
-				names.add("ONE");
+			if(i < 4) {
+				if(i==0)
+					names.add("ONE");
 			} else {
 				names.add(s);
 			}
+			i ++;
 		}
 		size = names.size();
 	}
@@ -32,6 +35,7 @@ public class LoadInputSimple extends LoadInput {
 		int TWO = 2;
 		
 		LoadInputSimple[] input = new LoadInputSimple[TWO];
+		List<Integer>[] Q = new List[TWO];
 		List<Double>[] B = new List[TWO];
 		List<double[]>[] M = new List[TWO];
 		for(int i=0; i < TWO; i++) {
@@ -39,18 +43,22 @@ public class LoadInputSimple extends LoadInput {
 			input[i].init(line);
 			B[i] = new ArrayList<Double>();
 			M[i] = new ArrayList<double[]>();
+			Q[i] = new ArrayList<Integer>();
 		}
 		
 		while((line = in.readLine()) != null) {
-			Pair<Double, double[]> pair = input[0].parseLine(line);
+			Triple<Double, Integer, double[]> pair = input[0].parseLine(line);
 			int ind = Math.random() > ratio ? 1 : 0;			
 			B[ind].add(pair.getFirst());
-			M[ind].add(pair.getSecond());
+			Q[ind].add(pair.getSecond());
+			M[ind].add(pair.getThird());
 		}
 		for(int j=0; j < TWO; j++) {
+			input[j].Q = new int[B[j].size()];
 			input[j].B = new double[B[j].size()];
 			input[j].M = new double[B[j].size()][];
 			for(int i=0; i < B[j].size(); i++) {
+				input[j].Q[i] = Q[j].get(i);
 				input[j].B[i] = B[j].get(i);
 				input[j].M[i] = M[j].get(i);
 			}
@@ -58,21 +66,26 @@ public class LoadInputSimple extends LoadInput {
 		return new Pair<LoadInput, LoadInput>(input[0], input[1]);
 	}
 	
-	Pair<Double, double[]> parseLine(String line) {
+	Triple<Double, Integer, double[]> parseLine(String line) {
 		double res = 0;
+		int q = 0;
 		double[] in = new double[size];
 		int i=0;
 		StringTokenizer st = new StringTokenizer(line, "\t");
 		while(st.hasMoreTokens()) {
-			double f = Double.parseDouble(prepareToken(st.nextToken()));
-			if(i == 0) {
-				res = f;
-				in[0] = 1;
-			} else {
-				in[i] = f;
+			String s = st.nextToken();
+			if(i < 4) {
+				if(i==0)
+					q = Integer.valueOf(s);
+				if(i == 1) {
+					res = Double.parseDouble(prepareToken(s));
+					in[0] = 1;
+				}
+			} else if(i < size) {
+				in[i-3] = Double.parseDouble(prepareToken(s));
 			}
 			i ++;
 		}
-		return new Pair<Double, double[]>(res, in);
+		return new Triple<Double, Integer, double[]>(res, q, in);
 	}
 }

@@ -1,11 +1,8 @@
 package org.styskin.greed;
 
-import static org.styskin.greed.MatrixUtils.leastSqares;
-
 import org.styskin.ca.model.Pair;
 import org.styskin.util.LoadInput;
 import org.styskin.util.LoadInputImat;
-import org.styskin.util.LoadInputSimple;
 
 public class Imat {
 	
@@ -23,7 +20,6 @@ public class Imat {
 			System.out.printf("Check LS:\t%f\t%f\n", fml.check(check), fml.dcg(check));
 //			System.out.printf("%s\n", fml.toString(input));
 		}
-		
 		return fml;
 	}
 	

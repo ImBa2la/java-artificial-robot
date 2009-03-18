@@ -1,5 +1,13 @@
 package org.styskin.greed;
 
+import static java.lang.Math.log;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static org.styskin.greed.MatrixUtils.add;
+import static org.styskin.greed.MatrixUtils.correlation;
+import static org.styskin.greed.MatrixUtils.leastSqares;
+import static org.styskin.greed.MatrixUtils.mult;
+import static org.styskin.greed.MatrixUtils.tr;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 
@@ -11,11 +19,7 @@ import java.util.List;
 import org.styskin.util.LoadInput;
 import org.styskin.util.PairDI;
 
-import ru.yandex.utils.Triple;
-
 import Jama.Matrix;
-import static org.styskin.greed.MatrixUtils.*;
-import static java.lang.Math.*;
 
 
 public class Formula {
@@ -166,9 +170,9 @@ public class Formula {
 				if(cr < 0.97) {
 					monoms.add(newMonoms.get(r.get(i).second));
 					++ C;
-//					System.out.printf("Correlation: %f\t%f\t%s\n", cr, r.get(i).first, newMonoms.get(r.get(i).second));
+					System.out.printf("Correlation: %f\t%f\t%s\n", cr, r.get(i).first, newMonoms.get(r.get(i).second));
 				} else {
-//					System.out.printf("Huge correlation: %f\t%s\n", cr, newMonoms.get(r.get(i).second));
+					System.out.printf("Huge correlation: %f\t%s\n", cr, newMonoms.get(r.get(i).second));
 				}
 			}		
 			double[][] X = new double[monoms.size()][N];
