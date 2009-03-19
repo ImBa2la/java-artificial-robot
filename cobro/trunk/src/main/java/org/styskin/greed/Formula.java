@@ -3,15 +3,12 @@ package org.styskin.greed;
 import static java.lang.Math.log;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static org.styskin.greed.MatrixUtils.add;
-import static org.styskin.greed.MatrixUtils.correlation;
-import static org.styskin.greed.MatrixUtils.leastSqares;
-import static org.styskin.greed.MatrixUtils.mult;
-import static org.styskin.greed.MatrixUtils.tr;
+import static org.styskin.greed.MatrixUtils.*;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -23,6 +20,8 @@ import Jama.Matrix;
 
 
 public class Formula {
+	
+	private static final double EPS = 1E-5;
 	
 	List<Monom> monoms = new ArrayList<Monom>();
 	DoubleList weight = new DoubleArrayList();
@@ -102,6 +101,11 @@ public class Formula {
 		return leastSqares(result(in.M), in.B);		
 	}
 	
+	public double checkCorrelation(LoadInput in) {
+		return correlation(result(in.M), in.B);		
+	}
+
+	
 	static class T {
 		int q;
 		double score;
@@ -147,6 +151,37 @@ public class Formula {
 		return dcg/N;		
 	}
 	
+	public double pfound(LoadInput in) {
+		List<T> list = new ArrayList<T>();
+		double[] r = result(in.M);
+		for(int i=0; i < r.length; i++)
+			list.add(new T(in.Q[i], r[i], in.B[i]));
+		Collections.sort(list, new Comparator<T>() {
+			public int compare(T o1, T o2) {
+				if(o1.q  == o2.q) {
+					return -Double.compare(o1.score, o2.score);										
+				} else {				
+					return o1.q < o2.q ? -1 : 1;
+				}
+			}
+		});
+		double pfound = 0;
+		int N = -1;
+		int cq = -1;
+		double pCont = 1.0;
+		for(int i=0; i < r.length; i++) {
+			T t = list.get(i);
+			if(t.q != cq) {
+				cq = t.q;
+				++ N;
+				pCont = 1.0;
+			}
+			pfound += t.real*pCont;
+			pCont *= 0.85*(1.0 - t.real);
+		}		
+		return pfound/N;		
+	}	
+	
 	public boolean addMonoms(List<Monom> newMonoms, double[] Y, double[] B, double[][] A) {
 		List<PairDI> r = new ArrayList<PairDI>();
 		for(int i=0; i < newMonoms.size(); i++) {
@@ -160,37 +195,36 @@ public class Formula {
 		//======
 		
 		int N = Y.length;
-		if(true) {
-			int C = 0;
-			for(int i=0; i < r.size() && C < 3; i++) {
-				double cr = 0;
-				double[] ta = calcVector(newMonoms.get(r.get(i).second), A);
-				for(int j=0; j < monoms.size(); j++)
-					cr = max(cr, correlation(ta, calcVector(monoms.get(j), A)));
-				if(cr < 0.97) {
-					monoms.add(newMonoms.get(r.get(i).second));
-					++ C;
-					System.out.printf("Correlation: %f\t%f\t%s\n", cr, r.get(i).first, newMonoms.get(r.get(i).second));
-				} else {
-					System.out.printf("Huge correlation: %f\t%s\n", cr, newMonoms.get(r.get(i).second));
-				}
-			}		
-			double[][] X = new double[monoms.size()][N];
-			for(int i=0; i < monoms.size(); i++)
-				for(int j=0; j < N; j++)
-					X[i][j] = monoms.get(i).result(A[j]);
-			// Regression for X -> Y
-			Matrix a = new Matrix(X); 
-			Matrix b = new Matrix(new double[][] {B});
-			Matrix x = a.transpose().solve(b.transpose());
-			weight.clear();
-			for(int i=0; i < monoms.size(); i++) {
-				weight.add(x.get(i, 0));
+		int C = 0;
+		for(int i=0; i < r.size() && C < 3; i++) {
+			double cr = 0;
+			double[] ta = calcVector(newMonoms.get(r.get(i).second), A);
+			for(int j=0; j < monoms.size(); j++)
+				cr = max(cr, correlation(ta, calcVector(monoms.get(j), A)));
+			if(cr < 0.97) {
+				monoms.add(newMonoms.get(r.get(i).second));
+				++ C;
+//					System.out.printf("Correlation: %f\t%f\t%s\n", cr, r.get(i).first, newMonoms.get(r.get(i).second));
+			} else {
+//					System.out.printf("Huge correlation: %f\t%s\n", cr, newMonoms.get(r.get(i).second));
 			}
+		}		
+		double[][] X = new double[monoms.size()][N];
+		for(int i=0; i < monoms.size(); i++)
+			for(int j=0; j < N; j++)
+				X[i][j] = monoms.get(i).result(A[j]);
+		// Regression for X -> Y
+		Matrix a = new Matrix(X); 
+		Matrix b = new Matrix(new double[][] {B});
+		Matrix x = a.transpose().solve(b.transpose());
+		weight.clear();
+		for(int i=0; i < monoms.size(); i++) {
+			weight.add(x.get(i, 0));
 		}
 		return true; // true - if added
 	}
-
+	
+	
 	private static double[] calcVector(Monom m, double[][] A) {
 		double[] ta = new double[A.length];
 		for(int l=0; l < A.length; l++)

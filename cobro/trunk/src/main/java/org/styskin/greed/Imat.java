@@ -7,7 +7,7 @@ import org.styskin.util.LoadInputImat;
 public class Imat {
 	
 	public Formula optimize() throws Exception {
-		Pair<LoadInput, LoadInput> pair = LoadInputImat.loadInput("cfg/imat/imat2009_learning.txt", 0.1);
+		Pair<LoadInput, LoadInput> pair = LoadInputImat.loadInput("cfg/imat/imat2009_learning.txt", 1);
 		LoadInput input = pair.getFirst();
 		LoadInput check = pair.getSecond();
 		

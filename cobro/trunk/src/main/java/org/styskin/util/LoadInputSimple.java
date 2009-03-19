@@ -13,7 +13,7 @@ import ru.yandex.utils.Triple;
 public class LoadInputSimple extends LoadInput {
 	
 	public void init(String head) {
-		StringTokenizer st = new StringTokenizer(head, " ");
+		StringTokenizer st = new StringTokenizer(head);
 		int i=0;
 		while(st.hasMoreTokens()) {
 			String s = prepareToken(st.nextToken());
@@ -71,7 +71,7 @@ public class LoadInputSimple extends LoadInput {
 		int q = 0;
 		double[] in = new double[size];
 		int i=0;
-		StringTokenizer st = new StringTokenizer(line, "\t");
+		StringTokenizer st = new StringTokenizer(line);
 		while(st.hasMoreTokens()) {
 			String s = st.nextToken();
 			if(i < 4) {

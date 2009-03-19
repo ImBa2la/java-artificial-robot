@@ -20,7 +20,19 @@ public class MatrixUtils {
 	public static void mult(double[] a, double c) {
 		for(int i=0; i < a.length; i++)
 			a[i] *= c;		
+	}
+	
+	public static double[] mult(double[] a, double c, double[] res) {
+		for(int i=0; i < a.length; i++)
+			res[i] = a[i] * c;
+		return res;
 	}	
+	
+	public static double[] scalar(double[] a, double[] b, double[] res) {
+		for(int i=0; i < a.length; i++)
+			res[i] = a[i] * b[i];
+		return res;
+	}
 	
 	public static double[] copy(double[] a) {
 		double[] r = new double[a.length];
