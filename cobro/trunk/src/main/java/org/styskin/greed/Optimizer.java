@@ -48,8 +48,8 @@ public abstract class Optimizer {
 		double[] h = new double[N];
 		
 		int deep = 0;
-		double start = 1;
 		outer: for(int i=0; i < 100; i++) {
+			double start = 1;
 			Arrays.fill(h, start);
 			while(!searchPoint(M, w, x, y, q, h)) {
 				start /= 2;

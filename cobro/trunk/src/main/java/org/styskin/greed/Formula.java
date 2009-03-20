@@ -55,7 +55,7 @@ public class Formula {
 		}
 		
 		void addFactor(int index, List<Monom> out) {
-			{
+			if(list.size() < 4){
 				Monom m = copy();
 				m.list.add(index);
 				out.add(m);
@@ -116,9 +116,6 @@ public class Formula {
 			this.score = score;
 			this.real = real;
 		}
-		
-		
-		
 	}
 	
 	public double dcg(LoadInput in) {
@@ -244,7 +241,7 @@ public class Formula {
 		Collections.sort(list);
 
 		List<Monom> newMonoms = new ArrayList<Monom>();
-		for(int i=0; i < min(4, list.size()); i++) {
+		for(int i=0; i < min(10, list.size()); i++) {
 			newMonoms.add(new Monom(list.get(i).second));
 			for(Monom m : this.monoms) {
 				m.addFactor(list.get(i).second, newMonoms);

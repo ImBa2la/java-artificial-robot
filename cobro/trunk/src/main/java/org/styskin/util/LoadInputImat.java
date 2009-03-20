@@ -24,7 +24,7 @@ public class LoadInputImat extends LoadInput {
 	public static Pair<LoadInput, LoadInput> loadInput(String file, double ratio) throws Exception {
 		
 		BufferedReader in = new BufferedReader(new FileReader(file));
-		String line = in.readLine();
+		String line;
 		int TWO = 2;
 		
 		LoadInputImat[] input = new LoadInputImat[TWO];
