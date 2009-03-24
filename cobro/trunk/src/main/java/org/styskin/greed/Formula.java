@@ -3,15 +3,25 @@ package org.styskin.greed;
 import static java.lang.Math.log;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static org.styskin.greed.MatrixUtils.*;
+import static org.styskin.greed.MatrixUtils.add;
+import static org.styskin.greed.MatrixUtils.correlation;
+import static org.styskin.greed.MatrixUtils.leastSqares;
+import static org.styskin.greed.MatrixUtils.mult;
+import static org.styskin.greed.MatrixUtils.tr;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntCollections;
+import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.ints.IntLists;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.styskin.util.LoadInput;
 import org.styskin.util.PairDI;
@@ -26,39 +36,56 @@ public class Formula {
 	List<Monom> monoms = new ArrayList<Monom>();
 	DoubleList weight = new DoubleArrayList();
 	
+	IntSet bannedMonoms = new IntOpenHashSet();
+	
 	public Formula() {
 		monoms.add(new Monom(0));
 		weight.add(1d);
 	}
 	
 	static class Monom {
-		List<Integer> list = new ArrayList<Integer>();
+		IntList list = new IntArrayList();
+		int uniqSize = 0;
 
 		Monom() {}
 		
 		public Monom(int... inds) {
 			for(int ind : inds)
-				this.list.add(ind);
+				list.add(ind);
 		}
 
 		public double result(double[] row) {
 			double r = 1;
 			for(int i=0; i < list.size(); i++)
-				r *= row[list.get(i)];
+				r *= row[list.getInt(i)];
 			return r;
 		}
 		
 		Monom copy() {
 			Monom m = new Monom();
 			m.list.addAll(this.list);
+			m.uniqSize = this.uniqSize;
 			return m;
 		}
 		
+		void add(int index) {
+			list.add(index);
+			Collections.sort(list);
+		}
+		
 		void addFactor(int index, List<Monom> out) {
-			if(list.size() < 4){
+			if(uniqSize <= 4){
 				Monom m = copy();
-				m.list.add(index);
+				m.uniqSize ++;
+				for(int i=0; i < m.list.size(); i++) {
+					if(m.list.getInt(i) == index) {
+						m.uniqSize --;
+						break;
+					}
+				}
+				m.add(index);
 				out.add(m);
+
 			}
 			if(list.size() > 1) {
 				for(int i=0; i < list.size(); i++) {
@@ -85,6 +112,18 @@ public class Formula {
 			}
 			return sb.toString();
 		}
+
+		public int code() {
+			int c = list.getInt(0);
+			for(int i=1, j = 0; i < list.size(); i++) {
+				if(list.getInt(i) != list.getInt(i-1)) {
+					j ++;
+					c ^= list.getInt(i) << (i*8); 
+				}				
+			}
+			return c;
+		}
+		
 		
 	}
 	
@@ -106,37 +145,17 @@ public class Formula {
 	}
 
 	
-	static class T {
-		int q;
-		double score;
-		double real;
-		
-		public T(int q, double score, double real) {
-			this.q = q;
-			this.score = score;
-			this.real = real;
-		}
-	}
-	
 	public double dcg(LoadInput in) {
-		List<T> list = new ArrayList<T>();
+		List<UrlQueryScore> list = new ArrayList<UrlQueryScore>();
 		double[] r = result(in.M);
 		for(int i=0; i < r.length; i++)
-			list.add(new T(in.Q[i], r[i], in.B[i]));
-		Collections.sort(list, new Comparator<T>() {
-			public int compare(T o1, T o2) {
-				if(o1.q  == o2.q) {
-					return -Double.compare(o1.score, o2.score);										
-				} else {				
-					return o1.q < o2.q ? -1 : 1;
-				}
-			}
-		});
+			list.add(new UrlQueryScore(in.Q[i], r[i], in.B[i]));
+		Collections.sort(list, new UrlQueryScoreComparator());
 		double dcg = 0;
 		int N = -1;
 		int cq = -1, j = 0;
 		for(int i=0; i < r.length; i++) {
-			T t = list.get(i);
+			UrlQueryScore t = list.get(i);
 			if(t.q != cq) {
 				j = 1;
 				cq = t.q;
@@ -149,25 +168,17 @@ public class Formula {
 	}
 	
 	public double pfound(LoadInput in) {
-		List<T> list = new ArrayList<T>();
+		List<UrlQueryScore> list = new ArrayList<UrlQueryScore>();
 		double[] r = result(in.M);
 		for(int i=0; i < r.length; i++)
-			list.add(new T(in.Q[i], r[i], in.B[i]));
-		Collections.sort(list, new Comparator<T>() {
-			public int compare(T o1, T o2) {
-				if(o1.q  == o2.q) {
-					return -Double.compare(o1.score, o2.score);										
-				} else {				
-					return o1.q < o2.q ? -1 : 1;
-				}
-			}
-		});
+			list.add(new UrlQueryScore(in.Q[i], r[i], in.B[i]));
+		Collections.sort(list, new UrlQueryScoreComparator());
 		double pfound = 0;
 		int N = -1;
 		int cq = -1;
 		double pCont = 1.0;
 		for(int i=0; i < r.length; i++) {
-			T t = list.get(i);
+			UrlQueryScore t = list.get(i);
 			if(t.q != cq) {
 				cq = t.q;
 				++ N;
@@ -183,17 +194,19 @@ public class Formula {
 		List<PairDI> r = new ArrayList<PairDI>();
 		for(int i=0; i < newMonoms.size(); i++) {
 			Monom m = newMonoms.get(i);
-			double[] t = new double[A.length];
-			for(int j=0; j < A.length; j++)
-				t[j] = m.result(A[j]);
-			r.add(new PairDI(-correlation(t, Y), i));
+			if(!bannedMonoms.contains(m.code())) {
+				double[] t = new double[A.length];
+				for(int j=0; j < A.length; j++)
+					t[j] = m.result(A[j]);
+				r.add(new PairDI(-correlation(t, Y), i));
+			}
 		}
 		Collections.sort(r);
 		//======
 		
 		int N = Y.length;
 		int C = 0;
-		for(int i=0; i < r.size() && C < 3; i++) {
+		for(int i=0; i < r.size() && C < 5; i++) {
 			double cr = 0;
 			double[] ta = calcVector(newMonoms.get(r.get(i).second), A);
 			for(int j=0; j < monoms.size(); j++)
@@ -203,6 +216,7 @@ public class Formula {
 				++ C;
 //					System.out.printf("Correlation: %f\t%f\t%s\n", cr, r.get(i).first, newMonoms.get(r.get(i).second));
 			} else {
+				bannedMonoms.add(newMonoms.get(r.get(i).second).code());
 //					System.out.printf("Huge correlation: %f\t%s\n", cr, newMonoms.get(r.get(i).second));
 			}
 		}		
@@ -221,6 +235,59 @@ public class Formula {
 		return true; // true - if added
 	}
 	
+	public boolean addMonomsIncremental(List<Monom> newMonoms, double[] Y, double[] B, double[][] A, LoadInput input) {
+		List<PairDI> r = new ArrayList<PairDI>();
+		for(int i=0; i < newMonoms.size(); i++) {
+			Monom m = newMonoms.get(i);
+			double[] t = new double[A.length];
+			for(int j=0; j < A.length; j++)
+				t[j] = m.result(A[j]);
+			r.add(new PairDI(-correlation(t, Y), i));
+		}
+		Collections.sort(r);
+		//======
+		
+		List<Monom> monomsForAdd = new ArrayList<Monom>();  
+		int N = Y.length;
+		int C = 0;
+		for(int i=0; i < r.size() && C < 3; i++) {
+			double cr = 0;
+			double[] ta = calcVector(newMonoms.get(r.get(i).second), A);
+			for(int j=0; j < monoms.size(); j++)
+				cr = max(cr, correlation(ta, calcVector(monoms.get(j), A)));
+			for(int j=0; j < monomsForAdd.size(); j++)
+				cr = max(cr, correlation(ta, calcVector(monomsForAdd.get(j), A)));
+			
+			if(cr < 0.97) {
+				monomsForAdd.add(newMonoms.get(r.get(i).second));
+				++ C;
+//					System.out.printf("Correlation: %f\t%f\t%s\n", cr, r.get(i).first, newMonoms.get(r.get(i).second));
+			} else {
+//					System.out.printf("Huge correlation: %f\t%s\n", cr, newMonoms.get(r.get(i).second));
+			}
+		}		
+		double[][] X = new double[monomsForAdd.size()][N];
+		for(int i=0; i < monomsForAdd.size(); i++)
+			for(int j=0; j < N; j++)
+				X[i][j] = monomsForAdd.get(i).result(A[j]);
+		// Regression for X -> Y
+		Matrix a = new Matrix(X); 
+		Matrix b = new Matrix(new double[][] {Y});
+		Matrix x = a.transpose().solve(b.transpose());
+		for(int i=0; i < monomsForAdd.size(); i++) {
+			monoms.add(monomsForAdd.get(i));
+			weight.add(x.get(i, 0));
+		}
+
+		
+		// Optimize
+		Optimizer optimizer = new OptimizeDcg();
+		optimizer.optimize(this, input);
+		
+		return true; // true - if added
+	}
+	
+	
 	
 	private static double[] calcVector(Monom m, double[][] A) {
 		double[] ta = new double[A.length];
@@ -229,12 +296,12 @@ public class Formula {
 		return ta;
 	}
 	
-	public boolean iteration(double[] B, double[][] A) {
-		double[] Y = result(A);
+	public boolean iteration(LoadInput input) {
+		double[] Y = result(input.M);
 		mult(Y, -1);
-		add(Y, B);
+		add(Y, input.B);
 
-		double[][] t = tr(A);
+		double[][] t = tr(input.M);
 		List<PairDI> list = new ArrayList<PairDI>();		
 		for(int i=0; i < t.length; i++)
 			list.add(new PairDI(-correlation(t[i], Y), i));
@@ -247,7 +314,8 @@ public class Formula {
 				m.addFactor(list.get(i).second, newMonoms);
 			}
 		}
-		addMonoms(newMonoms, Y, B, A);
+		addMonoms(newMonoms, Y, input.B, input.M);
+//		addMonomsIncremental(newMonoms, Y, input.B, input.M, input);
 //		System.out.printf("Optimisation: %s\t%f\n", this, correlation(result(A), B));		
 		return true;
 	}

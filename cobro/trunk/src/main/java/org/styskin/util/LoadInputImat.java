@@ -18,8 +18,6 @@ public class LoadInputImat extends LoadInput {
 			names.add(Integer.toString(i));
 	}
 	
-	
-	
 	@SuppressWarnings("unchecked")
 	public static Pair<LoadInput, LoadInput> loadInput(String file, double ratio) throws Exception {
 		

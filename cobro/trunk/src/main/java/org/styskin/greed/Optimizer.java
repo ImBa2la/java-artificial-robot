@@ -9,7 +9,7 @@ import org.styskin.util.LoadInput;
 
 public abstract class Optimizer {
 	
-	private static final double EPS = 1E-9;
+	private static final double EPS = 1E-12;
 	
 	abstract double check(double[] a, double[] b, int[] q);
 	
@@ -28,12 +28,13 @@ public abstract class Optimizer {
 		boolean was = false;
 		double[] c = new double[x.length];
 		double cr = check(result(w, x, c), y, q);
-		for(int i=0; i < M; i++) {
+		for(int i=1; i < M; i++) {
 			for(int m = -1; m <=1; m += 2) {
 				w[i] += m*h[i];
 				double ncr = check(result(w, x, c), y, q);
 				if(ncr > cr + EPS) {
 					h[i] = m*h[i];
+					was = true;
 					break;
 				}
 				w[i] -= m*h[i];
@@ -45,32 +46,38 @@ public abstract class Optimizer {
 	public void optimizeFunction(double[] w, double[][] x, double[] y, int[] q) {
 		int N = x.length;
 		int M = w.length;
-		double[] h = new double[N];
+		double[] h = new double[M];
 		
 		int deep = 0;
-		outer: for(int i=0; i < 100; i++) {
-			double start = 1;
+		outer: for(int i=0; i < 20; i++) {
+			double start = 0.01;
 			Arrays.fill(h, start);
 			while(!searchPoint(M, w, x, y, q, h)) {
 				start /= 2;
 				Arrays.fill(h, start);
-				if(++ deep > 15)
+				if(++ deep > 15) {
+					System.out.println("Finished on " + i);
 					break outer;
+				}
 			}
 			double[] c = new double[N];
 			double cr = check(result(w, x, c), y, q);
+			int stepCount = 0;
 			while(true) {
-				for(int j=0; j < N; j++)
+				for(int j=0; j < M; j++)
 					w[j] += h[j];
 				double ncr = check(result(w, x, c), y, q);
 				if(ncr > cr + EPS) {
-					for(int j=0; j < N; j++)
-						h[j] *= 2;					
+					for(int j=0; j < M; j++)
+						h[j] *= 1.5;
+					cr = ncr;
 				} else {
-					for(int j=0; j < N; j++)
+					for(int j=0; j < M; j++)
 						w[j] -= h[j];
+					System.out.printf("Iteration %d value %f, step %d\n", i, cr, stepCount);
 					break;					
 				}
+				stepCount ++;
 			}
 		}
 	}	

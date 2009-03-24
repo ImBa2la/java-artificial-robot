@@ -18,7 +18,7 @@ public class AutoTest extends TestCase {
 //		while(fml.iteration(input.B, input.M));
 		Optimizer optimizer = new OptimizeCorrelation();
 		for(int i=0; i < 30; i++) {
-			fml.iteration(input.B, input.M);
+			fml.iteration(input);
 			System.out.printf("LS:\t%f\t%f\n", fml.check(input), fml.pfound(input));
 			System.out.printf("Check LS:\t%f\t%f\n", fml.check(check), fml.pfound(check));
 //			for(int j=0; j < fml.weight.size(); j++)
