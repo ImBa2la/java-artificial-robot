@@ -91,3 +91,8 @@ t = 0;
 While[x < 2000000, t += x; x = NextPrime[x]];
 t
 }}}
+
+= Task 48 =
+{{{
+Mod[Total[Table[PowerMod[i, i, 10^11], {i, 1000}]], 10^10]
+}}}
