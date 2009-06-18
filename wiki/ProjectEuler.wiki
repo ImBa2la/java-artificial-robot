@@ -37,3 +37,6 @@ For[i = 10, i < 1000, i++,
    If[x > p && ToString[x] == StringReverse[ToString[x]], p = x]]];
 p
 }}}
+
+= Task 5 =
+LCM @@ Range[20]
