@@ -39,4 +39,10 @@ p
 }}}
 
 = Task 5 =
+{{{
 LCM @@ Range[20]
+}}}
+= Task 6 =
+{{{
+Total[Range[100]]^2 - Total[Range[100]^2]
+}}}
