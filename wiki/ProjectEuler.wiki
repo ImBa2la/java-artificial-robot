@@ -83,3 +83,11 @@ For[a = 1, a < 1000, a++,
   If[a + b + c == 1000 && c^2 == a^2 + b^2, Print[a*b*c]]
   ]]
 }}}
+
+= Task 10 =
+{{{
+x = 2;
+t = 0;
+While[x < 2000000, t += x; x = NextPrime[x]];
+t
+}}}
