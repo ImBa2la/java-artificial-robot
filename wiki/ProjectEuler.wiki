@@ -46,3 +46,8 @@ LCM @@ Range[20]
 {{{
 Total[Range[100]]^2 - Total[Range[100]^2]
 }}}
+
+= Task 7 =
+{{{
+Prime[10001]
+}}}
