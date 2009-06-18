@@ -28,3 +28,12 @@ While[Mod[n, x] > 0, x = NextPrime[x, -1]];
 x
 }}}
 6857
+
+= Task 4 =
+{{{
+p = 0;
+For[i = 10, i < 1000, i++,
+  For[j = 10, j < 1000, j++, x = i*j; 
+   If[x > p && ToString[x] == StringReverse[ToString[x]], p = x]]];
+p
+}}}
