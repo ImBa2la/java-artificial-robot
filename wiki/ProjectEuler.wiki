@@ -1,0 +1,6 @@
+# Solutions of Euler problems
+
+
+= Task 1 =
+Plus @@ Select[Range[999], (Mod[#, 3] == 0 || Mod[#, 5] == 0) &]
+233168
