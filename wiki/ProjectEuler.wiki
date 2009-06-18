@@ -19,3 +19,12 @@ For[i = 2, i < 1000, i++,
 T
 }}}
 4613732
+
+= Task 3 =
+{{{
+n = 600851475143;
+x = IntegerPart[Sqrt[n]];
+While[Mod[n, x] > 0, x = NextPrime[x, -1]];
+x
+}}}
+6857
