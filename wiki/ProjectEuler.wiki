@@ -92,6 +92,16 @@ While[x < 2000000, t += x; x = NextPrime[x]];
 t
 }}}
 
+= Task 47 =
+{{{
+n = 4;
+For[i = 10, True, i++,
+ If[And @@ 
+   Map[Length[FactorInteger[#]] == n &, Table[i + j - 1, {j, n}]], 
+  Print[i]; Break[]]
+ ]
+}}}
+
 = Task 48 =
 {{{
 Mod[Total[Table[PowerMod[i, i, 10^11], {i, 1000}]], 10^10]
