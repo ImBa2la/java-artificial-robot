@@ -126,7 +126,7 @@ void CalcPrimes(int n, vi& primes) {
     for (int i = 2; i < n; ++i) {
         if (m[i] == 0) {
             primes.push_back(i);
-            int x = i << 2;
+            int x = i << 1;
             while (x < n) {
                 m[x] = 1;
                 x += i;
