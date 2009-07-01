@@ -106,3 +106,54 @@ For[i = 10, True, i++,
 {{{
 Mod[Total[Table[PowerMod[i, i, 10^11], {i, 1000}]], 10^10]
 }}}
+
+= Task 204 =
+{{{
+#include <util/stream/ios.h>
+#include <util/stream/ios.h>
+#include <util/generic/pair.h>
+#include <util/generic/set.h>
+#include <util/generic/vector.h>
+
+
+
+typedef ypair<size_t, size_t> pii;
+typedef yvector<size_t> vi;
+typedef yset<size_t> si;
+
+void CalcPrimes(int n, vi& primes) {
+    yvector<int> m(n); // shoutl be bitset
+    for (int i = 2; i < n; ++i) {
+        if (m[i] == 0) {
+            primes.push_back(i);
+            int x = i << 2;
+            while (x < n) {
+                m[x] = 1;
+                x += i;
+            }
+        }
+    }
+}
+
+int main(int argc, char** argv) {
+    vi primes;
+    CalcPrimes(100, primes);
+    vi max_powers;
+    size_t MAXN = 1000000000;
+    si numbers;
+    numbers.insert(1);
+    size_t count = 0;
+    while (!numbers.empty()) {
+        size_t x = *numbers.begin();
+        numbers.erase(numbers.begin());
+        for (vi::const_iterator it = primes.begin(); it != primes.end(); ++it) {
+            if (*it * x <= MAXN) {
+                numbers.insert(*it * x);
+            }
+        }
+        ++ count;
+    }
+    Cout << count << Endl;
+    return 0;
+}
+}}}
