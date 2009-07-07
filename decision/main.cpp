@@ -110,7 +110,25 @@ struct TChoser {
     TVD w;
     TPrefs b;
 
+    ofstream out;
     TPlanes planes;
+   
+    TChoser(const char * inf, const char * outf = NULL) {
+        ifstream in(inf);
+        in >> *this;
+        if (outf)
+        	out.open(outf);
+    }
+    
+    void Dump(double r) {
+    	if (out.is_open()) {
+    		out << r;
+    		for (size_t i = 0; i < M-1; ++i) {
+    			out << " " << w[i];
+    		}
+    		out << endl;
+    	}
+    }
 
     void Init() {
         for (int i = 0; i < P; ++i) {
@@ -130,6 +148,16 @@ struct TChoser {
             current[i] = 1;
         }
         
+        // Dump constrains
+        if (out.is_open()) {
+            for (size_t i = 0; i < planes.size(); ++i) {
+            	out << planes[i].k;
+            	for (size_t j = 0; j < planes[i].norm.size(); ++j)
+            		out << " " << planes[i].norm[j];
+            	out << endl;
+            }
+            out << -1 << endl;
+        }
     }
 
     struct TCmp {
@@ -146,6 +174,7 @@ struct TChoser {
 
 
     bool MakeCheck() {
+    	Dump(0);
         for (int iter = 0; iter < 100000; ++iter) {
             bool was = false;
             for (size_t i = 0; i < planes.size(); ++i) {
@@ -159,7 +188,7 @@ struct TChoser {
                 }
                 break;
             }
-//            Print(w);
+            Dump(0);
             if (!was)
                 return true;
         }
@@ -219,6 +248,7 @@ struct TChoser {
             double a = 10*EPS, b = t - 10*EPS;
             // Can be optimized
             TVD nn;
+            double r = 0;
             while (b - a > EPS) {
             	TVD n1, n2;
             	double x1 = b - (b-a)/f;
@@ -226,21 +256,23 @@ struct TChoser {
 
                 double r1 = Radius(w, n, x1, n1);
                 double r2 = Radius(w, n, x2, n2);
-                cout << "R: " << r1 << "\t" << r2 << endl;
                 if (r1 > r2) {
                     b = x2;
                     nn = n2;
+                    r = r1;
                 } else {
                     a = x1;
                     nn = n1;
+                    r = r2;
                 }
             }
             TVD x;
             Point(w, n, a, x);
             Print(x);
-            if (Dist(w, x) < EPS)
+            if (Dist(w, x) < EPS*1e2)
             	break;
             w = x;
+            Dump(r);
             n = nn;
         }
     }
@@ -272,14 +304,8 @@ istream &operator>>(istream &stream, TChoser &ob) {
 }
 
 
-void LoadData(TChoser& input, const char* fileName) {
-    ifstream in(fileName);
-    in >> input;
-}
-
 int main(void) {
-    TChoser input;
-    LoadData(input, "input.in");
+    TChoser input("input.in", "output.txt");
     input.Init();
     input.MakeCheck();
     Print(input.w);
