@@ -48,7 +48,7 @@ struct TPlane {
 };
 
 istream &operator>>(istream &stream, TOption &ob) {
-  for (int i = 0; i < ob.u.size(); ++i)
+  for (size_t i = 0; i < ob.u.size(); ++i)
       stream >> ob.u[i];
   return stream;
 }
@@ -59,25 +59,25 @@ typedef vector<pii> TPrefs;
 
 static inline double Mult(const TVD& a, const TVD& b) {
     double r = 0;
-    for (int i = 0; i < a.size(); ++i)
+    for (size_t i = 0; i < a.size(); ++i)
         r += a[i] * b[i];
     return r;
 }
 
 static void Add(TVD& a, const TVD& b) {
-    for (int i = 0; i < a.size(); ++i)
+    for (size_t i = 0; i < a.size(); ++i)
         a[i] += b[i];
 }
 
 static void Mult(TVD& a, const double m) {
-    for (int i = 0; i < a.size(); ++i)
+    for (size_t i = 0; i < a.size(); ++i)
         a[i] *= m;
 }
 
 
 static inline double Norm(const TVD& v) {
     double d = 0;
-    for (int i =0; i < v.size(); ++i)
+    for (size_t i =0; i < v.size(); ++i)
         d += v[i] * v[i];
     return sqrt(d);
 }
@@ -128,7 +128,7 @@ struct TChoser {
     bool MakeCheck() {
         for (int iter = 0; iter < 100000; ++iter) {
             bool was = false;
-            for (int i = 0; i < planes.size(); ++i) {
+            for (size_t i = 0; i < planes.size(); ++i) {
                 bool ch = CheckUnequation(w, planes[i]);
                 if (ch)
                     continue;
@@ -157,16 +157,25 @@ struct TChoser {
     }
 
     double Radius(TVD& point, TVD& n) {
-        n.clear();
-        n.resize(planes.size());
         double md = 1e10;
-        for (int i = 0; i < planes.size(); ++i) {
+        for (size_t i = 0; i < planes.size(); ++i) {
             if (Dist(point, planes[i]) < md) {
                 md = Dist(point, planes[i]);
-                n = planes[i].norm;
             }
         }
-        Mult(n, 1.0/Norm(n));
+        n.clear();
+        for (size_t i = 0; i < planes.size(); ++i) {
+        	if (Abs(Dist(point, planes[i]) - md) < EPS) {
+        		if (n.empty()) {
+        			n = planes[i].norm;
+        	        Mult(n, 1.0/Norm(n));        			
+        		} else {
+        			TVD x = planes[i].norm;
+        	        Mult(x, 1.0/Norm(x));
+        	        Add(n, x);
+        		}        		
+        	}
+        }
         return md;
     }
 
@@ -186,10 +195,10 @@ struct TChoser {
     void Optimize() {
         // polygon is convex
         TVD n;
-        double md = Radius(w, n);
+        Radius(w, n);
         for (int ind = 0; ind < 1000; ++ind) {
             double t = 1e9;
-            for (int i = 0; i < planes.size(); ++i) {
+            for (size_t i = 0; i < planes.size(); ++i) {
                 double tt = -(Mult(planes[i].norm, w) - planes[i].k)/Mult(planes[i].norm, n);
                 if (tt > 2*EPS) {
                     t = min(t, tt);
@@ -200,13 +209,14 @@ struct TChoser {
             double a = 10*EPS, b = t - 10*EPS;
             // Can be optimized
             TVD nn;
+            TVD n1, n2;
             while (b - a > EPS) {
                 double x1 = b - (b-a)/f;
                 double x2 = a + (b-a)/f;
-                TVD n1, n2;
 
                 double r1 = Radius(w, n, x1, n1);
                 double r2 = Radius(w, n, x2, n2);
+                cout << "R: " << r1 << "\t" << r2 << endl;
                 if (r1 > r2) {
                     b = x2;
                     nn = n2;
@@ -219,10 +229,7 @@ struct TChoser {
             Point(w, n, a, x);
             Print(x);
             w = x;
-            Add(n, nn);
-            cout << "@@@@@" << endl;
-            Print(n);
-
+            n = nn;
         }
     }
 
