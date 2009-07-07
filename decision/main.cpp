@@ -18,6 +18,11 @@ static inline T Abs(T a) {
     return a < 0 ? -a: a;
 }
 
+template <class T>
+static inline T Sqr(T a) {
+	return a * a;
+}
+
 template <class TCol>
 void Print(const TCol& col) {
     bool first = true;
@@ -82,6 +87,13 @@ static inline double Norm(const TVD& v) {
     return sqrt(d);
 }
 
+static inline double Dist(const TVD& a, const TVD& b) {
+	double d = 0;
+	for (size_t i = 0; i < a.size(); ++i)
+		d += Sqr(a[i] - b[i]);
+	return sqrt(d);
+}
+
 static inline double Dist(const TVD& point, const TPlane& plane) {
     double r = -plane.k;
     r += Mult(plane.norm, point);
@@ -110,6 +122,14 @@ struct TChoser {
             }
             planes.back().k = -un;
         }
+        // Wi > 0 - border 
+        for (int i = 0; i < M - 1; ++i) {
+            planes.push_back(TPlane());
+            TVD& current = planes.back().norm;
+            current.resize(M-1);
+            current[i] = 1;
+        }
+        
     }
 
     struct TCmp {
@@ -144,16 +164,6 @@ struct TChoser {
                 return true;
         }
         return false;
-    }
-
-    bool IsValid() {
-        double s = 0;
-        for (int i = 0; i < M - 1; ++i) {
-            if (w[i] < 0)
-                return false;
-            s += w[i];
-        }
-        return s < 1;
     }
 
     double Radius(TVD& point, TVD& n) {
@@ -209,9 +219,9 @@ struct TChoser {
             double a = 10*EPS, b = t - 10*EPS;
             // Can be optimized
             TVD nn;
-            TVD n1, n2;
             while (b - a > EPS) {
-                double x1 = b - (b-a)/f;
+            	TVD n1, n2;
+            	double x1 = b - (b-a)/f;
                 double x2 = a + (b-a)/f;
 
                 double r1 = Radius(w, n, x1, n1);
@@ -228,6 +238,8 @@ struct TChoser {
             TVD x;
             Point(w, n, a, x);
             Print(x);
+            if (Dist(w, x) < EPS)
+            	break;
             w = x;
             n = nn;
         }
@@ -246,17 +258,17 @@ struct TChoser {
 };
 
 istream &operator>>(istream &stream, TChoser &ob) {
-  stream >> ob.N >> ob.M >> ob.P;
-  ob.w.resize(ob.M, 1./ob.M);
-  for (int i=0; i < ob.N; ++i) {
-      ob.options.push_back(TOption(ob.M));
-      stream >> ob.options.back();
-  }
-  for (int i = 0; i < ob.P; ++i) {
-      ob.b.push_back(pii());
-      stream >> ob.b.back().first >> ob.b.back().second;
-  }
-  return stream;
+	stream >> ob.N >> ob.M >> ob.P;
+	ob.w.resize(ob.M, 1./ob.M);
+	for (int i=0; i < ob.N; ++i) {
+		ob.options.push_back(TOption(ob.M));
+		stream >> ob.options.back();
+	}
+	for (int i = 0; i < ob.P; ++i) {
+		ob.b.push_back(pii());
+		stream >> ob.b.back().first >> ob.b.back().second;
+	}
+	return stream;
 }
 
 
@@ -269,7 +281,7 @@ int main(void) {
     TChoser input;
     LoadData(input, "input.in");
     input.Init();
-    cout << input.MakeCheck() << "\t" << input.IsValid() << endl;
+    input.MakeCheck();
     Print(input.w);
     input.Optimize();
     Print(input.w);
