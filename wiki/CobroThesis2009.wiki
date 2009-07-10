@@ -1,0 +1,32 @@
+#labels cobro,thesis
+# Machine Learning For Object Estimation Using Hierarhical Criteria System
+
+= Machine Learning For Object Estimation Using Hierarhical Criteria System =
+_Andrey Styskin, Cybernetics Departent of MEPhI(SU), astyskin@gmail.com_
+
+= ABSTRACT =
+	This paper presents machine learning method to determine parameters of hierarchical criteria system for object estimation based on learning set.
+The  hierarchical criteria system for object estimation is clear for interpret and there fore is self check. Machine learning algorithm is iterational. On each iteration we go throught criterias using breadth first algorithm and optimmize each critara while fix arameters of others. For each criteria we do just several steps of optimization so we have uniform optimization.
+This algorithm gives good approximation (better than lineral regression) and works for small learning set - we can easily check the resulting system.
+
+sum of squares
+= 1  INTRODUCTION =
+In management, science and commercial field we are usually faced with multi-criteria optimization or choosing best object problems. Multi-criteria decision-analysis (MCDA) are used in such problems. But when there are many criteria the standard MCDA-methods becomes hard to use and interpret results and in this case hierarchical methods are used. In these methods criteria are structured in tree/network view and aggregation functions are used to aggregate single criterion to more general ones. 
+When the problem of building hierarchical models becomes regular it is good idea to machine learn the parameters of model: weights and parameters of aggregation functions. We can use expert values of objects or any other kind of estimation of ranking function output for learning set objects. 
+The resulting optimized model is well interpreted so a researcher could check the validness himself. And this approach works good for small learning set 
+= 2 HIERARCHICAL MODEL =
+= 3 MACHINE LEARNING ALGORITHM =
+= 4 COMPARISON WITH REGRESSION AND OTHERS =
+= 5 CONCLUSION =
+= References =
+
+
+В задачах, связанных с научной, управленческой и предпринимательской деятельностью нам постоянно приходится сталкиваться с множеством критериев, по которым необходимо оптимизировать параметры систем, либо оценивать управленческие решения. Для решения таких задач можно использовать многокритериальные методы. 
+В данном дипломном проекте рассматривается иерархическая система комплексных показателей [1]. Применять традиционные методы даже для 5-6 критериев уже затруднительно, поэтому необходимо их структурировать в виде дерева критериев, а затем проводить агрегирование критериев по дереву. 
+В случае, когда есть представление о связях между критериями и набор значений входов и соответствующих им значений изучаемого показателя, можно найти такие параметры иерархической модели комплексных показателей, которые будут доставлять изучаемому показателю необходимые значения.
+Параметры модели представляют собой веса и коэффициенты жесткости, которые дают исследователю представление о влиянии конкретного фактора на изучаемый показатель и характер совместного влияния этих факторов.
+Поскольку модель хорошо интерпретируема и управляема, исследователь может изменять модель, варьировать её параметры и изучать их влияние на показатели. Такой подход позволяет получать представление об объективных оценках собственного и совместного влияния показателей и адекватно выставлять субъективные значения важности факторов в случае задач оптимизации параметров или принятия управленческих решений.
+Необходимость в получении объективных значений параметров модели часто возникает в задачах квалиметрии. Такие задачи возникают в компании Яндекс, когда руководителям проектов необходимо сформулировать интегральный показатель качества какого-либо сервиса. Подход, излагаемый далее в дипломном проекте, позволяет понять влияние факторов и измерений на значение интегрального показателя, а также изменить модель согласно собственным предпочтениям менеджера. Именно такой механизм формирования оценки качества с обратной связью позволяет учитывать предпочтения менеджеров и не отрываться от реальной ситуации.
+ПОСТАНОВКА ЗАДАЧИ
+Целью данного дипломного проекта является создание программного решения для работы с иерархической системой критериев и определения её параметров по обучающей выборке.
+Исследователь должен получить инструмент, в котором он сможет строить модель предметной области и получать оценку связанного показателя от простых показателей. У него должна быть возможность задавать экспертные оценки параметрам модели, а также указать источник данных с обучающей выборкой и получать параметры модели, которые наиболее хорошо описывают поведение модели на обучающей выборке. Критерием, по которому определяется степень соответствия модели действительности, выбрано среднеквадратичное отклонение оценок зависимого показателя от его реальных значений.
