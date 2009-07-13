@@ -5,15 +5,19 @@
 _Andrey Styskin, Cybernetics Departent of MEPhI(SU), astyskin@gmail.com_
 
 = ABSTRACT =
-	This paper presents machine learning method to determine parameters of hierarchical criteria system for object estimation based on learning set.
-The  hierarchical criteria system for object estimation is clear for interpret and there fore is self check. Machine learning algorithm is iterational. On each iteration we go throught criterias using breadth first algorithm and optimmize each critara while fix arameters of others. For each criteria we do just several steps of optimization so we have uniform optimization.
-This algorithm gives good approximation (better than lineral regression) and works for small learning set - we can easily check the resulting system.
+This paper presents machine learning method to determine parameters of hierarchical criteria system for object estimation based on learning set. The  hierarchical criteria system for object estimation is clear for interpret. Machine learning algorithm is iterational. On each iteration we go throught criterias using breadth first algorithm and optimmize each critara while parameters of others criteria are fixed. This algorithm gives good approximation and works for small learning set problem.
 
-sum of squares
+* self checked
+* For each criteria we do just several steps of optimization so we have uniform optimization.
+* sum of squares
+* (better than lineral regression) 
+* small learning set problem - we can easily check the resulting system
+
 = 1  INTRODUCTION =
-In management, science and commercial field we are usually faced with multi-criteria optimization or choosing best object problems. Multi-criteria decision-analysis (MCDA) are used in such problems. But when there are many criteria the standard MCDA-methods becomes hard to use and interpret results and in this case hierarchical methods are used. In these methods criteria are structured in tree/network view and aggregation functions are used to aggregate single criterion to more general ones. 
-When the problem of building hierarchical models becomes regular it is good idea to machine learn the parameters of model: weights and parameters of aggregation functions. We can use expert values of objects or any other kind of estimation of ranking function output for learning set objects. 
-The resulting optimized model is well interpreted so a researcher could check the validness himself. And this approach works good for small learning set 
+In management, science and commercial field we are usually faced with multi-criteria optimization or choosing best object problems. Multi-criteria decision-analysis (MCDA) are used in such problems. But when there are many criteria the standard MCDA-methods becomes hard to use and interpret results and in this case hierarchical methods are used. In these methods criteria are structured in tree/network form and aggregation functions are used to aggregate single criterion to more general ones. 
+When the problem of building hierarchical models becomes regular it is good idea to machine learn the parameters of model: weights and parameters of aggregation functions. We can use expert values of objects or any other kind of ranking function output estimation for learning set objects. 
+The resulting optimized model is well interpreted so a researcher could check the validness himself by comparing the parameter estimations with own fillings about the knowledge domain. And this approach works good for small learning set.
+
 = 2 HIERARCHICAL MODEL =
 = 3 MACHINE LEARNING ALGORITHM =
 = 4 COMPARISON WITH REGRESSION AND OTHERS =
