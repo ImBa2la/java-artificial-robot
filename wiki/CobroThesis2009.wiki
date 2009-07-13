@@ -1,16 +1,16 @@
 #labels cobro,thesis
-# Machine Learning For Object Estimation Using Hierarhical Criteria System
+# Machine Learning For Object Estimation Using Hierarchical Criteria System
 
-= Machine Learning For Object Estimation Using Hierarhical Criteria System =
-_Andrey Styskin, Cybernetics Departent of MEPhI(SU), astyskin@gmail.com_
+= Machine Learning For Object Estimation Using Hierarchical Criteria System =
+_Andrey Styskin, Cybernetics Department of MEPhI(SU), astyskin@gmail.com_
 
 = ABSTRACT =
-This paper presents machine learning method to determine parameters of hierarchical criteria system for object estimation based on learning set. The  hierarchical criteria system for object estimation is clear for interpret. Machine learning algorithm is iterational. On each iteration we go throught criterias using breadth first algorithm and optimmize each critara while parameters of others criteria are fixed. This algorithm gives good approximation and works for small learning set problem.
+This paper presents machine learning method to determine parameters of hierarchical criteria system for object estimation based on learning set. The  hierarchical criteria system for object estimation is clear for interpret. Machine learning algorithm is iterative. On each iteration we go through criteria using breadth first algorithm and optimize each criteria while parameters of others criteria are fixed. This algorithm gives good approximation and works for small learning set problem.
 
 * self checked
 * For each criteria we do just several steps of optimization so we have uniform optimization.
 * sum of squares
-* (better than lineral regression) 
+* (better than linear regression) 
 * small learning set problem - we can easily check the resulting system
 
 = 1  INTRODUCTION =
@@ -19,6 +19,21 @@ When the problem of building hierarchical models becomes regular it is good idea
 The resulting optimized model is well interpreted so a researcher could check the validness himself by comparing the parameter estimations with own fillings about the knowledge domain. And this approach works good for small learning set.
 
 = 2 HIERARCHICAL MODEL =
+== Definition ==
+While building hierarchical model it is required to group and structure measures in form of tree. Lives of such tree are called single criteria. The rest vertexes are called complex criteria. And the root is called integral criterion. 
+Single and complex criteria differ in units in principle. Single criteria are measured in dimension units and complex are measured in dimensionless units on interval [0; 1]. 
+The values close to 0 indicate the small utility and in opposite values close to 1 indicate big utility.
+Hierarchical model present both the set of factors for knowledge domain (in form of single and complex criteria) and logical links between them. On each level there are criteria of the same generality level.  Lets look at an example:
+
+To get estimations of objects with hierarchical model it is also required to define functional links between criteria (where logical links are). 
+So the hierarchical model is:
+* Knowledge domain organized in tree view;
+* Conversion functions for dimension units that map measures to [0; 1] scale;
+* Aggregation functions that aggregate several logicaly linked measures to more general measure
+
+== Aggregation function ==
+
+
 = 3 MACHINE LEARNING ALGORITHM =
 = 4 COMPARISON WITH REGRESSION AND OTHERS =
 = 5 CONCLUSION =
