@@ -157,3 +157,8 @@ int main(int argc, char** argv) {
     return 0;
 }
 }}}
+
+= Task 203 =
+{{{
+Total[Select[Union[Join @@ Table[Binomial[n, k], {n, 0, 50}, {k, 0, n}]], Max[Last /@ FactorInteger[#]] < 2 &]]
+}}}
