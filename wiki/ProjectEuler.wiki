@@ -92,6 +92,11 @@ While[x < 2000000, t += x; x = NextPrime[x]];
 t
 }}}
 
+= Task 39 =
+{{{
+SortBy[ Tally[Map[Total, Select[Join @@ Map[Map[{Last[#]^2 - First[#]^2, 2*First[#]*Last[#], Last[#]^2 + First[#]^2} &, Select[Join @@ Table[{i, j}, {i, 1, 25}, {j, i + 1, 25}], CoprimeQ @@ # &]]*# &, Range[83]], Total[#] <= 1000 &]]], Last]
+}}}
+
 = Task 47 =
 {{{
 n = 4;
