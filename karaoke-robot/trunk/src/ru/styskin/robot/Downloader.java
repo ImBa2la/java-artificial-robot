@@ -22,8 +22,8 @@ public class Downloader {
 	
 	public void run() {
 		try {
-			Pattern pattern = Pattern.compile("<h1>.*<\\/h1>");			
-			BufferedReader in = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
+			Pattern pattern = Pattern.compile("<h1.*<\\/h1>");			
+			BufferedReader in = new BufferedReader(new InputStreamReader(new URL(url).openStream(), "utf-8"));
 			PrintWriter out = null;
 			String s;
 			boolean flag = false;
@@ -32,22 +32,23 @@ public class Downloader {
 				Matcher matcher = pattern.matcher(s);
 				if(matcher.find()) {
 					s = matcher.group();
-					s = s.replace("<h1>", "").replace("</h1>", "").trim();
+					s = s.substring(s.indexOf('>') + 1);
+					s = s.substring(0, s.indexOf("</"));
+					s = s.substring(1, s.indexOf("»"));
 					String fileName = title + "/" + s + ".txt";
 					out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName))));
 				}
-				if(s.indexOf("<pre>") >= 0 && out != null) {
+				if(s.indexOf("descr_full") >= 0 && out != null) {
 					flag = true;
 				}
 				if(flag) {
-					if(s.indexOf("<pre>") >= 0) {
-						s = s.substring(s.indexOf("<pre>") + "<pre>".length());
+					if(s.indexOf("<br />") >= 0) {
+						s = s.substring(s.indexOf("<br />") + "<br />".length());
 					}
-					if(s.indexOf("</pre>") >= 0) {
-						s = s.substring(0, s.indexOf("</pre>"));
-						flag = false;
-					}
-					out.println(s.trim());					
+					out.println(s.trim());
+					if (s.indexOf("</div>") >= 0) {
+						break;						
+					}					
 				}
 			}			
 			in.close();

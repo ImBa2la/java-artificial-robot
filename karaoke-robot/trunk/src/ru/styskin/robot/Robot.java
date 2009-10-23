@@ -20,13 +20,13 @@ public class Robot implements Runnable {
 	}
 	
 	public static void main(String[] args) {
-		new Robot("http://www.karaoke.ru", "/base/186.htm", "Сюткин").run();		
+		new Robot("http://www.karaoke.ru", "/catalog/artist_songs/8881", "Р‘Рё-2").run();		
 	}
 	                            
 	public void run() {
 		File dir = new File(title);
 		dir.mkdir();		
-		Pattern pattern = Pattern.compile("<a href=\\/song\\/\\d{1,5}\\.htm");
+		Pattern pattern = Pattern.compile("<a href=\"\\/catalog\\/song\\/\\d{1,5}\"");
 		try {
 			URL url = new URL(head + enterance);
 			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -36,6 +36,7 @@ public class Robot implements Runnable {
 				if(matcher.find()) {
 					s = matcher.group();
 					s = s.substring(s.indexOf('=')+1);
+					s = s.substring(1, s.length() - 1);
 					new Downloader(title, head + s).run();					
 				}				
 			}			
