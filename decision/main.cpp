@@ -123,7 +123,7 @@ struct TChoser {
     void Dump(double r) {
     	if (out.is_open()) {
     		out << r;
-    		for (size_t i = 0; i < M-1; ++i) {
+    		for (int i = 0; i < M-1; ++i) {
     			out << " " << w[i];
     		}
     		out << endl;
@@ -147,6 +147,15 @@ struct TChoser {
             current.resize(M-1);
             current[i] = 1;
         }
+
+        // Sum(Wi) < 1
+        planes.push_back(TPlane());
+        TVD& current = planes.back().norm;
+        current.resize(M-1);
+        for (int i = 0; i < M - 1; ++i) {
+        	current[i] = -1;
+        }
+        planes.back().k = -1;
         
         // Dump constrains
         if (out.is_open()) {
@@ -173,6 +182,7 @@ struct TChoser {
     };
 
 
+    // TODO: rewrite using simplex ideas of feasible plan
     bool MakeCheck() {
     	Dump(0);
         for (int iter = 0; iter < 100000; ++iter) {
