@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       145,          7]
-NotebookDataLength[     16684,        358]
-NotebookOptionsPosition[     16267,        339]
-NotebookOutlinePosition[     16656,        356]
-CellTagsIndexPosition[     16613,        353]
+NotebookDataLength[     13091,        284]
+NotebookOptionsPosition[     12675,        265]
+NotebookOutlinePosition[     13064,        282]
+CellTagsIndexPosition[     13021,        279]
 WindowFrame->Normal
 ContainsDynamic->False*)
 
@@ -97,30 +97,24 @@ Cell[BoxData[{
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"way", "=", 
-   RowBox[{"ListLinePlot", "[", 
-    RowBox[{
-     RowBox[{"Map", "[", 
-      RowBox[{"Rest", ",", "points"}], "]"}], ",", 
-     RowBox[{"PlotRange", "\[Rule]", 
-      RowBox[{"{", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"Map", "[", 
+     RowBox[{"Arrow", ",", 
+      RowBox[{"Partition", "[", 
        RowBox[{
-        RowBox[{"{", 
-         RowBox[{"0", ",", "1"}], "}"}], ",", 
-        RowBox[{"{", 
-         RowBox[{"0", ",", "1"}], "}"}]}], "}"}]}]}], "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
+        RowBox[{"Rest", "/@", "points"}], ",", "2", ",", "1"}], "]"}]}], 
+     "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"cir", "=", 
-   RowBox[{"ContourPlot", "[", 
-    RowBox[{
-     RowBox[{"Evaluate", "[", 
-      RowBox[{"circle", "[", 
-       RowBox[{"a", ",", "b"}], "]"}], "]"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"a", ",", "0", ",", "1"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"b", ",", "0", ",", "1"}], "}"}]}], "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
+   RowBox[{"Graphics", "[", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Circle", "[", 
+        RowBox[{
+         RowBox[{"Rest", "[", "#", "]"}], ",", 
+         RowBox[{"First", "[", "#", "]"}]}], "]"}], "&"}], ",", "points"}], 
+     "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Show", "[", 
    RowBox[{"reg", ",", "way", ",", "cir"}], "]"}], "\[IndentingNewLine]", 
@@ -145,7 +139,11 @@ Cell[BoxData[{
    3.4560360409101963`*^9}, {3.456036093986917*^9, 3.456036099141057*^9}, {
    3.456036470999682*^9, 3.456036517079883*^9}, 3.4656397839986258`*^9, 
    3.4656398347806187`*^9, 3.4656398716311693`*^9, {3.4656624493042173`*^9, 
-   3.4656624667018547`*^9}, {3.465666191563919*^9, 3.4656662007102537`*^9}}],
+   3.4656624667018547`*^9}, {3.465666191563919*^9, 3.4656662007102537`*^9}, {
+   3.4656683461452503`*^9, 3.465668532733993*^9}, {3.4656685992005863`*^9, 
+   3.4656685994747667`*^9}, {3.465668679792777*^9, 3.465668693399065*^9}, {
+   3.4656687356218777`*^9, 3.465668765539962*^9}, {3.4656688357866507`*^9, 
+   3.465668880163986*^9}}],
 
 Cell[BoxData[
  GraphicsBox[{GraphicsComplexBox[CompressedData["
@@ -238,71 +236,14 @@ XlDngYr/j2Ve8PcT71fkbKeBRzwPI8wfadSJg/XgpCy5L5hohP8Bj6sj4g==
        130, 129, 72, 106, 71, 160, 94, 105, 104, 147, 148, 146, 145, 108, 81, 
        127, 92, 162, 93, 80, 125, 79, 126, 70, 123, 124, 120, 122, 121, 69, 
        103, 68, 159, 91, 102, 101, 143, 144, 142, 141, 107, 78, 119, 
-       67}]}}], {{}, {}, 
-    {Hue[0.67, 0.6, 0.6], 
-     LineBox[{{0.333333, 0.333333}, {0.27451, 0.568627}, {0.27451, 
-      0.568627}, {0.262441, 0.616904}, {0.0730745, 0.593592}}]}}, 
-   GraphicsComplexBox[CompressedData["
-1:eJxlkn9Q03UYx5eMzIWNo8IKtCHD7hK8I4JoAu+FCzYTG1p4XgwFnKBsIj/U
-Iz0WKxB/QYwfySEiKoY7pkgwKERsHJjya245jyX78d33mwiedYqsC3aGBN8/
-6nOfz33u83mee57X834ev5TMTdJFDAZDMHue3/8uPfSjFyO6wwloglpffrB/
-GGVckYorIjBumr5qYg2isqnpqKyZwG9a+ezux+m1leKCHQ6oV8Tsj0vqh3nu
-30HbPzR4R/udcEA7iCds5gBkPbWWFhmJosXOHSPfDMD/eXgVCbcq0Z0XOEM4
-58BlIYvCAo9lqgSJgRTYR10RnXf1kHqHD7vWU+gSTz5lSG9DmXW87qaAgmqO
-04DJ5m+tugAKO823+Kw4A4RzBgo83ysNXIcBTkHMGpGVnOczgjF2tmdTHQnm
-owAQCiPNww89dqqw14jg7pLt91eTWHGPqN5nN0Ii7z3D6XNAlnOpPr/dSNeb
-l1EwtivHCHehNDLWQiD94rKEG5lG7M0typOaCUyU3fcoExgR9cXJYXMfQfOq
-ZnKrJhIJ1G89INKEGMBitYTZNhN41Pi2JEtxm9b/v/15/N2ttMX8C/A6OODD
-pWzz8c7CHBaRvYdpR3KVa8uNP89AOqLY58G2o13/Tk4Du25eDzvipfKV1Z+V
-YDT2koastSM7NDw5PzMfq1qLKj/2INA4VHBlQJJJ5/fVLN2cwdiNqPdOubip
-BDhTaZ/ctX4O66Jf/uhLcYDzOumWmLOF1oORFnzId2kKPhp74OxROODTNijI
-uHkYG70UB/xDSOwxM5eFFVTRem+1Lbkc6F+L3cejXtINknQ9lWXlcZ4uEl7L
-n6X8lfA93c/RZvJdm1iNxpVBrdvCKJST5IbI9zXwd49o/pu/MA8tMBnu1SbF
-U2BOl8a+2N+G04xXPqiLodBRKF93oqIdwjtannYtNT8PncgOFqaHzuabcH1Z
-6NvQBffHxpHQERKtas+ovd3dNC9bya8We/wMJUe86rV1C7w68JI//eqNcgf8
-4vktP+XraD0quOldh4tn31MNnhaJg/Z/eFAt85IQuF6aKlcKdOg7ovSJW08g
-dfWv3OJoHa3/haDz+ppIHUy/W5OjYwjsqpFQeTXXocrdNjlTaofPm2zv5Xld
-dH+vOdUbeNKrCByfMde72+n6pscPPdE6bSiq4T3NsnfAsiapaYnRhmsJpoq3
-Otrg9tBQ/IPWRut3jnNsyPtHG8w7v+4NeKYB93zIq9s7bf+bv38ASsQNGA==
-
-    "], {{}, {}, {}, {}, {}, 
-     {Hue[0.37820393249936934`, 0.6, 0.6], 
-      TagBox[
-       TooltipBox[
-        LineBox[{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
-         18, 19, 20, 21, 22, 23, 24, 25, 26, 27}],
-        RowBox[{
-          RowBox[{
-            SuperscriptBox[
-             RowBox[{"(", 
-               RowBox[{
-                 RowBox[{"-", "0.262441`"}], "+", "a"}], ")"}], "2"], "+", 
-            SuperscriptBox[
-             RowBox[{"(", 
-               RowBox[{
-                 RowBox[{"-", "0.616904`"}], "+", "b"}], ")"}], "2"]}], 
-          "\[Equal]", "0.00247630640625`"}]],
-       Annotation[#, (-0.262441 + $CellContext`a)^2 + (-0.616904 + \
-$CellContext`b)^2 == 0.00247630640625, "Tooltip"]& ]}, 
-     {Hue[0.6142719099991583, 0.6, 0.6], 
-      TagBox[
-       TooltipBox[
-        LineBox[{28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 
-         43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 
-         60, 61, 62, 63, 64, 65, 66, 67, 68}],
-        RowBox[{
-          RowBox[{
-            SuperscriptBox[
-             RowBox[{"(", 
-               RowBox[{
-                 RowBox[{"-", "0.0730745`"}], "+", "a"}], ")"}], "2"], "+", 
-            SuperscriptBox[
-             RowBox[{"(", 
-               RowBox[{
-                 RowBox[{"-", "0.593592`"}], "+", "b"}], ")"}], "2"]}], 
-          "\[Equal]", "0.00533988255025`"}]],
-       Annotation[#, (-0.0730745 + $CellContext`a)^2 + (-0.593592 + \
-$CellContext`b)^2 == 0.00533988255025, "Tooltip"]& ]}}]},
+       67}]}}], {ArrowBox[{{0.333333, 0.333333}, {0.27451, 0.568627}}], 
+    ArrowBox[{{0.27451, 0.568627}, {0.27451, 0.568627}}], 
+    ArrowBox[{{0.27451, 0.568627}, {0.262441, 0.616904}}], 
+    ArrowBox[{{0.262441, 0.616904}, {0.0730745, 0.593592}}]}, {
+    CircleBox[{0.333333, 0.333333}, 0], CircleBox[{0.27451, 0.568627}, 0], 
+    CircleBox[{0.27451, 0.568627}, 0], 
+    CircleBox[{0.262441, 0.616904}, 0.0497625], 
+    CircleBox[{0.0730745, 0.593592}, 0.0730745]}},
   AspectRatio->1,
   Frame->True,
   Method->{"TransparentPolygonMesh" -> True, "AxesInFront" -> True},
@@ -311,22 +252,7 @@ $CellContext`b)^2 == 0.00533988255025, "Tooltip"]& ]}}]},
   PlotRangePadding->{
     Scaled[0.02], 
     Scaled[0.02]}]], "Output",
- CellChangeTimes->{{3.455992358487751*^9, 3.455992368294033*^9}, 
-   3.455992863841502*^9, {3.455992925218104*^9, 3.4559929478413486`*^9}, {
-   3.455993000342005*^9, 3.455993008477297*^9}, {3.455993227842087*^9, 
-   3.455993238155651*^9}, {3.455993347477396*^9, 3.455993366035232*^9}, {
-   3.455993411525558*^9, 3.4559934260980053`*^9}, {3.455993459520252*^9, 
-   3.455993523776897*^9}, 3.455993579699018*^9, 3.4559936121959267`*^9, 
-   3.4559936776125717`*^9, {3.455993757952929*^9, 3.455993777403285*^9}, 
-   3.4559938464586487`*^9, 3.455993895418398*^9, 3.4559939319816313`*^9, {
-   3.455993963545405*^9, 3.455993998101707*^9}, {3.4559940353284903`*^9, 
-   3.455994108857108*^9}, {3.455994211380629*^9, 3.455994240928522*^9}, {
-   3.4559942930628366`*^9, 3.455994339899658*^9}, {3.456035746287405*^9, 
-   3.4560358118328648`*^9}, 3.4560359299020977`*^9, 3.4560360413643503`*^9, 
-   3.456036100739072*^9, 3.456036517659133*^9, 3.465639792425413*^9, 
-   3.465639835676705*^9, 3.465639872386958*^9, {3.465662443955455*^9, 
-   3.46566246721283*^9}, 3.465665564719492*^9, 3.4656658923320217`*^9, {
-   3.46566619662363*^9, 3.465666202238084*^9}, 3.465666235587229*^9}]
+ CellChangeTimes->{{3.465668850689267*^9, 3.465668881279378*^9}}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -356,10 +282,10 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[590, 23, 4685, 124, 238, "Input"],
-Cell[5278, 149, 10554, 179, 373, "Output"]
+Cell[590, 23, 4777, 122, 238, "Input"],
+Cell[5370, 147, 6870, 107, 373, "Output"]
 }, Open  ]],
-Cell[15847, 331, 416, 6, 27, "Input"]
+Cell[12255, 257, 416, 6, 27, "Input"]
 }
 ]
 *)

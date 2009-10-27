@@ -256,7 +256,7 @@ struct TChoser {
             // Gold ratio method
             const double f = (sqrt(5.) + 1)/2;
             double a = 10*EPS, b = t - 10*EPS;
-            // Can be optimized
+            // Can be optimized: do not need to calculate radius in one point on each iteration
             TVD nn;
             double r = 0;
             while (b - a > EPS) {
@@ -315,7 +315,7 @@ istream &operator>>(istream &stream, TChoser &ob) {
 
 
 int main(void) {
-    TChoser input("input.in", "output.txt");
+    TChoser input("input3d.in", "output3d.txt");
     input.Init();
     input.MakeCheck();
     Print(input.w);
