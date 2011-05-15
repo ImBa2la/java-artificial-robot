@@ -112,13 +112,11 @@
 			<fileset dir="lib">
 				<include name="*.jar"/>
 			</fileset>
-			<fileset dir="lib">
-				<include name="*.jar"/>
-			</fileset>
             <fileset dir="${ir-utils.path}/lib">
                 <include name="spring.jar"/>
                 <include name="ojdbc*.jar"/>
                 <include name="log4j*.jar"/>
+                <include name="fast*.jar"/>
                 <include name="test/*.jar"/>
             </fileset>			
             <fileset dir="${ir-utils.path}/target/dist">
